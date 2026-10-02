@@ -1,0 +1,36 @@
+/* Attendee view: phone first, equally at home on a laptop. */
+.play {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(var(--space-5), env(safe-area-inset-top)) var(--space-4) max(var(--space-5), env(safe-area-inset-bottom));
+  background:
+    radial-gradient(80% 50% at 0% 0%, color-mix(in oklab, var(--pink) 22%, transparent), transparent 70%),
+    radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--cyan) 16%, transparent), transparent 70%),
+    var(--ink-900);
+}
+
+.play__panel {
+  width: min(100%, 560px);
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5);
+}
+
+.play__mark {
+  width: 56px;
+  height: 56px;
+}
+
+.play h1 {
+  font-size: clamp(2.5rem, 11vw, 3.5rem);
+}
+
+.play .lead {
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+@media (min-width: 720px) {
+  .play__panel { padding: var(--space-8) var(--space-7); }
+}

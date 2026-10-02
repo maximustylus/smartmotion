@@ -1,0 +1,175 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--ink-900);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Shared components ---------- */
+
+.grad-text {
+  background: var(--grad, var(--grad-sunrise));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grad-text--aurora { --grad: var(--grad-aurora); }
+.grad-text--meet { --grad: var(--grad-meet); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  color: var(--paper);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.75em 1.4em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--grad-sunrise);
+  color: var(--ink-950);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast);
+}
+
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(0.97); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--ink-600);
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.8em;
+  padding: 0.1em 0.45em;
+  border-radius: 6px;
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  font-family: var(--font-body);
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.card {
+  background: linear-gradient(160deg, var(--ink-800), var(--ink-900));
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-l);
+}
+
+/*
+  Placeholder marker for anything the owner still has to supply or verify.
+  Deliberately loud so none survive to the talk. The deck counts these.
+*/
+.todo {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border: 2px dashed var(--todo);
+  border-radius: 0.4em;
+  background: color-mix(in oklab, var(--todo) 12%, transparent);
+  color: var(--todo);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8em;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-transform: none;
+  -webkit-text-fill-color: var(--todo);
+}
+
+.todo::before {
+  content: 'TODO ';
+  font-weight: 800;
+}

@@ -1,0 +1,86 @@
+/*
+  smartmotion design tokens.
+  Dark cinematic base with saturated accents. Every text colour below passes
+  WCAG AA against --ink-900, and the primary pairs pass AAA, so slides stay
+  legible after Zoom compresses them into a small window.
+*/
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/inter';
+
+:root {
+  /* Surfaces */
+  --ink-950: #06061a;
+  --ink-900: #0a0a1f;
+  --ink-800: #13132e;
+  --ink-700: #1e1e44;
+  --ink-600: #2c2c5c;
+
+  /* Text */
+  --paper: #f7f5ff;
+  --muted: #b8b6d9;
+  --faint: #8a88b3;
+
+  /* Accents */
+  --pink: #ff3d8b;
+  --orange: #ff8a3d;
+  --yellow: #ffd23f;
+  --lime: #b6f23a;
+  --cyan: #2ee6d6;
+  --blue: #5b8cff;
+  --violet: #9b6bff;
+
+  /* Signature gradients */
+  --grad-sunrise: linear-gradient(100deg, var(--pink) 0%, var(--orange) 55%, var(--yellow) 100%);
+  --grad-aurora: linear-gradient(100deg, var(--violet) 0%, var(--blue) 45%, var(--cyan) 100%);
+  --grad-meet: linear-gradient(100deg, var(--pink) 0%, var(--yellow) 50%, var(--cyan) 100%);
+
+  /* Status */
+  --todo: #ffb020;
+
+  /* Type */
+  --font-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Radii and spacing for fluid (non-stage) layouts such as /play */
+  --radius-s: 10px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Motion. Presenter motion is slow and deliberate by design. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-base: 400ms;
+  --dur-slow: 900ms;
+
+  /* Current section accent, swapped by the deck */
+  --accent: var(--pink);
+  --accent-2: var(--orange);
+
+  color-scheme: dark;
+}
+
+/* Section accents, applied via [data-section] */
+[data-section='0'] { --accent: var(--pink); --accent-2: var(--yellow); }
+[data-section='1'] { --accent: var(--pink); --accent-2: var(--orange); }
+[data-section='2'] { --accent: var(--yellow); --accent-2: var(--pink); }
+[data-section='3'] { --accent: var(--cyan); --accent-2: var(--violet); }
+[data-section='4'] { --accent: var(--orange); --accent-2: var(--yellow); }
+[data-section='5'] { --accent: var(--lime); --accent-2: var(--cyan); }
+[data-section='6'] { --accent: var(--violet); --accent-2: var(--blue); }
+[data-section='7'] { --accent: var(--blue); --accent-2: var(--cyan); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}

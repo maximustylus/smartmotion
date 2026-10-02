@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- smartmotion mark: two overlapping factors, "vibe" and "coding", with the product where they meet -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16163A"/>
+      <stop offset="1" stop-color="#0A0A1F"/>
+    </linearGradient>
+    <clipPath id="left"><circle cx="206" cy="256" r="128"/></clipPath>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="206" cy="256" r="128" fill="#FF3D8B"/>
+  <circle cx="306" cy="256" r="128" fill="#2EE6D6"/>
+  <circle cx="306" cy="256" r="128" fill="#FFD23F" clip-path="url(#left)"/>
+</svg>
