@@ -1,8 +1,8 @@
-// The talk's running order and time budget, from BRIEF.md.
-// Section 0 is the title slide shown before the talk starts.
+// The talk's running order and time budget, from brief.md.
+// Section 0 is the title, shown before the talk starts.
 export const sections = [
   { n: 0, title: 'Welcome', minutes: 0 },
-  { n: 1, title: 'Scan and play', summary: 'Icebreaker quiz', minutes: 8 },
+  { n: 1, title: 'Scan and play', summary: 'An icebreaker quiz on your phone', minutes: 8 },
   { n: 2, title: 'Vibe × coding', summary: 'Garbage in, garbage out. Both factors needed.', minutes: 5 },
   { n: 3, title: 'The test', summary: 'Utility = Validity × Reliability × Educational Impact × Acceptability × Cost', minutes: 7 },
   { n: 4, title: 'Reality check', summary: 'Idea, working demo, the final 10%, and the march of nines', minutes: 7 },

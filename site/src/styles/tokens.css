@@ -1,50 +1,35 @@
 /*
-  smartmotion design tokens.
-  Dark cinematic base with saturated accents. Every text colour below passes
-  WCAG AA against --ink-900, and the primary pairs pass AAA, so slides stay
-  legible after Zoom compresses them into a small window.
+  smartmotion design tokens. Option A from the type and colour review:
+  Geist for everything, Instrument Serif italic for the talk's own voice,
+  neutral paper and ink with one ultramarine accent. Green only confirms a
+  quiz answer. Both themes are designed, not inverted.
 */
-@import '@fontsource-variable/bricolage-grotesque';
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/geist';
+@import '@fontsource/instrument-serif/400-italic.css';
 
 :root {
-  /* Surfaces */
-  --ink-950: #06061a;
-  --ink-900: #0a0a1f;
-  --ink-800: #13132e;
-  --ink-700: #1e1e44;
-  --ink-600: #2c2c5c;
+  /* Light: the bare root holds the full palette */
+  --bg: #f6f5f2;
+  --bg-2: #eeede8;
+  --fg: #111114;
+  --muted: #5e5e66;
+  --faint: #8d8d96;
+  --line: #dcdad4;
+  --accent: #2f4bff;
+  --accent-ink: #ffffff;
+  --accent-soft: #e4e8ff;
+  --second: #177a46;
+  --todo: #9a5a00;
+  --todo-soft: #fff1dc;
 
-  /* Text */
-  --paper: #f7f5ff;
-  --muted: #b8b6d9;
-  --faint: #8a88b3;
+  /* Particle field colours, read by Three.js */
+  --field: #2f4bff;
+  --field-alpha: 0.55;
 
-  /* Accents */
-  --pink: #ff3d8b;
-  --orange: #ff8a3d;
-  --yellow: #ffd23f;
-  --lime: #b6f23a;
-  --cyan: #2ee6d6;
-  --blue: #5b8cff;
-  --violet: #9b6bff;
+  --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-voice: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  /* Signature gradients */
-  --grad-sunrise: linear-gradient(100deg, var(--pink) 0%, var(--orange) 55%, var(--yellow) 100%);
-  --grad-aurora: linear-gradient(100deg, var(--violet) 0%, var(--blue) 45%, var(--cyan) 100%);
-  --grad-meet: linear-gradient(100deg, var(--pink) 0%, var(--yellow) 50%, var(--cyan) 100%);
-
-  /* Status */
-  --todo: #ffb020;
-
-  /* Type */
-  --font-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
-  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-
-  /* Radii and spacing for fluid (non-stage) layouts such as /play */
-  --radius-s: 10px;
-  --radius-m: 18px;
-  --radius-l: 28px;
+  /* Spacing and radii */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -53,29 +38,64 @@
   --space-6: 32px;
   --space-7: 48px;
   --space-8: 64px;
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-pill: 999px;
 
-  /* Motion. Presenter motion is slow and deliberate by design. */
+  /* Type scale. vmin keeps headlines large in a shrunken Zoom window. */
+  --text-body: clamp(1rem, 2.2vmin, 1.5rem);
+  --text-lead: clamp(1.2rem, 3.3vmin, 2.3rem);
+  --text-h3: clamp(1.5rem, 4vmin, 2.8rem);
+  --text-h2: clamp(2rem, 7.6vmin, 5.4rem);
+  --text-h1: clamp(2.6rem, 10.5vmin, 8rem);
+  --text-eyebrow: clamp(0.78rem, 1.5vmin, 1rem);
+
+  /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 180ms;
   --dur-base: 400ms;
   --dur-slow: 900ms;
 
-  /* Current section accent, swapped by the deck */
-  --accent: var(--pink);
-  --accent-2: var(--orange);
-
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-/* Section accents, applied via [data-section] */
-[data-section='0'] { --accent: var(--pink); --accent-2: var(--yellow); }
-[data-section='1'] { --accent: var(--pink); --accent-2: var(--orange); }
-[data-section='2'] { --accent: var(--yellow); --accent-2: var(--pink); }
-[data-section='3'] { --accent: var(--cyan); --accent-2: var(--violet); }
-[data-section='4'] { --accent: var(--orange); --accent-2: var(--yellow); }
-[data-section='5'] { --accent: var(--lime); --accent-2: var(--cyan); }
-[data-section='6'] { --accent: var(--violet); --accent-2: var(--blue); }
-[data-section='7'] { --accent: var(--blue); --accent-2: var(--cyan); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0b0b0e;
+    --bg-2: #141418;
+    --fg: #f2f1ee;
+    --muted: #a2a2ac;
+    --faint: #6f6f79;
+    --line: #232329;
+    --accent: #6e84ff;
+    --accent-ink: #0b0b0e;
+    --accent-soft: #1b2050;
+    --second: #3fcf7a;
+    --todo: #ffb020;
+    --todo-soft: #3a2a08;
+    --field: #7c90ff;
+    --field-alpha: 0.85;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0b0b0e;
+  --bg-2: #141418;
+  --fg: #f2f1ee;
+  --muted: #a2a2ac;
+  --faint: #6f6f79;
+  --line: #232329;
+  --accent: #6e84ff;
+  --accent-ink: #0b0b0e;
+  --accent-soft: #1b2050;
+  --second: #3fcf7a;
+  --todo: #ffb020;
+  --todo-soft: #3a2a08;
+  --field: #7c90ff;
+  --field-alpha: 0.85;
+  color-scheme: dark;
+}
 
 @media (prefers-reduced-motion: reduce) {
   :root {

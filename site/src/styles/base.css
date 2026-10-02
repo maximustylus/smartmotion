@@ -4,43 +4,39 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  height: 100%;
+html {
+  background: var(--bg);
+  /* The theme toggle crossfades the page colours */
+  transition: background-color var(--dur-base);
 }
 
 body {
-  background: var(--ink-900);
-  color: var(--paper);
-  font-family: var(--font-body);
-  font-size: 16px;
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color var(--dur-base), color var(--dur-base);
 }
 
-h1,
-h2,
-h3,
-h4,
-p {
-  margin: 0;
-}
+h1, h2, h3, h4, p, ul { margin: 0; }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.03em;
   line-height: 1.02;
   text-wrap: balance;
 }
 
-p {
-  text-wrap: pretty;
-}
+h1 { font-size: var(--text-h1); font-weight: 700; letter-spacing: -0.04em; }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); letter-spacing: -0.02em; }
+
+p { text-wrap: pretty; }
 
 a {
   color: inherit;
@@ -55,14 +51,12 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--yellow);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-[hidden] {
-  display: none !important;
-}
+[hidden] { display: none !important; }
 
 .visually-hidden {
   position: absolute;
@@ -75,22 +69,28 @@ button {
 
 /* ---------- Shared components ---------- */
 
-.grad-text {
-  background: var(--grad, var(--grad-sunrise));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* The talk's own voice: spoken asides such as "Ai MAi?" */
+.voice {
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 1.12em;
 }
 
-.grad-text--aurora { --grad: var(--grad-aurora); }
-.grad-text--meet { --grad: var(--grad-meet); }
-
 .eyebrow {
-  font-family: var(--font-body);
-  font-weight: 650;
-  letter-spacing: 0.14em;
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.lead {
+  font-size: var(--text-lead);
+  line-height: 1.3;
+  color: var(--muted);
+  max-width: 28ch;
 }
 
 .chip {
@@ -98,11 +98,11 @@ button {
   align-items: center;
   gap: 0.5em;
   padding: 0.35em 0.9em;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--accent) 16%, transparent);
-  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
-  color: var(--paper);
-  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font-weight: 500;
+  font-size: 0.9em;
   white-space: nowrap;
 }
 
@@ -112,12 +112,12 @@ button {
   justify-content: center;
   gap: 0.5em;
   min-height: 48px;
-  padding: 0.75em 1.4em;
+  padding: 0.7em 1.4em;
   border: 0;
-  border-radius: 999px;
-  background: var(--grad-sunrise);
-  color: var(--ink-950);
-  font-weight: 700;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
   cursor: pointer;
   transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast);
 }
@@ -127,8 +127,8 @@ button {
 
 .btn--ghost {
   background: transparent;
-  color: var(--paper);
-  box-shadow: inset 0 0 0 2px var(--ink-600);
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1.5px var(--line);
 }
 
 kbd {
@@ -136,37 +136,31 @@ kbd {
   min-width: 1.8em;
   padding: 0.1em 0.45em;
   border-radius: 6px;
-  border: 1px solid var(--ink-600);
-  background: var(--ink-800);
-  font-family: var(--font-body);
-  font-size: 0.9em;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  font-family: var(--font-sans);
+  font-size: 0.85em;
   text-align: center;
-}
-
-.card {
-  background: linear-gradient(160deg, var(--ink-800), var(--ink-900));
-  border: 1px solid var(--ink-700);
-  border-radius: var(--radius-l);
 }
 
 /*
   Placeholder marker for anything the owner still has to supply or verify.
-  Deliberately loud so none survive to the talk. The deck counts these.
+  Deliberately loud so none survive to the talk. The story counts these.
 */
 .todo {
   display: inline-block;
   padding: 0.15em 0.6em;
   border: 2px dashed var(--todo);
   border-radius: 0.4em;
-  background: color-mix(in oklab, var(--todo) 12%, transparent);
+  background: var(--todo-soft);
   color: var(--todo);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
+  font-style: normal;
   font-weight: 600;
   font-size: 0.8em;
   letter-spacing: 0;
   line-height: 1.3;
   text-transform: none;
-  -webkit-text-fill-color: var(--todo);
 }
 
 .todo::before {

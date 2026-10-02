@@ -1,14 +1,17 @@
 import './styles/tokens.css'
 import './styles/base.css'
+import { initTheme } from './lib/theme.js'
 
-// One app, three views. Each view is its own chunk, so a phone joining /play
-// never downloads the presenter deck.
-const routes = {
-  '/play': () => import('./play/play.js'),
-  '/styleguide': () => import('./styleguide.js'),
-}
+initTheme()
 
+const app = document.getElementById('app')
 const path = location.pathname.replace(/\/+$/, '') || '/'
-const load = routes[path] ?? (() => import('./presenter/presenter.js'))
 
-load().then((view) => view.mount(document.getElementById('app')))
+if (path === '/styleguide') {
+  import('./styleguide.js').then((m) => m.mount(app))
+} else {
+  // The QR code and short link point at /play. The quiz is section 1 of the
+  // same story everyone sees, so /play is simply the story opened there.
+  if (path === '/play') history.replaceState(null, '', '/#s1')
+  import('./story/story.js').then((m) => m.mount(app))
+}

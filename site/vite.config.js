@@ -11,14 +11,14 @@ export default defineConfig({
       manifest: {
         name: 'smartmotion: GAi GAi with me',
         short_name: 'smartmotion',
-        description: 'A casual stroll into generative AI for educators. Slides and audience quiz in one app.',
+        description: 'A casual stroll into generative AI for educators. The talk and the audience quiz in one scrolling story.',
         lang: 'en-GB',
         // Attendees are the ones who install; the presenter is one shortcut away.
         start_url: '/play',
         scope: '/',
         display: 'standalone',
-        background_color: '#0A0A1F',
-        theme_color: '#0A0A1F',
+        background_color: '#F6F5F2',
+        theme_color: '#F6F5F2',
         icons: [
           { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
@@ -27,7 +27,7 @@ export default defineConfig({
         ],
         shortcuts: [
           { name: 'Play the quiz', url: '/play' },
-          { name: 'Presenter view', url: '/' },
+          { name: 'Start of the talk', url: '/' },
         ],
       },
       workbox: {
