@@ -101,18 +101,25 @@ export function createMotus(host, { onOpen } = {}) {
 
   let k = 1
   let voxels = buildBody(k)
-  const mat = new THREE.MeshLambertMaterial()
+  const mat = new THREE.MeshLambertMaterial({ transparent: true })
   const ink = new THREE.Color('#111114')
   const m = new THREE.Matrix4()
   const rig = new THREE.Group()
   let mesh
+  // Stage geometry: cubes while coarse, then beads, then near-spheres,
+  // so the body rounds off before it hands over to the smooth one.
+  function cellGeometry() {
+    const size = 1 / k
+    if (k <= 2) return new THREE.BoxGeometry(size, size, size)
+    if (k === 3) return new THREE.IcosahedronGeometry(size * 0.62, 1)
+    return new THREE.IcosahedronGeometry(size * 0.6, 2)
+  }
   function buildMesh() {
     if (mesh) {
       rig.remove(mesh)
       mesh.geometry.dispose()
     }
-    const cube = 1 / k
-    mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(cube, cube, cube), mat, voxels.length + FACE_SLOTS)
+    mesh = new THREE.InstancedMesh(cellGeometry(), mat, voxels.length + FACE_SLOTS)
     mesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array((voxels.length + FACE_SLOTS) * 3), 3)
     voxels.forEach(([x, y, z], i) => {
       m.makeTranslation(x, y, z)
@@ -155,9 +162,10 @@ export function createMotus(host, { onOpen } = {}) {
     }
     sphereGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
   }
-  const body = new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.32, metalness: 0.08 }))
+  const bodyMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.32, metalness: 0.08, transparent: true, opacity: 0 })
+  const body = new THREE.Mesh(sphereGeo, bodyMat)
   smooth.add(body)
-  const inkMat = new THREE.MeshStandardMaterial({ color: '#111114', roughness: 0.5 })
+  const inkMat = new THREE.MeshStandardMaterial({ color: '#111114', roughness: 0.5, transparent: true, opacity: 0 })
   const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 16), inkMat)
   const eyeR = eyeL.clone()
   eyeL.position.set(-1.5, 1.1, 4.25)
@@ -216,6 +224,37 @@ export function createMotus(host, { onOpen } = {}) {
 
   const state = { mode: 'idle', blink: 0, lastTouch: performance.now(), talking: false }
   const IDLE_MS = 28000
+
+  // Walk the stages one by one so the evolution reads as a sequence.
+  let stage = 1
+  let stepping = null
+  function applyStage(n) {
+    const hi = n === 5
+    const level = hi ? 4 : n
+    if (level !== k) {
+      k = level
+      voxels = buildBody(k)
+      buildMesh()
+      theme()
+      setFace(faceName)
+    }
+    smooth.visible = true
+    rig.visible = true
+    const dur = reduce() ? 0 : 0.9
+    gsap.to(mat, { opacity: hi ? 0 : 1, duration: dur, ease: 'power2.inOut', overwrite: true, onComplete: () => (rig.visible = !hi) })
+    gsap.to([bodyMat, inkMat], { opacity: hi ? 1 : 0, duration: dur, ease: 'power2.inOut', overwrite: true, onComplete: () => (smooth.visible = hi) })
+    if (!reduce()) {
+      gsap.fromTo(rig.scale, { x: 0.86, y: 0.86, z: 0.86 }, { x: 1, y: 1, z: 1, duration: 0.6, ease: 'back.out(2.2)', overwrite: true })
+      gsap.fromTo(smooth.scale, { x: 0.9, y: 0.9, z: 0.9 }, { x: 1, y: 1, z: 1, duration: 0.8, ease: 'back.out(1.6)', overwrite: true })
+    }
+  }
+  function stepTo(target) {
+    clearTimeout(stepping)
+    if (target === stage) return
+    stage += target > stage ? 1 : -1
+    applyStage(stage)
+    if (stage !== target) stepping = setTimeout(() => stepTo(target), reduce() ? 0 : 520)
+  }
 
   let awakeFace = 'smile'
   function setEyes(open) {
@@ -341,26 +380,18 @@ export function createMotus(host, { onOpen } = {}) {
   return {
     theme,
     // 0: a 28 pixel sprite. 1: a smooth 256 pixel render.
+    // Fidelity 0 to 1 maps to five stages. A change walks through the
+    // stages one at a time, each with a small pop, and the last stage
+    // crossfades the bead body into the smooth one.
     setFidelity(f) {
+      const target = f < 0.2 ? 1 : f < 0.45 ? 2 : f < 0.7 ? 3 : f < 0.9 ? 4 : 5
       const px = Math.round(28 + (256 - 28) * f)
-      const level = f < 0.3 ? 1 : f < 0.7 ? 2 : 3
-      if (level !== k) {
-        k = level
-        voxels = buildBody(k)
-        buildMesh()
-        theme()
-        setFace(faceName)
+      if (px !== SIZE) {
+        SIZE = px
+        renderer.setSize(SIZE, SIZE, false)
+        renderer.domElement.style.imageRendering = f > 0.6 ? 'auto' : 'pixelated'
       }
-      const hi = f > 0.85
-      if (hi !== smooth.visible) {
-        smooth.visible = hi
-        rig.visible = !hi
-        if (!reduce()) gsap.fromTo(hi ? smooth.scale : rig.scale, { x: 0.7, y: 0.7, z: 0.7 }, { x: 1, y: 1, z: 1, duration: 0.7, ease: 'back.out(2)' })
-      }
-      if (px === SIZE) return
-      SIZE = px
-      renderer.setSize(SIZE, SIZE, false)
-      renderer.domElement.style.imageRendering = f > 0.8 ? 'auto' : 'pixelated'
+      stepTo(target)
     },
     // The story calls this when the scene changes: Motus hops along.
     travel(index, total, title) {

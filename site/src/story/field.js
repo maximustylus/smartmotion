@@ -146,6 +146,30 @@ const forms = {
     }
     return a
   },
+  // A thin ring and a loose triangle of three clusters, so the nest is not
+  // always the same shape.
+  nestring(n, r) {
+    const a = new Float32Array(n * 3)
+    for (let i = 0; i < n; i++) {
+      const t = r() * Math.PI * 2
+      const rad = 0.9 + gauss(r) * 0.06
+      a[i * 3] = Math.cos(t) * rad * 1.1
+      a[i * 3 + 1] = Math.sin(t) * rad
+      a[i * 3 + 2] = gauss(r) * 0.05
+    }
+    return a
+  },
+  nesttri(n, r) {
+    const a = new Float32Array(n * 3)
+    const c = [[-0.8, -0.5], [0.8, -0.5], [0, 0.85]]
+    for (let i = 0; i < n; i++) {
+      const [cx, cy] = c[i % 3]
+      a[i * 3] = cx + gauss(r) * 0.28
+      a[i * 3 + 1] = cy + gauss(r) * 0.28
+      a[i * 3 + 2] = gauss(r) * 0.2
+    }
+    return a
+  },
   // The nest: a small, tight cloud the field rests in while a beat is copy only.
   nest(n, r) {
     const a = new Float32Array(n * 3)
@@ -395,6 +419,7 @@ const vertex = /* glsl */ `
   uniform float uDrift;
   uniform float uSpin;
   uniform vec2 uOffset;
+  uniform vec2 uWobble;
   uniform float uScale;
   uniform vec2 uPointer;
   uniform float uPixelRatio;
@@ -434,7 +459,7 @@ const vertex = /* glsl */ `
     float c = cos(uSpin), s = sin(uSpin);
     p.xz = mat2(c, -s, s, c) * p.xz;
 
-    p.xy = p.xy * uScale + uOffset;
+    p.xy = p.xy * uScale + uOffset + uWobble;
     p.z *= uScale;
 
     // Low fidelity snaps every point to a coarse grid: a dot matrix.
@@ -531,6 +556,7 @@ export function createField(host) {
     uDrift: { value: reduce() ? 0 : 1 },
     uSpin: { value: 0 },
     uOffset: { value: new THREE.Vector2() },
+    uWobble: { value: new THREE.Vector2() },
     uScale: { value: 1 },
     uPointer: { value: new THREE.Vector2(99, 99) },
     uPixelRatio: { value: renderer.getPixelRatio() },
@@ -571,8 +597,9 @@ export function createField(host) {
 
   // ---------- Layout: portrait stacks, landscape splits ----------
 
-  const view = { w: 1, h: 1, portrait: false, stage: { x: 0, y: 0, s: 1 }, nest: { x: 0, y: 0, s: 1 } }
+  const view = { w: 1, h: 1, portrait: false, stage: { x: 0, y: 0, s: 1 }, nest: { x: 0, y: 0, s: 1 }, nests: [] }
   let mode = 'stage'
+  let nestSlot = 0
   const CELLS = 46 // matrix cells across a form's width
   function place(instant = false) {
     const t = view[mode]
@@ -601,8 +628,23 @@ export function createField(host) {
     const availW = view.portrait ? visW * 0.92 : visW * 0.46
     const availH = view.portrait ? visH * 0.46 : visH * 0.8
     view.stage = { x: view.portrait ? 0 : visW * 0.25, y: view.portrait ? visH * 0.24 : 0, s: Math.min(availW / 3.4, availH / 2.2) }
-    // The nest: tucked top right, under the top bar, out of the copy's way.
-    view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
+    // Perches for the nest, away from the copy. Portrait keeps the copy low,
+    // so the perches sit high; landscape keeps it left, so they sit right.
+    const ns = Math.min(visW, visH) * 0.085
+    view.nests = view.portrait
+      ? [
+          { x: visW * 0.34, y: visH * 0.32, s: ns },
+          { x: -visW * 0.34, y: visH * 0.3, s: ns },
+          { x: 0, y: visH * 0.36, s: ns * 0.9 },
+          { x: visW * 0.3, y: visH * 0.12, s: ns * 0.8 },
+        ]
+      : [
+          { x: visW * 0.38, y: visH * 0.3, s: ns },
+          { x: visW * 0.3, y: -visH * 0.22, s: ns },
+          { x: visW * 0.12, y: visH * 0.34, s: ns * 0.9 },
+          { x: visW * 0.4, y: 0, s: ns * 0.8 },
+        ]
+    view.nest = view.nests[nestSlot % view.nests.length]
     // Centre stage: the form sits in the upper middle with the copy beneath.
     view.centre = { x: 0, y: visH * 0.25, s: Math.min((visW * 0.86) / 3.4, (visH * 0.38) / 2.4) }
     // Wide: the form fills the screen behind the copy.
@@ -638,10 +680,19 @@ export function createField(host) {
     return { positions: forms[name](N, rng(name.length * 31)) }
   }
 
-  function morphTo(name, { instant = false, anchor, enter } = {}) {
+  const NESTS = ['nest', 'nestring', 'nesttri']
+  function morphTo(name, { instant = false, anchor, enter, slot = 0 } = {}) {
+    // Each nesting picks a perch and a shape from the slot, so the field
+    // never returns to the same corner twice in a row.
+    if (name === 'nest') {
+      nestSlot = slot
+      view.nest = view.nests[slot % view.nests.length] ?? view.nest
+      name = NESTS[slot % NESTS.length]
+    }
+    const isNest = NESTS.includes(name)
     if (!name.startsWith('text:') && !SPECIAL[name] && !forms[name]) return
-    const next = name === 'nest' ? 'nest' : anchor === 'centre' ? 'centre' : anchor === 'wide' ? 'wide' : 'stage'
-    if (next !== mode) {
+    const next = isNest ? 'nest' : anchor === 'centre' ? 'centre' : anchor === 'wide' ? 'wide' : 'stage'
+    if (next !== mode || (isNest && name !== current)) {
       mode = next
       place(instant)
     }
@@ -703,6 +754,10 @@ export function createField(host) {
     }
     uniforms.uTime.value = clock.getElapsedTime()
     uniforms.uPointer.value.lerp(target, 0.08)
+    // While nested the whole cloud wanders on a slow figure of eight.
+    const t = uniforms.uTime.value
+    const wob = mode === 'nest' && !reduce() ? 1 : 0
+    uniforms.uWobble.value.lerp(new THREE.Vector2(Math.sin(t * 0.21) * view.w * 0.03 * wob, Math.sin(t * 0.42) * view.h * 0.02 * wob), 0.04)
     renderer.render(scene, camera)
   }
   frame()

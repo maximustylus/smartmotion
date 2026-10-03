@@ -105,7 +105,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       }
       root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
-      field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined })
+      field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined, slot: si * 3 + bi })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
     },
     onProgress(si, p, pb) {
@@ -136,7 +136,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     import('./field.js').then((m) => {
       field = m.createField(root.querySelector('.field'))
       const cur = scenes[scroll.state.scene]
-      field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true, anchor: cur.beats[scroll.state.beat]?.anchor ?? cur.anchor })
+      field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true, anchor: cur.beats[scroll.state.beat]?.anchor ?? cur.anchor, slot: scroll.state.scene * 3 + scroll.state.beat })
       field.setFidelity(FIDELITY[root.dataset.era] ?? 1, { instant: true })
       onThemeChange(() => field.theme())
       root.classList.add('has-field')
