@@ -29,8 +29,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     </div>
     <header class="topbar">
       <a class="wordmark" href="/"><svg class="mark" viewBox="60 110 392 300" aria-hidden="true"><defs><linearGradient id="mark-g" gradientUnits="userSpaceOnUse" x1="76" y1="0" x2="436" y2="0"><stop offset="0" stop-color="#FF1FB3"/><stop offset="0.36" stop-color="#FF6A5A"/><stop offset="0.68" stop-color="#FFD23F"/><stop offset="1" stop-color="#A6FF1F"/></linearGradient><mask id="mark-cut"><rect x="0" y="0" width="512" height="512" fill="#fff"/><polygon points="203,396 309,396 256,276" fill="#000"/></mask></defs><g mask="url(#mark-cut)" fill="url(#mark-g)"><polygon points="76,384 190,128 304,384"/><polygon points="208,384 322,128 436,384"/></g><circle cx="256" cy="276" r="7" fill="#FFF8E1"/></svg>Smart Motion</a>
-      <span class="topbar__tag" aria-hidden="true"></span>
-      <a class="topbar__switch" href="${mode === 'route' ? '/' : '/talk'}">${mode === 'route' ? 'Playbook' : route.title}</a>
+      <span class="topbar__spacer"></span>
     </header>
     <main class="story">
       ${scenes
@@ -61,7 +60,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   })
 
   const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
-  const tag = root.querySelector('.topbar__tag')
   let field = null
   let motus = null
   const mounted = new Map()
@@ -71,15 +69,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       const s = scenes[si]
       const k = railed.indexOf(s)
       const mi = moveScenes.indexOf(s)
-      tag.textContent = s.era
-        ? `The journey · ${s.title}`
-        : s.className?.includes('scene--phase')
-          ? `ADDIE · ${s.title}`
-          : mi >= 0
-            ? `Move ${mi + 1} of ${moveScenes.length}`
-            : k >= 0 && mode === 'route'
-              ? `${k + 1} of ${railed.length}`
-              : ''
       // Scenes outside the rail count as "between" the last railed scene and the next.
       const done = k >= 0 ? k : railed.findIndex((r) => scenes.indexOf(r) > si)
       railed.forEach((r, j) => {

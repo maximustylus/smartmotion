@@ -392,7 +392,7 @@ html.overlay-open { overflow: hidden; }
   white-space: nowrap;
 }
 
-.topbar__tag { margin-left: auto; }
+.topbar__spacer { margin-left: auto; }
 
 .source {
   display: inline-flex;
