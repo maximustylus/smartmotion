@@ -57,3 +57,4 @@ Motus answers only from `functions/kb.json`, which is built from README,
 design.md, BRIEF.md, HANDOVER.md, references.md, content/, workflows/ and
 the app's own moves and journey. Fill content/profile.md so it can answer
 about the owner. Conversations are not stored.
+- REHEARSAL.md: the checklist for the shared screen.

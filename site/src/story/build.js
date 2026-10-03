@@ -1,6 +1,7 @@
 import { moves, moveById } from '../content/moves.js'
 import { examples } from '../content/examples.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
+import { tracks, workflows, compare, link } from '../content/tracks.js'
 
 /*
   Turns content into scenes. Two modes:
@@ -225,6 +226,7 @@ export function playbookScenes(route) {
       out.push(moveScene(m, moves.indexOf(m) + 1))
     }
   }
+  out.push(takeHomeScene({ title: 'Take-home' }))
   out.push(list)
   return out
 }
@@ -377,6 +379,54 @@ function examplesScene(step) {
   }
 }
 
+// The take-home: which track are you on, then the five workflows.
+function takeHomeScene(step) {
+  return {
+    id: 'takehome',
+    title: step.title ?? 'Take-home',
+    minutes: step.minutes ?? 0,
+    phase: 'implement',
+    form: 'nest',
+    beats: [
+      {
+        html: `
+          ${eyebrow('Take-home', 'Which track are you on?')}
+          <h2>Two tracks, same prompts</h2>
+          <p class="lead">Every workflow runs on both. The track decides which tool you paste into, what it costs you and where it stops.</p>
+          <div class="tracks" data-no-split>
+            ${tracks
+              .map(
+                (t) => `<a class="track" href="${link(t.file)}" target="_blank" rel="noopener">
+                  <span class="track__name">${t.name}</span>
+                  <span class="track__line">${t.line}</span>
+                  <ul>${t.points.map((p) => `<li>${p}</li>`).join('')}</ul>
+                  <span class="track__cta">Read the cost cards <span aria-hidden="true">&nearr;</span></span>
+                </a>`,
+              )
+              .join('')}
+          </div>
+          <p class="note"><a href="${link(compare.file)}" target="_blank" rel="noopener">${compare.name}</a>, including the six gates and the tool limits, checked 3 October 2026.</p>
+        `,
+      },
+      {
+        html: `
+          ${eyebrow('Take-home', 'Five workflows')}
+          <h2>Copy, paste, check</h2>
+          <p class="lead">Define done first, supply the source, plan before producing, produce, then check. Five recipes that follow the pattern.</p>
+          <ol class="flows" data-no-split>
+            ${workflows
+              .map(
+                (w) => `<li><a href="${link(w.file)}" target="_blank" rel="noopener"><span class="flows__n">0${w.n}</span><span class="flows__name">${w.name}</span><span class="flows__need">${w.need}</span></a></li>`,
+              )
+              .join('')}
+          </ol>
+          <p class="note">All of it lives at <a href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>. Reuse and adapt with credit.</p>
+        `,
+      },
+    ],
+  }
+}
+
 function questionsScene() {
   return {
     id: 'questions',
@@ -406,6 +456,7 @@ export function routeScenes(route) {
     if (step.scene === 'quiz') return { ...quizScene(step), phase: 'design' }
     if (step.scene === 'examples') return { ...examplesScene(step), phase: 'evaluate' }
     if (step.scene === 'questions') return questionsScene()
+    if (step.scene === 'takehome') return takeHomeScene(step)
     if (step.era) {
       const era = eras.find((e) => e.id === step.era)
       if (!era) throw new Error(`Unknown era in route: ${step.era}`)

@@ -1032,3 +1032,40 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   color: var(--fg);
 }
 @media (max-width: 599px) { .install { bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); left: var(--space-5); transform: none; } }
+
+
+/* ---------- Take-home: tracks and workflows ---------- */
+.tracks { display: grid; gap: var(--space-3); max-width: 62ch; }
+.track {
+  display: grid;
+  gap: 6px;
+  padding: var(--space-4);
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  background: color-mix(in oklab, var(--bg-2) 80%, transparent);
+  text-decoration: none;
+  color: var(--fg);
+  transition: border-color var(--dur-fast), transform var(--dur-fast) var(--ease-out);
+}
+.track:hover { border-color: var(--accent); transform: translateY(-1px); }
+.track__name { font-weight: 700; }
+.track__line { font-size: 0.9em; color: var(--muted); }
+.track ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 0.85em; color: var(--muted); display: grid; gap: 2px; }
+.track__cta { font-size: 0.85em; font-weight: 600; color: var(--accent); margin-top: 4px; }
+
+.flows { list-style: none; margin: 0; padding: 0; display: grid; max-width: 62ch; }
+.flows a {
+  display: grid;
+  grid-template-columns: 3ch 1fr;
+  gap: 2px var(--space-3);
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--fg);
+}
+.flows li:last-child a { border-bottom: 1px solid var(--line); }
+.flows__n { grid-row: span 2; font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
+.flows__name { font-weight: 600; }
+.flows__need { font-size: 0.85em; color: var(--muted); }
+.flows a:hover .flows__name { color: var(--accent); }
+@media (orientation: landscape) and (min-width: 900px) { .tracks { grid-template-columns: 1fr 1fr; max-width: none; } }
