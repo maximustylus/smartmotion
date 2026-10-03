@@ -762,9 +762,32 @@ export function createField(host) {
   let running = true
   let lastW = 0, lastH = 0
   let parallax = 0
+  // Watchdog: if frames run long for a while, drop the pixel ratio once,
+  // and then the alpha a little, rather than stutter through the talk.
+  let slow = 0, lastT = performance.now(), degraded = 0
+  function watch() {
+    const now = performance.now()
+    const dt = now - lastT
+    lastT = now
+    if (dt > 34) slow += 1
+    else slow = Math.max(0, slow - 1)
+    if (slow > 90 && degraded === 0) {
+      degraded = 1
+      renderer.setPixelRatio(1)
+      uniforms.uPixelRatio.value = 1
+      console.info('[smartmotion] field: lowered pixel ratio for smoother frames')
+      slow = 0
+    } else if (slow > 120 && degraded === 1) {
+      degraded = 2
+      uniforms.uAlpha.value *= 0.8
+      console.info('[smartmotion] field: lightened the field for smoother frames')
+      slow = 0
+    }
+  }
   function frame() {
     if (!running) return
     requestAnimationFrame(frame)
+    watch()
     if (host.clientWidth !== lastW || host.clientHeight !== lastH) {
       lastW = host.clientWidth
       lastH = host.clientHeight

@@ -414,20 +414,36 @@ html.overlay-open { overflow: hidden; }
   max-width: 62ch;
 }
 
+.sheet__card {
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  background: color-mix(in oklab, var(--bg-2) 80%, transparent);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  text-align: left;
+}
+.sheet__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid color-mix(in oklab, var(--fg) 8%, transparent);
+}
+.sheet__dot { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in oklab, var(--fg) 18%, transparent); }
+.sheet__label { margin-left: 8px; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .sheet__text {
   margin: 0;
-  max-height: 34svh;
+  max-height: 30svh;
   overflow: auto;
   padding: var(--space-4);
-  border-radius: var(--radius-m);
-  border: 1px solid var(--line);
-  background: var(--bg-2);
-  font-family: var(--font-sans);
-  font-size: 0.85em;
-  line-height: 1.45;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  line-height: 1.5;
   white-space: pre-wrap;
   overscroll-behavior: contain;
+  color: var(--fg);
 }
+.sheet__text::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
 
 .sheet__actions {
   display: flex;
@@ -439,7 +455,7 @@ html.overlay-open { overflow: hidden; }
 .sheet__status { font-size: 0.85em; color: var(--muted); }
 
 @media (orientation: landscape) and (min-width: 900px) {
-  .sheet__text { max-height: 46svh; }
+  .sheet__text { max-height: 42svh; }
 }
 
 /* ---------- The journey: one grammar per ADDIE phase, plus eras ---------- */

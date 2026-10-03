@@ -71,9 +71,12 @@ export function moveBeats(m, n) {
         <h3>${sheet.title}</h3>
         ${sheet.intro ? `<p class="note">${sheet.intro}</p>` : ''}
         <div class="sheet" data-no-split>
-          ${sheet.missing ? todo(`workflows/${m.cheatsheet}.md is missing`) : `<pre class="sheet__text" tabindex="0">${esc(sheet.prompt)}</pre>`}
+          <div class="sheet__card">
+            <div class="sheet__bar"><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__label">Prompt · paste into any assistant</span></div>
+            ${sheet.missing ? todo(`site/src/content/cheatsheets/${m.cheatsheet}.md is missing`) : `<pre class="sheet__text" tabindex="0">${esc(sheet.prompt)}</pre>`}
+          </div>
           <p class="sheet__actions">
-            <button type="button" class="btn" data-copy aria-label="Copy the cheatsheet">Copy</button>
+            <button type="button" class="btn" data-copy aria-label="Copy the cheatsheet">Copy prompt</button>
             <span class="sheet__status" aria-live="polite"></span>
           </p>
         </div>
