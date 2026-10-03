@@ -576,3 +576,149 @@ html.overlay-open { overflow: hidden; }
 }
 .quote__who { display: grid; gap: 2px; font-weight: 600; }
 .quote__source { font-weight: 400; color: var(--muted); font-size: 0.85em; }
+
+/* ---------- Finish pass: chrome, position, cover ---------- */
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mark {
+  width: 20px;
+  height: 20px;
+  fill: var(--accent);
+  fill-opacity: 0.55;
+}
+
+/* Beat dots: where you are inside the scene. */
+.dots {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right, 0px));
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.dots button {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--fg) 28%, transparent);
+  cursor: pointer;
+  transition: height var(--dur-base) var(--ease-out), background var(--dur-base);
+}
+
+.dots button[aria-current='true'] {
+  height: 22px;
+  background: var(--accent);
+}
+
+.dots button:focus-visible { outline-offset: 4px; }
+
+/* Scene counter, bottom left. */
+.counter {
+  position: fixed;
+  left: max(var(--space-5), env(safe-area-inset-left, 0px));
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+
+.counter__of { color: var(--faint); font-weight: 500; }
+
+/* Scroll cue on the cover only: a thin line that keeps drawing downward. */
+.cue {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-slow);
+  pointer-events: none;
+}
+
+.app.at-cover .cue { opacity: 1; }
+
+.cue span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--fg);
+  transform-origin: top;
+  animation: cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cue span { animation: none; transform: none; }
+}
+
+/* Cover: the wordmark is the field itself; the copy sits just beneath it. */
+.scene--cover .scene__pin { align-content: start; grid-template-rows: minmax(0, 46%) auto; }
+.scene--cover .scene__copy, .scene--cover .beat { align-content: start; align-self: start; }
+@media (orientation: landscape) and (min-width: 900px) {
+  .scene--cover .scene__pin { grid-template-rows: none; align-content: center; }
+  .scene--cover .scene__copy, .scene--cover .beat { align-content: center; align-self: center; }
+}
+
+.cover__lead {
+  font-size: var(--text-lead);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  max-width: 30ch;
+  color: var(--fg);
+}
+
+.chip--link {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+  text-decoration: none;
+}
+
+/* Type finish: heavier headings, a marker on the eyebrow, calmer lead. */
+.beat h2 { font-weight: 700; }
+.beat .eyebrow { display: flex; align-items: center; gap: 0.6em; }
+.beat .eyebrow::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 999px;
+  background: var(--accent);
+  flex: none;
+}
+.beat .lead { color: var(--fg); opacity: 0.86; }
+.beat > p:not(.lead):not(.eyebrow):not(.note) { max-width: 58ch; color: var(--fg); opacity: 0.8; }
+
+/* Hide the phone counter when the quiz needs the room. */
+@media (max-width: 599px) {
+  .counter { font-size: 0.72rem; }
+  .dots { right: 8px; }
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .cover__lead { max-width: 32ch; }
+}

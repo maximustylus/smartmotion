@@ -141,19 +141,19 @@ export function playbookScenes(route) {
     id: 'cover',
     title: 'Smart Motion',
     minutes: 0,
-    form: 'cloud',
+    form: 'text:Smart\nMotion',
+    className: 'scene--cover',
     beats: [
       {
         html: `
-          ${eyebrow('Smart Motion')}
-          <h1>Smart moves, written down.</h1>
-          <p class="lead">A digital playbook for building, teaching and presenting with AI assistants. Eight moves, each with a framework, a worked example and a cheatsheet you can paste anywhere.</p>
+          <h1 class="visually-hidden">Smart Motion</h1>
+          ${eyebrow('A playbook of smart moves')}
+          <p class="cover__lead">Build, teach and present with AI assistants. Eight moves, each with a framework, a worked example and a cheatsheet you can paste anywhere.</p>
           <div class="chips">
             <span class="chip">${moves.length} moves</span>
-            <span class="chip">${moves.length} cheatsheets</span>
-            <span class="chip">1 route</span>
+            <span class="chip">5 eras</span>
+            <a class="chip chip--link" href="/talk">The talk</a>
           </div>
-          <p class="hint">Scroll, or press <kbd>→</kbd>. The talk is at <a href="/talk">/talk</a>.</p>
         `,
       },
     ],
@@ -202,19 +202,19 @@ function routeCover(route) {
     id: 'cover',
     title: route.title,
     minutes: 0,
-    form: 'cloud',
+    form: 'text:GAi GAi\nwith me',
+    className: 'scene--cover',
     beats: [
       {
         html: `
+          <h1 class="visually-hidden">${route.title}</h1>
           ${eyebrow(route.event)}
-          <h1>${route.title}</h1>
-          <p class="lead">${route.subtitle} <span class="voice">${route.voice}</span></p>
+          <p class="cover__lead">${route.subtitle} <span class="voice">${route.voice}</span></p>
           <div class="chips">${route.when.map((w) => `<span class="chip">${w}</span>`).join('')}</div>
           <div class="speaker">
             <p class="speaker__name">${route.speaker.name}</p>
             ${route.speaker.roles.map((r) => `<p>${r}</p>`).join('')}
           </div>
-          <p class="hint">A route through <a href="/">Smart Motion</a>. Scroll, or press <kbd>→</kbd>.</p>
         `,
       },
     ],

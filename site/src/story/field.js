@@ -159,6 +159,37 @@ const forms = {
   },
 }
 
+// Rasterise words and sample the ink, so the field can spell the wordmark.
+function textForm(text, n, r) {
+  const lines = text.split('\n')
+  const W = 1024, H = 640
+  const c = document.createElement('canvas')
+  c.width = W
+  c.height = H
+  const g = c.getContext('2d')
+  g.fillStyle = '#000'
+  g.fillRect(0, 0, W, H)
+  const size = Math.min(230, (H * 0.8) / lines.length)
+  g.font = `700 ${size}px 'Geist Variable', system-ui, sans-serif`
+  g.textAlign = 'center'
+  g.textBaseline = 'middle'
+  g.fillStyle = '#fff'
+  const gap = size * 1.02
+  lines.forEach((ln, i) => g.fillText(ln, W / 2, H / 2 + (i - (lines.length - 1) / 2) * gap))
+  const px = g.getImageData(0, 0, W, H).data
+  const ink = []
+  for (let y = 0; y < H; y += 2) for (let x = 0; x < W; x += 2) if (px[(y * W + x) * 4] > 128) ink.push(x, y)
+  const a = new Float32Array(n * 3)
+  const count = ink.length / 2
+  for (let i = 0; i < n; i++) {
+    const k = Math.floor(r() * count)
+    a[i * 3] = ((ink[k * 2] / W) - 0.5) * 3.4 + gauss(r) * 0.004
+    a[i * 3 + 1] = (0.5 - ink[k * 2 + 1] / H) * 2.1 + gauss(r) * 0.004
+    a[i * 3 + 2] = gauss(r) * 0.04
+  }
+  return a
+}
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
@@ -198,8 +229,10 @@ const vertex = /* glsl */ `
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = aSize * uPixelRatio * uScale * (9.0 / -mv.z);
-    vFade = 0.6 + 0.4 * aSeed;
+    // Nearer points are larger and brighter: a little depth of field.
+    float depth = clamp(0.5 + p.z * 0.6, 0.35, 1.0);
+    gl_PointSize = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth);
+    vFade = (0.45 + 0.55 * aSeed) * depth;
   }
 `
 
@@ -237,7 +270,7 @@ export function createField(host) {
   const sizes = new Float32Array(N)
   for (let i = 0; i < N; i++) {
     seeds[i] = r()
-    sizes[i] = 1.4 + r() * 1.6
+    sizes[i] = 1.2 + r() * r() * 3.2
   }
   from.set(to)
   geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3))
@@ -321,9 +354,10 @@ export function createField(host) {
   let current = 'cloud'
   const cache = { cloud: Float32Array.from(to) }
   function morphTo(name, { instant = false } = {}) {
-    if (!forms[name] || name === current) return
+    const isText = name.startsWith('text:')
+    if ((!isText && !forms[name]) || name === current) return
     current = name
-    const next = (cache[name] ??= forms[name](N, rng(name.length * 31)))
+    const next = (cache[name] ??= isText ? textForm(name.slice(5), N, rng(name.length * 31)) : forms[name](N, rng(name.length * 31)))
     // Freeze wherever the points are right now, then head for the new form.
     const fromA = geo.attributes.aFrom.array
     const toA = geo.attributes.aTo.array

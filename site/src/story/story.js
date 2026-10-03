@@ -17,7 +17,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   document.title = mode === 'route' ? `${route.title} · Smart Motion` : 'Smart Motion'
 
   // The rail at the top: by time budget on a route, one segment per move at home.
-  const railed = scenes.filter((s) => (mode === 'route' ? s.minutes > 0 : s.id !== 'cover' && s.id !== 'routes'))
+  const railed = scenes.filter((s) => (mode === 'route' ? s.minutes > 0 : s.beats && !s.era && !s.className?.includes('scene--phase') && s.id !== 'cover' && s.id !== 'routes'))
+  const moveScenes = scenes.filter((s) => s.phase && !s.className?.includes('scene--phase') && s.id !== 'quiz' && s.id !== 'examples')
 
   root.className = `app app--${mode}`
   root.innerHTML = `
@@ -26,7 +27,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       ${railed.map((s) => `<div class="rail__seg" data-scene="${s.id}" style="flex:${mode === 'route' ? s.minutes : 1}"><div class="rail__fill"></div></div>`).join('')}
     </div>
     <header class="topbar">
-      <a class="wordmark" href="/">Smart Motion</a>
+      <a class="wordmark" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="12" r="7"/><circle cx="15" cy="12" r="7"/></svg>Smart Motion</a>
       <span class="topbar__tag" aria-hidden="true"></span>
       <a class="topbar__switch" href="${mode === 'route' ? '/' : '/talk'}">${mode === 'route' ? 'Playbook' : route.title}</a>
     </header>
@@ -45,8 +46,17 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         )
         .join('')}
     </main>
+    <nav class="dots" aria-label="Beats in this scene"></nav>
+    <div class="counter" aria-hidden="true"><span class="counter__n">01</span><span class="counter__of">/ ${String(scenes.length).padStart(2, '0')}</span></div>
+    <div class="cue" aria-hidden="true"><span></span></div>
   `
   root.querySelector('.topbar').append(themeToggle())
+  const dots = root.querySelector('.dots')
+  const counterN = root.querySelector('.counter__n')
+  dots.addEventListener('click', (e) => {
+    const b = e.target.closest('button')
+    if (b) scroll.goTo(scroll.state.scene, +b.dataset.beat)
+  })
 
   const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
   const tag = root.querySelector('.topbar__tag')
@@ -57,13 +67,30 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     onScene(si, bi, sceneChanged) {
       const s = scenes[si]
       const k = railed.indexOf(s)
-      tag.textContent = k >= 0 ? (mode === 'route' ? `${k + 1} of ${railed.length}` : `Move ${k + 1} of ${railed.length}`) : ''
+      const mi = moveScenes.indexOf(s)
+      tag.textContent = s.era
+        ? `The journey · ${s.title}`
+        : s.className?.includes('scene--phase')
+          ? `ADDIE · ${s.title}`
+          : mi >= 0
+            ? `Move ${mi + 1} of ${moveScenes.length}`
+            : k >= 0 && mode === 'route'
+              ? `${k + 1} of ${railed.length}`
+              : ''
+      // Scenes outside the rail count as "between" the last railed scene and the next.
+      const done = k >= 0 ? k : railed.findIndex((r) => scenes.indexOf(r) > si)
       railed.forEach((r, j) => {
-        const f = j < k ? 1 : j === k ? (bi + 1) / s.beats.length : 0
+        const f = k >= 0 ? (j < k ? 1 : j === k ? (bi + 1) / s.beats.length : 0) : j < (done < 0 ? railed.length : done) ? 1 : 0
         fills[r.id].firstElementChild.style.transform = `scaleX(${f})`
         fills[r.id].classList.toggle('is-current', j === k)
       })
       hud?.onScene(si, bi)
+      counterN.textContent = String(si + 1).padStart(2, '0')
+      root.classList.toggle('at-cover', si === 0)
+      if (sceneChanged || dots.childElementCount !== s.beats.length) {
+        dots.innerHTML = s.beats.map((_, k) => `<button type="button" data-beat="${k}" aria-label="Beat ${k + 1}"></button>`).join('')
+      }
+      ;[...dots.children].forEach((d, k) => d.setAttribute('aria-current', k === bi))
       root.dataset.phase = s.phase ?? ''
       // The field's colour drifts era by era and stays until the next era.
       const era = s.era ?? [...scenes].slice(0, si).reverse().find((x) => x.era)?.era ?? ''
