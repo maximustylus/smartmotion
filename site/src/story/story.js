@@ -111,6 +111,11 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     onProgress(si, p, pb) {
       if (si !== scroll.state.scene) return
       field?.setProgress(p)
+      // Cover parallax: the copy lifts faster than the field.
+      if (si === 0) {
+        root.querySelector('#scene-cover .scene__copy')?.style.setProperty('--lift', String(p))
+        field?.setParallax(p)
+      } else field?.setParallax(0)
       // The utility formula collapses as you scroll through its framework beat.
       const s = scenes[si]
       const bi = scroll.state.beat

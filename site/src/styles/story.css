@@ -300,7 +300,9 @@
   z-index: 20;
   overflow: auto;
   padding: calc(40px + env(safe-area-inset-top, 0px)) 24px 40px;
-  background: color-mix(in oklab, var(--bg) 94%, transparent);
+  background:
+    radial-gradient(90% 50% at 50% 0%, color-mix(in oklab, var(--field) 10%, transparent), transparent 60%),
+    color-mix(in oklab, var(--bg) 94%, transparent);
   backdrop-filter: blur(10px);
   font-size: 1rem;
 }
@@ -762,8 +764,11 @@ html.overlay-open { overflow: hidden; }
   padding: var(--space-4);
   border-radius: 14px;
   border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
-  background: color-mix(in oklab, var(--bg) 94%, transparent);
+  background:
+    radial-gradient(120% 80% at 100% 0%, color-mix(in oklab, var(--field) 14%, transparent), transparent 60%),
+    color-mix(in oklab, var(--bg) 92%, transparent);
   backdrop-filter: blur(22px) saturate(1.4);
+  transition: background 1.6s ease;
   box-shadow: 0 28px 70px -18px color-mix(in oklab, var(--fg) 40%, transparent);
 }
 
@@ -973,3 +978,7 @@ html.overlay-open { overflow: hidden; }
     linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
 }
 .app--page::before { display: none; }
+
+
+/* Cover parallax: the copy lifts gently while the pixel M holds, as the page scrolls on. */
+.scene--cover .scene__copy { will-change: transform; transform: translateY(calc(var(--lift, 0) * -48px)); transition: transform 0.2s linear; }

@@ -92,8 +92,11 @@
   grid-template-rows: auto 1fr auto auto auto;
   border-radius: 12px;
   border: 1px solid color-mix(in oklab, var(--fg) 14%, transparent);
-  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  background:
+    radial-gradient(120% 80% at 0% 0%, color-mix(in oklab, var(--field) 14%, transparent), transparent 60%),
+    color-mix(in oklab, var(--bg) 90%, transparent);
   backdrop-filter: blur(22px) saturate(1.4);
+  transition: background 1.6s ease;
   box-shadow:
     0 0 0 0.5px color-mix(in oklab, var(--fg) 8%, transparent),
     0 28px 70px -18px color-mix(in oklab, var(--fg) 40%, transparent);

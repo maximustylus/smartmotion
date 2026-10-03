@@ -761,6 +761,7 @@ export function createField(host) {
   const clock = new THREE.Clock()
   let running = true
   let lastW = 0, lastH = 0
+  let parallax = 0
   function frame() {
     if (!running) return
     requestAnimationFrame(frame)
@@ -774,7 +775,7 @@ export function createField(host) {
     // While nested the whole cloud wanders on a slow figure of eight.
     const t = uniforms.uTime.value
     const wob = mode === 'nest' && !reduce() ? 1 : 0
-    uniforms.uWobble.value.lerp(new THREE.Vector2(Math.sin(t * 0.21) * view.w * 0.03 * wob, Math.sin(t * 0.42) * view.h * 0.02 * wob), 0.04)
+    uniforms.uWobble.value.lerp(new THREE.Vector2(Math.sin(t * 0.21) * view.w * 0.03 * wob, Math.sin(t * 0.42) * view.h * 0.02 * wob - parallax * view.h * 0.06), 0.04)
     renderer.render(scene, camera)
   }
   frame()
@@ -791,6 +792,11 @@ export function createField(host) {
     // never a still image on the shared screen.
     setProgress(p) {
       gsap.to(uniforms.uSpin, { value: (p - 0.5) * (mode === 'nest' ? 1.2 : 0.5), duration: 0.6, ease: 'power2.out', overwrite: true })
+    },
+    // Parallax: the form sinks a little as the scene is scrolled away,
+    // slower than the copy, so the page has depth.
+    setParallax(p) {
+      parallax = p
     },
     get mode() { return mode },
     // Scroll-built diagrams: mode picks the direction, v is how much is built.
