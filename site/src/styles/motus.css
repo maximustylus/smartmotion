@@ -85,6 +85,7 @@
    centred title, a soft frame. Minimise keeps the title bar; maximise
    fills most of the screen. */
 .mchat {
+  order: -1;
   width: min(400px, calc(100vw - 32px));
   max-height: min(72svh, 600px);
   display: grid;

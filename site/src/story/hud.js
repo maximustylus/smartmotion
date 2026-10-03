@@ -4,6 +4,8 @@
   on a phone never sees it unless they go looking.
 */
 
+import { genieIn, genieOut } from '../lib/genie.js'
+
 const mmss = (ms) => {
   const t = Math.max(0, Math.floor(ms / 1000))
   return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`
@@ -123,13 +125,12 @@ export function createHud(root, scenes, scroll) {
 
   function toggleOverlay(el, force) {
     const open = force ?? el.hidden
-    for (const o of [overview, help]) o.hidden = true
-    el.hidden = !open
+    for (const o of [overview, help]) if (o !== el && !o.hidden) genieOut(o, '50% 0%')
     document.documentElement.classList.toggle('overlay-open', open)
-    if (open && el === overview) {
-      renderOverview()
-      overview.querySelector('button[aria-current="true"]')?.focus()
-    }
+    if (open) {
+      if (el === overview) renderOverview()
+      genieIn(el, '50% 0%', () => el === overview && overview.querySelector('button[aria-current="true"]')?.focus())
+    } else genieOut(el, '50% 0%')
   }
 
   overview.addEventListener('click', (e) => {
