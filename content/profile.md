@@ -6,11 +6,7 @@ file. Public information only.
 - Name: Muhammad Alif
 - Focus: innovator in digital health and emerging technologies, a scientist
   and an artist.
-- Summary (owner's words, confirmed in session): Innovator in digital health
-  and emerging technologies, a scientist and an artist. He builds tools with
-  and for clinical educators and teaches others to build their own with the
-  same care: a clear brief, a solid framework and an honest test of utility.
-  Balancing is an act.
+- Summary (owner's words, confirmed in session): He researches and builds tools that are meaningful, evidence based and grounded in theory and frameworks, then teaches others to do the same with care: a clear brief, a solid framework and an honest test of utility. Balancing is an act.
 - Links: https://linktr.ee/muhammad.alif
 - Portfolio (tools built, talks given, publications): TODO
 - How to reach: TODO
