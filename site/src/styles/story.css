@@ -1071,8 +1071,21 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 @media (orientation: landscape) and (min-width: 900px) { .tracks { grid-template-columns: 1fr 1fr; max-width: none; } }
 
 
-/* The tool map: three lanes */
-.lanes { display: grid; gap: var(--space-3); max-width: 70ch; }
+/* The tool map: three lanes. On narrow screens they swipe sideways, one
+   card at a time, so the pinned beat never runs off the bottom. */
+.lanes {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+  margin-inline: calc(-1 * var(--space-5));
+  padding-inline: var(--space-5);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.lanes::-webkit-scrollbar { display: none; }
+.lane { flex: 0 0 min(86%, 420px); scroll-snap-align: start; max-height: 54svh; overflow-y: auto; }
 .lane {
   display: grid;
   gap: 6px;
@@ -1096,5 +1109,8 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 .badge--corporate { background: color-mix(in oklab, #0a8a76 14%, transparent); color: #0a8a76; }
 .badge--both { background: color-mix(in oklab, var(--fg) 10%, transparent); color: var(--muted); }
 .lane__link { font-size: 0.85em; font-weight: 600; color: var(--accent); margin-top: 4px; }
-@media (orientation: landscape) and (min-width: 900px) { .lanes { grid-template-columns: repeat(3, 1fr); max-width: none; } }
+@media (orientation: landscape) and (min-width: 900px) {
+  .lanes { display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; margin-inline: 0; padding-inline: 0; }
+  .lane { max-height: none; overflow: visible; }
+}
 @media (max-width: 599px) { .lane__steps li { font-size: 0.85em; } }
