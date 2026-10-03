@@ -55,8 +55,9 @@ export function splash(root) {
       <polygon class="sp__path" points="203,396 309,396 256,276"/>
       <circle class="sp__glow" cx="256" cy="276" r="120" fill="url(#sp-light)"/>
       <circle class="sp__core" cx="256" cy="276" r="4" fill="#FFFDF2"/>
+      <text class="sp__name" x="256" y="474" textLength="360" lengthAdjust="spacingAndGlyphs" text-anchor="middle">SMARTMOTION</text>
     </svg>
-    <div class="sp__word"><span class="sp__name">Smart Motion</span><span class="sp__tag">A playbook of smart moves</span></div>
+    <div class="sp__word"><span class="sp__tag">A playbook of smart moves</span></div>
     <button type="button" class="sp__skip">Skip</button>
   `
   root.before(el)

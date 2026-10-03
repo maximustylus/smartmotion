@@ -121,7 +121,19 @@ export function eraScene(era, prevYear) {
     },
   ]
   if (era.quote) beats.push({ html: `${eyebrow(era.title)}${quoteBlock(era.quote)}` })
-  return { id: era.id, title: era.title, minutes: 0, era: era.id, className: 'scene--era', form: era.form, beats }
+  // The first era is a pixel timeline the heroes drop onto, centred.
+  const centred = era.id === 'wonder'
+  return {
+    id: era.id,
+    title: era.title,
+    minutes: 0,
+    era: era.id,
+    className: `scene--era${centred ? ' scene--centre' : ''}`,
+    form: centred ? 'timeline80s' : era.form,
+    anchor: centred ? 'centre' : undefined,
+    enter: centred ? 'drop' : undefined,
+    beats,
+  }
 }
 
 export function phaseScene(phase) {
@@ -148,8 +160,9 @@ export function playbookScenes(route) {
     id: 'cover',
     title: 'Smart Motion',
     minutes: 0,
-    form: 'text:Smart\nMotion',
-    className: 'scene--cover',
+    form: 'logo',
+    anchor: 'centre',
+    className: 'scene--cover scene--centre',
     beats: [
       {
         html: `
@@ -169,7 +182,9 @@ export function playbookScenes(route) {
     id: 'routes',
     title: 'Routes',
     minutes: 0,
-    form: 'text:Smart\nMotion',
+    form: 'logo',
+    anchor: 'centre',
+    className: 'scene--centre',
     beats: [
       {
         html: `
@@ -209,8 +224,9 @@ function routeCover(route) {
     id: 'cover',
     title: route.title,
     minutes: 0,
-    form: 'text:GAi GAi\nwith me',
-    className: 'scene--cover',
+    form: 'logo',
+    anchor: 'centre',
+    className: 'scene--cover scene--centre',
     beats: [
       {
         html: `
@@ -357,7 +373,9 @@ function questionsScene() {
     id: 'questions',
     title: 'Questions',
     minutes: 0,
-    form: 'text:Smart\nMotion',
+    form: 'logo',
+    anchor: 'centre',
+    className: 'scene--centre',
     beats: [
       {
         html: `

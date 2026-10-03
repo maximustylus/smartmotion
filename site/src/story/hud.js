@@ -17,10 +17,6 @@ export function createHud(root, scenes, scroll) {
     'beforeend',
     `
     <div class="hud" hidden></div>
-    <div class="nav-buttons">
-      <button type="button" data-nav="prev" aria-label="Previous">&uarr;</button>
-      <button type="button" data-nav="next" aria-label="Next">&darr;</button>
-    </div>
     <div class="overlay overview" role="dialog" aria-label="Overview" hidden></div>
     <div class="overlay help" role="dialog" aria-label="Keyboard shortcuts" hidden></div>
     <div class="blackout" aria-hidden="true"></div>
@@ -183,8 +179,6 @@ export function createHud(root, scenes, scroll) {
     else if (e.key === 'z' || e.key === 'Z') window.dispatchEvent(new Event('smartmotion:reset-totals'))
   })
 
-  root.querySelector('[data-nav="prev"]').addEventListener('click', scroll.prev)
-  root.querySelector('[data-nav="next"]').addEventListener('click', scroll.next)
 
   // Mouse controls appear only while the pointer moves.
   let controlsTimer

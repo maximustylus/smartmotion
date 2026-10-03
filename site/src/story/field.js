@@ -203,11 +203,113 @@ function textForm(text, n, r) {
   return a
 }
 
+// The brand gradient, sampled by t in 0..1.
+const BRAND = [[0, [0xff, 0x1f, 0xb3]], [0.36, [0xff, 0x6a, 0x5a]], [0.68, [0xff, 0xd2, 0x3f]], [1, [0xa6, 0xff, 0x1f]]]
+function brand(t) {
+  for (let i = 1; i < BRAND.length; i++) {
+    if (t <= BRAND[i][0]) {
+      const [t0, c0] = BRAND[i - 1], [t1, c1] = BRAND[i], k = (t - t0) / (t1 - t0)
+      return c0.map((v, j) => (v + (c1[j] - v) * k) / 255)
+    }
+  }
+  return BRAND[BRAND.length - 1][1].map((v) => v / 255)
+}
+
+// The M: two walls of a path to a vanishing point, as in the icon.
+// Rasterised and sampled, coloured by the brand gradient across its width.
+function logoForm(n, r) {
+  const S = 512
+  const c = document.createElement('canvas')
+  c.width = c.height = S
+  const g = c.getContext('2d')
+  g.fillStyle = '#000'
+  g.fillRect(0, 0, S, S)
+  g.fillStyle = '#fff'
+  for (const pts of [[[76, 384], [190, 128], [304, 384]], [[208, 384], [322, 128], [436, 384]]]) {
+    g.beginPath()
+    pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)))
+    g.closePath()
+    g.fill()
+  }
+  g.fillStyle = '#000'
+  g.beginPath()
+  g.moveTo(203, 396)
+  g.lineTo(309, 396)
+  g.lineTo(256, 276)
+  g.closePath()
+  g.fill()
+  const px = g.getImageData(0, 0, S, S).data
+  const ink = []
+  for (let y = 0; y < S; y += 2) for (let x = 0; x < S; x += 2) if (px[(y * S + x) * 4] > 128) ink.push(x, y)
+  const a = new Float32Array(n * 3)
+  const col = new Float32Array(n * 4)
+  const count = ink.length / 2
+  for (let i = 0; i < n; i++) {
+    const k = Math.floor(r() * count)
+    const x = ink[k * 2], y = ink[k * 2 + 1]
+    a[i * 3] = ((x - 256) / 360) * 3.4 + gauss(r) * 0.004
+    a[i * 3 + 1] = ((276 - y) / 360) * 3.4 + 0.1 + gauss(r) * 0.004
+    a[i * 3 + 2] = gauss(r) * 0.03
+    const [cr, cg, cb] = brand((x - 76) / 360)
+    col.set([cr, cg, cb, 1], i * 4)
+  }
+  return { positions: a, colors: col }
+}
+
+// Original pixel figures in the spirit of the robot heroes of 1963, 1979
+// and 1984. Drawn here, not copied from anywhere. Letters are palette keys.
+const PALETTE = { k: [0.07, 0.07, 0.09], w: [0.96, 0.96, 0.94], r: [0.93, 0.2, 0.2], b: [0.15, 0.45, 0.95], y: [1, 0.82, 0.25], s: [0.98, 0.8, 0.65], g: [0.55, 0.57, 0.62], c: [0.2, 0.7, 0.9] }
+const SPRITES = [
+  // A boy robot: black spiked hair, a red belt and red boots.
+  ['....kk.k....', '...kkkkkk...', '..kkssssk...', '..ksssssk...', '..kskssks...', '...ssssss...', '....ssss....', '...ssssss...', '..ssssssss..', '..s.ssss.s..', '....rrrr....', '....ssss....', '....ssss....', '...rr..rr...', '..rrr..rrr..'],
+  // A round blue cat robot with a white face and a yellow bell.
+  ['....bbbb....', '..bbbbbbbb..', '.bbwwwwwwbb.', '.bwwkwwkwwb.', 'bbwwwrwwwwbb', 'bbwwwwwwwwbb', '.bwwwwwwwwb.', '..bbwwwwbb..', '...rrrrrr...', '..bwwyywwb..', '.bbwwwwwwbb.', '.bbwwwwwwbb.', '..bbwwwwbb..', '...bb..bb...', '...ww..ww...'],
+  // A tall truck robot: blue helmet, red chest with windows, grey arms.
+  ['....bbbb....', '...bbbbbb...', '...bkccbk...', '...bbggbb...', '..ggrrrrgg..', '.ggrrccrrgg.', '.g.rrccrr.g.', '.g.rrrrrr.g.', '.g.rrrrrr.g.', '...bbbbbb...', '...bb..bb...', '...bb..bb...', '...bb..bb...', '..bbb..bbb..', '..kkk..kkk..'],
+]
+
+// A horizontal timeline with the three figures standing on it. Their
+// points carry their own colours; the line takes the field colour.
+function timeline80sForm(n, r) {
+  const a = new Float32Array(n * 3)
+  const col = new Float32Array(n * 4)
+  const cell = 3.4 / 46
+  const snapTo = (v) => Math.round(v / cell) * cell
+  const lineN = Math.floor(n * 0.34)
+  for (let i = 0; i < lineN; i++) {
+    a[i * 3] = (r() - 0.5) * 3.3
+    a[i * 3 + 1] = (r() - 0.5) * 0.05
+    a[i * 3 + 2] = (r() - 0.5) * 0.05
+  }
+  // Tick marks at the three years.
+  const xs = [-1.05, 0, 1.05].map(snapTo)
+  let i = lineN
+  const per = Math.floor((n - lineN) / 3)
+  SPRITES.forEach((rows, si) => {
+    const cells = []
+    rows.forEach((row, y) => [...row].forEach((ch, x) => ch !== '.' && cells.push([x, y, PALETTE[ch]])))
+    const h = rows.length, w = rows[0].length
+    for (let j = 0; j < per && i < n; j++, i++) {
+      const [cx, cy, rgb] = cells[Math.floor(r() * cells.length)]
+      a[i * 3] = xs[si] + (cx - Math.floor(w / 2) + 0.5) * cell
+      a[i * 3 + 1] = (h - cy + 0.5) * cell
+      a[i * 3 + 2] = (r() - 0.5) * 0.04
+      col.set([rgb[0], rgb[1], rgb[2], 1], i * 4)
+    }
+  })
+  for (; i < n; i++) {
+    a[i * 3] = (r() - 0.5) * 3.3
+    a[i * 3 + 1] = (r() - 0.5) * 0.05
+  }
+  return { positions: a, colors: col }
+}
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
   attribute float aSeed;
   attribute float aSize;
+  attribute vec4 aColor;
   uniform float uMix;
   uniform float uTime;
   uniform float uDrift;
@@ -220,12 +322,15 @@ const vertex = /* glsl */ `
   uniform float uFidelity;
   uniform float uCell;
   uniform float uPxPerUnit;
+  uniform float uSnap;
   varying float vFade;
   varying float vLens;
   varying float vFid;
   varying float vThin;
+  varying vec4 vColor;
 
   void main() {
+    vColor = aColor;
     // Each point starts its journey a little after the last, by seed.
     float m = clamp(uMix * 1.35 - aSeed * 0.35, 0.0, 1.0);
     m = m * m * (3.0 - 2.0 * m);
@@ -244,7 +349,7 @@ const vertex = /* glsl */ `
 
     // Low fidelity snaps every point to a coarse grid: a dot matrix.
     vec2 snapped = (floor(p.xy / uCell) + 0.5) * uCell;
-    p.xy = mix(snapped, p.xy, smoothstep(0.0, 0.45, uFidelity));
+    p.xy = mix(snapped, p.xy, max(smoothstep(0.0, 0.45, uFidelity), 1.0 - uSnap));
     p.z = mix(0.0, p.z, smoothstep(0.1, 0.6, uFidelity));
 
     // The loupe: points under the pointer part like a lens and brighten.
@@ -277,6 +382,8 @@ const fragment = /* glsl */ `
   varying float vLens;
   varying float vFid;
   varying float vThin;
+  varying vec4 vColor;
+  uniform float uUseColor;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
@@ -290,7 +397,8 @@ const fragment = /* glsl */ `
     float a = shape * uAlpha * (vFade + vLens * 0.8);
     if (vFid < 0.3 && vThin > 0.5) discard;
     if (a < 0.01) discard;
-    gl_FragColor = vec4(mix(uColor, vec3(1.0), vLens * 0.35), min(a, 1.0));
+    vec3 base = mix(uColor, vColor.rgb, vColor.a * uUseColor);
+    gl_FragColor = vec4(mix(base, vec3(1.0), vLens * 0.35), min(a, 1.0));
   }
 `
 
@@ -323,6 +431,7 @@ export function createField(host) {
   geo.setAttribute('aTo', new THREE.BufferAttribute(to, 3))
   geo.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1))
   geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
+  geo.setAttribute('aColor', new THREE.BufferAttribute(new Float32Array(N * 4), 4))
   geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 10)
 
   const uniforms = {
@@ -338,6 +447,8 @@ export function createField(host) {
     uFidelity: { value: 1 },
     uCell: { value: 0.12 },
     uPxPerUnit: { value: 100 },
+    uUseColor: { value: 0 },
+    uSnap: { value: 1 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -368,15 +479,19 @@ export function createField(host) {
 
   const view = { w: 1, h: 1, portrait: false, stage: { x: 0, y: 0, s: 1 }, nest: { x: 0, y: 0, s: 1 } }
   let mode = 'stage'
+  const CELLS = 46 // matrix cells across a form's width
   function place(instant = false) {
     const t = view[mode]
+    const cell = Math.max(0.03, (t.s * 3.4) / CELLS)
     if (instant || reduce()) {
       uniforms.uOffset.value.set(t.x, t.y)
       uniforms.uScale.value = t.s
+      uniforms.uCell.value = cell
       return
     }
     gsap.to(uniforms.uOffset.value, { x: t.x, y: t.y, duration: 1.8, ease: 'power3.inOut', overwrite: true })
     gsap.to(uniforms.uScale, { value: t.s, duration: 1.8, ease: 'power3.inOut', overwrite: true })
+    gsap.to(uniforms.uCell, { value: cell, duration: 1.8, ease: 'power3.inOut', overwrite: true })
   }
   function resize() {
     const w = host.clientWidth, h = host.clientHeight
@@ -394,9 +509,10 @@ export function createField(host) {
     view.stage = { x: view.portrait ? 0 : visW * 0.25, y: view.portrait ? visH * 0.24 : 0, s: Math.min(availW / 3.4, availH / 2.2) }
     // The nest: tucked top right, under the top bar, out of the copy's way.
     view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
+    // Centre stage: the form sits in the upper middle with the copy beneath.
+    view.centre = { x: 0, y: visH * 0.14, s: Math.min((visW * 0.86) / 3.4, (visH * 0.5) / 2.4) }
     uniforms.uLoupe.value = Math.min(visW, visH) * 0.045
     // Dot-matrix cell: about 14 cells across the shorter edge of the stage form.
-    uniforms.uCell.value = Math.max(0.03, view.stage.s * 3.4 / 46)
     uniforms.uPxPerUnit.value = (h * renderer.getPixelRatio()) / visH
     place(true)
   }
@@ -418,17 +534,24 @@ export function createField(host) {
   // ---------- Morphing ----------
 
   let current = 'cloud'
-  const cache = { cloud: Float32Array.from(to) }
-  function morphTo(name, { instant = false } = {}) {
-    const isText = name.startsWith('text:')
-    if ((!isText && !forms[name]) || name === current) return
-    current = name
-    const next = name === 'nest' ? 'nest' : 'stage'
+  const cache = { cloud: { positions: Float32Array.from(to) } }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm }
+  function build(name) {
+    if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
+    if (SPECIAL[name]) return SPECIAL[name](N, rng(name.length * 31))
+    return { positions: forms[name](N, rng(name.length * 31)) }
+  }
+
+  function morphTo(name, { instant = false, anchor, enter } = {}) {
+    if (!name.startsWith('text:') && !SPECIAL[name] && !forms[name]) return
+    const next = name === 'nest' ? 'nest' : anchor === 'centre' ? 'centre' : 'stage'
     if (next !== mode) {
       mode = next
       place(instant)
     }
-    const target = (cache[name] ??= isText ? textForm(name.slice(5), N, rng(name.length * 31)) : forms[name](N, rng(name.length * 31)))
+    if (name === current) return
+    current = name
+    const target = (cache[name] ??= build(name))
     // Freeze wherever the points are right now, then head for the new form.
     const fromA = geo.attributes.aFrom.array
     const toA = geo.attributes.aTo.array
@@ -438,12 +561,34 @@ export function createField(host) {
       m = m * m * (3 - 2 * m)
       for (let k = 0; k < 3; k++) fromA[i * 3 + k] = fromA[i * 3 + k] + (toA[i * 3 + k] - fromA[i * 3 + k]) * m
     }
-    toA.set(target)
+    toA.set(target.positions)
+    // Per-point colours, or none.
+    const colA = geo.attributes.aColor.array
+    if (target.colors) colA.set(target.colors)
+    else colA.fill(0)
+    geo.attributes.aColor.needsUpdate = true
+    gsap.to(uniforms.uUseColor, { value: target.colors ? 1 : 0, duration: 1.2, overwrite: true })
+    gsap.to(uniforms.uSnap, { value: target.snap === false ? 0 : 1, duration: 0.8, overwrite: true })
+    // A drop: coloured points start above the screen and fall onto the form.
+    if (enter === 'drop' && target.colors && !instant && !reduce()) {
+      for (let i = 0; i < N; i++) {
+        if (target.colors[i * 4 + 3] > 0) {
+          fromA[i * 3] = toA[i * 3]
+          fromA[i * 3 + 1] = toA[i * 3 + 1] + 3.2 + seeds[i] * 1.5
+          fromA[i * 3 + 2] = toA[i * 3 + 2]
+        } else {
+          fromA[i * 3] = 0
+          fromA[i * 3 + 1] = toA[i * 3 + 1]
+          fromA[i * 3 + 2] = toA[i * 3 + 2]
+        }
+      }
+    }
     geo.attributes.aFrom.needsUpdate = true
     geo.attributes.aTo.needsUpdate = true
     gsap.killTweensOf(uniforms.uMix)
     uniforms.uMix.value = 0
     if (instant || reduce()) uniforms.uMix.value = 1
+    else if (enter === 'drop') gsap.to(uniforms.uMix, { value: 1, duration: 1.9, ease: 'bounce.out' })
     else gsap.to(uniforms.uMix, { value: 1, duration: 2.2, ease: 'power2.inOut' })
   }
 

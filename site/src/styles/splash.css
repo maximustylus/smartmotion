@@ -27,7 +27,7 @@
 
 .sp__word {
   position: absolute;
-  bottom: 14vh;
+  bottom: 10vh;
   display: grid;
   gap: 6px;
   justify-items: center;
@@ -35,9 +35,11 @@
 }
 
 .sp__name {
+  font-family: var(--font-sans);
   font-weight: 700;
-  font-size: clamp(1.6rem, 4.5vmin, 2.6rem);
-  letter-spacing: -0.03em;
+  font-size: 58px;
+  letter-spacing: 0.02em;
+  fill: #f2f1ee;
   opacity: 0;
 }
 
