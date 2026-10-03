@@ -836,7 +836,7 @@ html.overlay-open { overflow: hidden; }
   pointer-events: none;
   background: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--fg) 6%, transparent) 3px 4px);
   mix-blend-mode: multiply;
-  opacity: 0.6;
+  opacity: 0.28;
 }
 :root[data-theme='dark'] .app[data-era='wonder'] .story::after { mix-blend-mode: screen; opacity: 0.35; }
 @media (prefers-color-scheme: dark) {
