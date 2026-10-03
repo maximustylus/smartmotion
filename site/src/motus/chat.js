@@ -5,7 +5,10 @@
   with the next question.
 */
 
+import { gsap } from 'gsap'
+
 const KEY = 'smartmotion.motus'
+const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const STARTERS = ['What is Smart Motion?', 'Which workflow should I start with?', 'Personal or corporate track?', 'Take me to the cheatsheets', 'What is ADDIE?']
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -185,15 +188,37 @@ export function openChat(host, { onTalking, onOpen }) {
   panel.querySelector('.mchat__head').addEventListener('dblclick', (e) => !e.target.closest('button') && panel.classList.toggle('is-max'))
   window.addEventListener('keydown', (e) => e.key === 'Escape' && !panel.hidden && toggle(false))
 
+  // The genie: the window rises out of Motus as a sliver, bulges and
+  // settles; closing pours it back into the bot.
+  let animating = false
   function toggle(force) {
     const open = force ?? panel.hidden
-    panel.hidden = !open
+    if (open === !panel.hidden || animating) return
     host.classList.toggle('is-open', open)
     if (open) {
+      panel.hidden = false
       onOpen?.()
-      input.focus()
+      if (reduce()) {
+        gsap.set(panel, { clearProps: 'transform,opacity' })
+      } else {
+        animating = true
+        gsap.timeline({ onComplete: () => (animating = false) })
+          .fromTo(panel, { scaleX: 0.06, scaleY: 0.03, skewX: -16, opacity: 0.6, transformOrigin: '86% 100%' }, { scaleY: 0.92, scaleX: 0.28, skewX: -9, opacity: 1, duration: 0.22, ease: 'power2.in' })
+          .to(panel, { scaleX: 1.03, scaleY: 1.02, skewX: 3, duration: 0.26, ease: 'power3.out' })
+          .to(panel, { scaleX: 1, scaleY: 1, skewX: 0, duration: 0.45, ease: 'elastic.out(1, 0.55)' })
+      }
+      input.focus({ preventScroll: true })
       log.scrollTop = log.scrollHeight
+      return
     }
+    if (reduce()) {
+      panel.hidden = true
+      return
+    }
+    animating = true
+    gsap.timeline({ onComplete: () => { panel.hidden = true; animating = false; gsap.set(panel, { clearProps: 'transform,opacity' }) } })
+      .to(panel, { scaleX: 0.28, scaleY: 0.92, skewX: -9, duration: 0.18, ease: 'power2.in', transformOrigin: '86% 100%' })
+      .to(panel, { scaleX: 0.06, scaleY: 0.03, skewX: -16, opacity: 0.4, duration: 0.22, ease: 'power3.in' })
   }
 
   return { toggle, setScene: (title) => (where.textContent = title ?? '') }
