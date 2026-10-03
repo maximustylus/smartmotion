@@ -1,6 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Smart Motion mark: two circles in motion, the move where they meet -->
-  <rect width="512" height="512" rx="112" fill="#F6F5F2"/>
-  <circle cx="196" cy="256" r="140" fill="#2F4BFF" fill-opacity="0.55"/>
-  <circle cx="316" cy="256" r="140" fill="#2F4BFF" fill-opacity="0.55"/>
+  <!-- smartmotion mark: an M whose two peaks are the walls of a path running to
+       a vanishing point, with a faint light at the far end -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <!-- colour of the two walls -->
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="76" y1="0" x2="436" y2="0">
+      <stop offset="0" stop-color="#FF1FB3"/>
+      <stop offset="0.36" stop-color="#FF6A5A"/>
+      <stop offset="0.68" stop-color="#FFD23F"/>
+      <stop offset="1" stop-color="#A6FF1F"/>
+    </linearGradient>
+    <!-- depth: the walls darken with distance from the vanishing point -->
+    <radialGradient id="depth" gradientUnits="userSpaceOnUse" cx="256" cy="276" r="250">
+      <stop offset="0" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#000000" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.62"/>
+    </radialGradient>
+    <!-- the faint light at the end -->
+    <radialGradient id="light" gradientUnits="userSpaceOnUse" cx="256" cy="276" r="84">
+      <stop offset="0" stop-color="#FFF8E1" stop-opacity="0.85"/>
+      <stop offset="0.18" stop-color="#FFE9A8" stop-opacity="0.45"/>
+      <stop offset="0.55" stop-color="#FFD23F" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FFD23F" stop-opacity="0"/>
+    </radialGradient>
+    <!-- the path: the gap between the walls -->
+    <mask id="cut">
+      <rect width="512" height="512" fill="#FFFFFF"/>
+      <polygon points="203,396 309,396 256,276" fill="#000000"/>
+    </mask>
+    <clipPath id="tile"><rect width="512" height="512" rx="112"/></clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <g clip-path="url(#tile)">
+    <g mask="url(#cut)">
+      <polygon points="76,384 190,128 304,384" fill="url(#g)"/>
+      <polygon points="208,384 322,128 436,384" fill="url(#g)"/>
+      <polygon points="76,384 190,128 304,384" fill="url(#depth)"/>
+      <polygon points="208,384 322,128 436,384" fill="url(#depth)"/>
+    </g>
+    <circle cx="256" cy="276" r="84" fill="url(#light)"/>
+    <circle cx="256" cy="276" r="4" fill="#FFFDF2" opacity="0.9"/>
+  </g>
 </svg>

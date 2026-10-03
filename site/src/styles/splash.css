@@ -1,0 +1,63 @@
+/* The splash: ink background, one-point perspective, the M, the light. */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: #000;
+  color: #f2f1ee;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sp {
+  width: min(78vmin, 560px);
+  height: auto;
+  overflow: visible;
+}
+
+.sp__horizon { stroke: #ffffff; stroke-opacity: 0.22; stroke-width: 1; opacity: 0; }
+.sp__ray { stroke: #ffffff; stroke-opacity: 0.16; stroke-width: 0.8; opacity: 0; }
+.sp__fill { fill: url(#sp-g); opacity: 0; }
+.sp__trace { fill: none; stroke: url(#sp-g); stroke-width: 2.4; stroke-linejoin: round; }
+.sp__path { fill: #000; opacity: 0; }
+.sp__glow, .sp__core { opacity: 0; }
+
+.sp__word {
+  position: absolute;
+  bottom: 14vh;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.sp__name {
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4.5vmin, 2.6rem);
+  letter-spacing: -0.03em;
+  opacity: 0;
+}
+
+.sp__tag {
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-size: clamp(1rem, 2.6vmin, 1.4rem);
+  color: #a2a2ac;
+  opacity: 0;
+}
+
+.sp__skip {
+  position: absolute;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #a2a2ac;
+  font-size: 0.8rem;
+  cursor: pointer;
+}

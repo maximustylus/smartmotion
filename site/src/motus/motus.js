@@ -12,28 +12,45 @@ import { openChat } from './chat.js'
 
 const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// Voxel map. Each entry: [x, y, z, part]. y up. Parts pick a colour.
+// Voxel map. Each entry: [x, y, z, part]. y up. A round face, like a
+// robot emoji: a voxel sphere wearing the brand gradient left to right,
+// two eyes, a smile, and an antenna whose tip is the light from the logo.
 function buildVoxels() {
   const v = []
-  // Body: a rounded block 7 wide, 6 tall, 6 deep.
-  for (let x = -3; x <= 3; x++)
-    for (let y = 0; y <= 5; y++)
-      for (let z = -3; z <= 2; z++) {
-        const edge = (Math.abs(x) === 3) + (y === 0 || y === 5) + (z === -3 || z === 2)
-        if (edge >= 2) continue
-        v.push([x, y, z, 'body'])
+  const R = 4.6
+  for (let x = -5; x <= 5; x++)
+    for (let y = -5; y <= 5; y++)
+      for (let z = -5; z <= 5; z++) {
+        const d = Math.sqrt(x * x + y * y + z * z)
+        if (d > R || d < R - 1.6) continue
+        v.push([x, y, z, 'skin'])
       }
-  // Face plate, a shade lighter, on the front.
-  for (let x = -2; x <= 2; x++) for (let y = 1; y <= 4; y++) v.push([x, y, 3, 'face'])
-  // Eyes.
-  v.push([-1, 3, 4, 'eye'], [1, 3, 4, 'eye'])
-  // Feet.
-  v.push([-2, -1, 0, 'foot'], [-2, -1, 1, 'foot'], [2, -1, 0, 'foot'], [2, -1, 1, 'foot'])
-  // Antenna and its tip.
-  v.push([0, 6, 0, 'body'], [0, 7, 0, 'body'], [0, 8, 0, 'tip'])
-  // Little ear blocks.
-  v.push([-4, 3, 0, 'foot'], [4, 3, 0, 'foot'])
+  // Face features sit proud of the sphere on the +z side.
+  const face = (x, y) => Math.round(Math.sqrt(Math.max(0, R * R - x * x - y * y)))
+  for (const [x, y] of [[-2, 1], [-1, 1], [2, 1], [1, 1]]) v.push([x, y, face(x, y) + 1, 'eye'])
+  for (const [x, y] of [[-3, -1], [-2, -2], [-1, -3], [0, -3], [1, -3], [2, -2], [3, -1]]) v.push([x, y, face(x, y) + 1, 'mouth'])
+  // Antenna and tip.
+  v.push([0, 5, 0, 'stem'], [0, 6, 0, 'stem'], [0, 7, 0, 'tip'])
+  // Feet, so it can stand and squash.
+  v.push([-2, -5, 0, 'foot'], [-2, -5, 1, 'foot'], [2, -5, 0, 'foot'], [2, -5, 1, 'foot'])
   return v
+}
+
+// The logo gradient, fuchsia to lime, sampled by x.
+const STOPS = [
+  [0, '#FF1FB3'],
+  [0.36, '#FF6A5A'],
+  [0.68, '#FFD23F'],
+  [1, '#A6FF1F'],
+].map(([t, c]) => [t, new THREE.Color(c)])
+function gradient(t) {
+  for (let i = 1; i < STOPS.length; i++) {
+    if (t <= STOPS[i][0]) {
+      const [t0, c0] = STOPS[i - 1], [t1, c1] = STOPS[i]
+      return c0.clone().lerp(c1, (t - t0) / (t1 - t0))
+    }
+  }
+  return STOPS[STOPS.length - 1][1].clone()
 }
 
 export function createMotus(host, { onOpen } = {}) {
@@ -56,11 +73,11 @@ export function createMotus(host, { onOpen } = {}) {
   btn.append(renderer.domElement)
 
   const scene = new THREE.Scene()
-  const camera = new THREE.OrthographicCamera(-7, 7, 7, -7, 0.1, 100)
-  camera.position.set(6, 7, 16)
-  camera.lookAt(0, 2.6, 0)
-  scene.add(new THREE.AmbientLight(0xffffff, 0.75))
-  const sun = new THREE.DirectionalLight(0xffffff, 1.4)
+  const camera = new THREE.OrthographicCamera(-8, 8, 8, -8, 0.1, 100)
+  camera.position.set(3, 4, 18)
+  camera.lookAt(0, 0.6, 0)
+  scene.add(new THREE.AmbientLight(0xffffff, 1.1))
+  const sun = new THREE.DirectionalLight(0xffffff, 1.1)
   sun.position.set(4, 8, 6)
   scene.add(sun)
 
@@ -68,7 +85,7 @@ export function createMotus(host, { onOpen } = {}) {
   const geo = new THREE.BoxGeometry(1, 1, 1)
   const mat = new THREE.MeshLambertMaterial()
   const mesh = new THREE.InstancedMesh(geo, mat, voxels.length)
-  const colours = { body: new THREE.Color(), face: new THREE.Color(), eye: new THREE.Color(), foot: new THREE.Color(), tip: new THREE.Color() }
+  const colours = { eye: new THREE.Color('#111114'), mouth: new THREE.Color('#111114'), stem: new THREE.Color('#111114'), tip: new THREE.Color('#FFF8E1'), foot: new THREE.Color('#111114') }
   const colourAttr = new Float32Array(voxels.length * 3)
   mesh.instanceColor = new THREE.InstancedBufferAttribute(colourAttr, 3)
   const m = new THREE.Matrix4()
@@ -82,15 +99,13 @@ export function createMotus(host, { onOpen } = {}) {
   rig.add(mesh)
   scene.add(rig)
 
+  // The gradient is the brand, so it stays the same in both themes. The
+  // features flip between ink and paper so the face always reads.
   function theme() {
-    const css = getComputedStyle(document.documentElement)
-    const get = (k) => css.getPropertyValue(k).trim()
-    colours.body.set(get('--accent') || '#2f4bff')
-    colours.face.copy(colours.body).lerp(new THREE.Color(get('--bg') || '#fff'), 0.35)
-    colours.eye.set(get('--bg') || '#f6f5f2')
-    colours.foot.set(get('--fg') || '#111')
-    colours.tip.set(get('--second') || '#1f9d55')
-    voxels.forEach(([, , , part], i) => mesh.setColorAt(i, colours[part]))
+    const dark = getComputedStyle(document.documentElement).colorScheme.includes('dark')
+    const ink = new THREE.Color(dark ? '#0b0b0e' : '#111114')
+    for (const k of ['eye', 'mouth', 'stem', 'foot']) colours[k].copy(ink)
+    voxels.forEach(([x, , , part], i) => mesh.setColorAt(i, part === 'skin' ? gradient((x + 5) / 10) : colours[part]))
     mesh.instanceColor.needsUpdate = true
   }
   theme()
@@ -114,8 +129,8 @@ export function createMotus(host, { onOpen } = {}) {
     state.mode = 'snooze'
     wrap.classList.add('is-snoozing')
     setEyes(false)
-    if (reduce()) rig.rotation.z = 1.35
-    else gsap.to(rig.rotation, { z: 1.35, duration: 1.2, ease: 'power3.inOut' })
+    if (reduce()) rig.rotation.z = 0.9
+    else gsap.to(rig.rotation, { z: 0.9, duration: 1.2, ease: 'power3.inOut' })
     gsap.to(rig.position, { y: -1.2, duration: 1.2, ease: 'power3.inOut' })
     say('zzz')
   }
@@ -163,7 +178,7 @@ export function createMotus(host, { onOpen } = {}) {
       const speed = state.talking ? 7 : 2.2
       const amp = state.talking ? 0.22 : 0.12
       mesh.position.y = Math.sin(t * speed) * amp
-      rig.rotation.y = Math.sin(t * 0.6) * 0.35
+      rig.rotation.y = Math.sin(t * 0.6) * 0.3
       mesh.rotation.z = Math.sin(t * 1.3) * 0.03
       if (t > nextBlink) {
         setEyes(false)

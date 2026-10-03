@@ -586,10 +586,8 @@ html.overlay-open { overflow: hidden; }
 }
 
 .mark {
-  width: 20px;
+  width: 26px;
   height: 20px;
-  fill: var(--accent);
-  fill-opacity: 0.55;
 }
 
 /* Beat dots: where you are inside the scene. */
