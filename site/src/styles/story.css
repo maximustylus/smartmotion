@@ -998,3 +998,37 @@ html.overlay-open { overflow: hidden; }
 
 /* Cover parallax: the copy lifts gently while the pixel M holds, as the page scrolls on. */
 .scene--cover .scene__copy { will-change: transform; transform: translateY(calc(var(--lift, 0) * -48px)); transition: transform 0.2s linear; }
+
+
+/* The QR overlay: one big code, centred, for the shared screen. */
+.qr-overlay { display: grid; place-items: center; }
+.qr-overlay__box { display: grid; gap: var(--space-4); justify-items: center; text-align: center; }
+.qr--big { width: min(60vmin, 480px); aspect-ratio: 1; color: var(--fg); background: #fff; padding: 4%; border-radius: 12px; }
+.qr--big svg { display: block; width: 100%; height: 100%; }
+.qr--big svg path { fill: #111114; }
+.qr--big svg path:first-child { fill: none; }
+.qr-overlay__link { font-weight: 700; font-size: var(--text-h3); letter-spacing: -0.01em; }
+
+/* Micro-interactions on the small controls. */
+.chip, .btn, .tile, .option, .dots button { transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast); }
+a.chip:hover, button.chip:hover, .btn:hover { transform: translateY(-1px); }
+a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(0.98); }
+
+/* Install chip, shown only when the browser offers an install. */
+.install {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 6;
+  padding: 0.5em 1em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--fg);
+}
+@media (max-width: 599px) { .install { bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); left: var(--space-5); transform: none; } }

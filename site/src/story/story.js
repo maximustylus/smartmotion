@@ -185,6 +185,22 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     })
   }
 
+  // Offer the install when the browser does, once, as a quiet chip.
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    if (root.querySelector('.install')) return
+    const chip = document.createElement('button')
+    chip.type = 'button'
+    chip.className = 'install'
+    chip.textContent = 'Keep Smart Motion on your home screen'
+    chip.addEventListener('click', async () => {
+      chip.remove()
+      await e.prompt()
+    })
+    root.append(chip)
+    setTimeout(() => chip.remove(), 20000)
+  })
+
   // Motus joins once the story is live. Its chat reads the scene list.
   scroll.scenes = scenes
   window.story = scroll

@@ -19,6 +19,9 @@ export function createHud(root, scenes, scroll) {
     <div class="hud" hidden></div>
     <div class="overlay overview" role="dialog" aria-label="Overview" hidden></div>
     <div class="overlay help" role="dialog" aria-label="Keyboard shortcuts" hidden></div>
+    <div class="overlay qr-overlay" role="dialog" aria-label="Scan to play" hidden>
+      <div class="qr-overlay__box"><div class="qr qr--big" aria-label="QR code for smartmotion.web.app/play"></div><p class="qr-overlay__link">smartmotion.web.app/play</p><p class="overlay__sub">Press <kbd>Esc</kbd> to close.</p></div>
+    </div>
     <div class="blackout" aria-hidden="true"></div>
     <p class="visually-hidden" aria-live="polite"></p>
   `,
@@ -26,6 +29,15 @@ export function createHud(root, scenes, scroll) {
   const hud = root.querySelector('.hud')
   const overview = root.querySelector('.overview')
   const help = root.querySelector('.help')
+  const qrOverlay = root.querySelector('.qr-overlay')
+  let qrDrawn = false
+  async function drawQr() {
+    if (qrDrawn) return
+    qrDrawn = true
+    const { default: QRCode } = await import('qrcode')
+    const { PLAY_URL } = await import('../quiz/tools.js')
+    qrOverlay.querySelector('.qr').innerHTML = await QRCode.toString(PLAY_URL, { type: 'svg', margin: 0, errorCorrectionLevel: 'M' })
+  }
   const live = root.querySelector('[aria-live]')
 
   // ---------- Timer ----------
@@ -113,6 +125,7 @@ export function createHud(root, scenes, scroll) {
       <dt><kbd>Shift</kbd> + <kbd>R</kbd></dt><dd>Reset the timer</dd>
       <dt><kbd>B</kbd> or <kbd>.</kbd></dt><dd>Black screen</dd>
       <dt><kbd>F</kbd></dt><dd>Full screen</dd>
+      <dt><kbd>Q</kbd></dt><dd>Show the QR code for the quiz, large</dd>
       <dt><kbd>D</kbd></dt><dd>Dark or light</dd>
       <dt><kbd>Z</kbd></dt><dd>Reset the room totals shown on this screen</dd>
       <dt><kbd>?</kbd></dt><dd>This help</dd>
@@ -121,7 +134,7 @@ export function createHud(root, scenes, scroll) {
 
   function toggleOverlay(el, force) {
     const open = force ?? el.hidden
-    for (const o of [overview, help]) if (o !== el && !o.hidden) genieOut(o, '50% 0%')
+    for (const o of [overview, help, qrOverlay]) if (o !== el && !o.hidden) genieOut(o, '50% 0%')
     document.documentElement.classList.toggle('overlay-open', open)
     if (open) {
       if (el === overview) renderOverview()
@@ -149,11 +162,15 @@ export function createHud(root, scenes, scroll) {
     // A focused button keeps Enter and Space for itself.
     if (ownsKeys(e.target) && (e.key === 'Enter' || e.key === ' ')) return
     if (ownsKeys(e.target) && !NEXT.has(e.key) && !PREV.has(e.key) && e.key !== 'Escape') return
-    const overlayOpen = !overview.hidden || !help.hidden
+    const overlayOpen = !overview.hidden || !help.hidden || !qrOverlay.hidden
 
-    if (e.key === 'Escape') return toggleOverlay(overview, false)
+    if (e.key === 'Escape') return [overview, help, qrOverlay].forEach((o) => !o.hidden && toggleOverlay(o, false))
     if (e.key === 'o' || e.key === 'O') return toggleOverlay(overview)
     if (e.key === '?') return toggleOverlay(help)
+    if (e.key === 'q' || e.key === 'Q') {
+      drawQr()
+      return toggleOverlay(qrOverlay)
+    }
     if (overlayOpen) return
 
     if (NEXT.has(e.key) || PREV.has(e.key)) e.preventDefault()
