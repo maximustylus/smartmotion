@@ -55,17 +55,17 @@ export function initTheme() {
   media.addEventListener('change', () => !stored() && apply())
 }
 
-// A 44px round button with a sun that becomes a moon.
+// A 44px round button with one glyph: a disc half in light, half in shade,
+// that turns over when the theme switches.
 export function themeToggle() {
   const btn = document.createElement('button')
   btn.type = 'button'
   btn.className = 'theme-toggle'
   btn.innerHTML = `
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <mask id="theme-mask"><rect width="24" height="24" fill="#fff"/><circle class="theme-toggle__bite" cx="19" cy="6" r="7" fill="#000"/></mask>
-      <circle class="theme-toggle__sun" cx="12" cy="12" r="5.5" fill="currentColor" mask="url(#theme-mask)"/>
-      <g class="theme-toggle__rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <g class="theme-toggle__disc">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>
       </g>
     </svg>`
   const label = () => {
