@@ -429,6 +429,8 @@ const vertex = /* glsl */ `
   uniform float uPxPerUnit;
   uniform float uSnap;
   uniform float uCollapse;
+  uniform float uReveal;
+  uniform float uRevealMode;
   varying float vFade;
   varying float vLens;
   varying float vFid;
@@ -441,6 +443,19 @@ const vertex = /* glsl */ `
     float m = clamp(uMix * 1.35 - aSeed * 0.35, 0.0, 1.0);
     m = m * m * (3.0 - 2.0 * m);
     vec3 p = mix(aFrom, aTo, m);
+
+    // Scroll-built diagrams. Mode 1 rises from the ground (a pyramid),
+    // mode 2 grows from the top down (a tree), mode 3 spreads from the
+    // centre (rings), mode 4 sweeps left to right (a timeline, a bar).
+    float hidden = 0.0;
+    if (uRevealMode > 0.5) {
+      float key = uRevealMode < 1.5 ? (p.y + 1.0) / 2.0
+                : uRevealMode < 2.5 ? (1.0 - p.y) / 2.0
+                : uRevealMode < 3.5 ? length(p.xy) / 1.3
+                : (p.x + 1.7) / 3.4;
+      hidden = 1.0 - smoothstep(key - 0.08, key + 0.04, uReveal);
+      p *= 1.0 - hidden;
+    }
 
     // The utility formula: the last factor drops to zero, then the product.
     if (uCollapse > 0.0) {
@@ -484,7 +499,7 @@ const vertex = /* glsl */ `
     float cellPx = uCell * uPxPerUnit * 0.7;
     float splat = base * (1.0 + 1.8 * smoothstep(0.7, 1.0, uFidelity));
     gl_PointSize = mix(cellPx, splat, smoothstep(0.0, 0.5, uFidelity)) * (1.0 + vLens * 1.4);
-    vFade = mix(0.09, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
+    vFade = mix(0.09, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity)) * (1.0 - hidden);
     vFid = uFidelity;
     vThin = aSeed;
   }
@@ -568,6 +583,8 @@ export function createField(host) {
     uSnap: { value: 1 },
     uSplat: { value: 0.55 },
     uCollapse: { value: 0 },
+    uReveal: { value: 1 },
+    uRevealMode: { value: 0 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -776,6 +793,11 @@ export function createField(host) {
       gsap.to(uniforms.uSpin, { value: (p - 0.5) * (mode === 'nest' ? 1.2 : 0.5), duration: 0.6, ease: 'power2.out', overwrite: true })
     },
     get mode() { return mode },
+    // Scroll-built diagrams: mode picks the direction, v is how much is built.
+    setReveal(mode, v) {
+      uniforms.uRevealMode.value = mode
+      gsap.to(uniforms.uReveal, { value: v, duration: 0.4, ease: 'power2.out', overwrite: true })
+    },
     // Scroll-driven: 0 is the formula intact, 1 is everything flat.
     setCollapse(v) {
       gsap.to(uniforms.uCollapse, { value: v, duration: 0.35, ease: 'power2.out', overwrite: true })
