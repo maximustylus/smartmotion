@@ -223,6 +223,7 @@ const vertex = /* glsl */ `
   varying float vFade;
   varying float vLens;
   varying float vFid;
+  varying float vThin;
 
   void main() {
     // Each point starts its journey a little after the last, by seed.
@@ -260,11 +261,12 @@ const vertex = /* glsl */ `
     // Size: fixed cells at low fidelity, varied and depth-sized at high, and
     // large soft splats at the top end.
     float base = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth);
-    float cellPx = uCell * uPxPerUnit * 0.82;
+    float cellPx = uCell * uPxPerUnit * 0.7;
     float splat = base * (1.0 + 1.8 * smoothstep(0.7, 1.0, uFidelity));
     gl_PointSize = mix(cellPx, splat, smoothstep(0.0, 0.5, uFidelity)) * (1.0 + vLens * 1.4);
-    vFade = mix(0.42, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
+    vFade = mix(0.09, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
     vFid = uFidelity;
+    vThin = aSeed;
   }
 `
 
@@ -274,6 +276,7 @@ const fragment = /* glsl */ `
   varying float vFade;
   varying float vLens;
   varying float vFid;
+  varying float vThin;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
@@ -285,6 +288,7 @@ const fragment = /* glsl */ `
     float splat = exp(-d * d * 9.0) * 0.55;
     float shape = mix(mix(square, dot, smoothstep(0.0, 0.3, vFid)), mix(soft, splat, smoothstep(0.65, 1.0, vFid)), smoothstep(0.3, 0.65, vFid));
     float a = shape * uAlpha * (vFade + vLens * 0.8);
+    if (vFid < 0.3 && vThin > 0.5) discard;
     if (a < 0.01) discard;
     gl_FragColor = vec4(mix(uColor, vec3(1.0), vLens * 0.35), min(a, 1.0));
   }
