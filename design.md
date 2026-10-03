@@ -1,7 +1,60 @@
-# smartmotion design brief
+# Smart Motion design brief
 
-Decided in the UI/UX interview on 3 October 2026. Supplements brief.md.
-Where the two differ, this file wins for the presenter and attendee views.
+Decided in the UI/UX interviews on 3 October 2026. Supplements brief.md.
+Where the two differ, this file wins.
+
+## What Smart Motion is
+
+Smart Motion is a digital interactive playbook of smart moves for building,
+teaching and presenting with AI assistants. The product is the playbook.
+The talk "GAi GAi with me" on 7 October 2026 is its first route: a guided
+path through chosen moves for one audience and one time budget.
+
+The playbook demonstrates its own moves. Its file system and architecture
+are a move you can open and read, and so is the brief that built it.
+
+### Moves
+
+Eight moves, in this order. Each has the same anatomy: principle and
+angle, the framework behind it with its source, a worked example, and a
+cheatsheet that pastes into any assistant.
+
+1. Begin with the end in mind
+2. Have an angle
+3. Know the hook, keep the engagement
+4. Understand the file system and architecture
+5. Build on solid frameworks
+6. Test it with the utility formula
+7. Reality check
+8. Use it safely
+
+### Routes
+
+A route strings moves into a session. Route steps are moves, or scenes
+the route brings with it: cover, quiz, worked examples, questions. The
+first route follows the time budget in brief.md.
+
+### Where things live
+
+| Path | Holds |
+| --- | --- |
+| site/src/content/moves.js | The eight moves |
+| site/src/content/routes.js | Routes, starting with the talk |
+| site/src/content/examples.js | Worked examples from the owner's tools |
+| site/src/story/ | Scroll story, scene builders, field, chrome |
+| site/src/quiz/ | The icebreaker and its Firestore client |
+| workflows/ | Cheatsheets as plain prompts, one per move |
+| skills/ | The same cheatsheets as Claude skills, Phase 4 |
+| firestore.rules | What a client may write: counters, up by one |
+
+### URLs
+
+| URL | Shows |
+| --- | --- |
+| / | The playbook |
+| /talk | The talk route |
+| /play | The talk route opened on the quiz, for the QR code |
+| /styleguide | The design system |
 
 ## Decisions
 

@@ -1,31 +1,40 @@
 import '../styles/story.css'
-import { scenes } from './scenes.js'
-import { sections } from './sections.js'
+import { playbookScenes, routeScenes } from './build.js'
+import { defaultRoute } from '../content/routes.js'
 import { createScroll } from './scroll.js'
 import { createHud } from './hud.js'
 import { themeToggle, onThemeChange } from '../lib/theme.js'
 
 const escapeAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
-export function mount(root) {
-  document.title = 'GAi GAi with me'
-  const budgeted = sections.filter((s) => s.minutes > 0)
+/*
+  Smart Motion. One scroll story on every device, in two modes:
+    playbook  the home, every move with its cheatsheet
+    route     a guided path, such as the talk, with its quiz and time budget
+*/
+export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
+  const scenes = mode === 'route' ? routeScenes(route) : playbookScenes(route)
+  document.title = mode === 'route' ? `${route.title} · Smart Motion` : 'Smart Motion'
 
-  root.className = 'app'
+  // The rail at the top: by time budget on a route, one segment per move at home.
+  const railed = scenes.filter((s) => (mode === 'route' ? s.minutes > 0 : s.id !== 'cover' && s.id !== 'routes'))
+
+  root.className = `app app--${mode}`
   root.innerHTML = `
     <div class="field" aria-hidden="true"></div>
     <div class="rail" aria-hidden="true">
-      ${budgeted.map((s) => `<div class="rail__seg" data-section="${s.n}" style="flex:${s.minutes}"><div class="rail__fill"></div></div>`).join('')}
+      ${railed.map((s) => `<div class="rail__seg" data-scene="${s.id}" style="flex:${mode === 'route' ? s.minutes : 1}"><div class="rail__fill"></div></div>`).join('')}
     </div>
     <header class="topbar">
-      <a class="wordmark" href="#s0">GAi GAi with me</a>
+      <a class="wordmark" href="/">Smart Motion</a>
       <span class="topbar__tag" aria-hidden="true"></span>
+      <a class="topbar__switch" href="${mode === 'route' ? '/' : '/talk'}">${mode === 'route' ? 'Playbook' : route.title}</a>
     </header>
     <main class="story">
       ${scenes
         .map(
           (s) => `
-        <section class="scene" id="scene-${s.id}" data-section="${s.section}" data-form="${s.form}"
+        <section class="scene ${s.className ?? ''}" id="scene-${s.id}" data-form="${s.form}" data-phase="${s.phase ?? ''}"
           style="--beats:${s.beats.length}" aria-label="${escapeAttr(s.title)}">
           <div class="scene__pin">
             <div class="scene__copy">
@@ -39,23 +48,31 @@ export function mount(root) {
   `
   root.querySelector('.topbar').append(themeToggle())
 
-  const fills = [...root.querySelectorAll('.rail__fill')]
+  const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
   const tag = root.querySelector('.topbar__tag')
   let field = null
+  const mounted = new Map()
 
   const scroll = createScroll(root, scenes, {
     onScene(si, bi, sceneChanged) {
       const s = scenes[si]
-      root.dataset.section = s.section
-      tag.textContent = s.section ? `Part ${s.section} of 7` : ''
-      budgeted.forEach((sec, k) => {
-        let f = 0
-        if (sec.n < s.section) f = 1
-        else if (sec.n === s.section) f = (bi + 1) / s.beats.length
-        fills[k].style.transform = `scaleX(${f})`
-        fills[k].parentElement.classList.toggle('is-current', sec.n === s.section)
+      const k = railed.indexOf(s)
+      tag.textContent = k >= 0 ? (mode === 'route' ? `${k + 1} of ${railed.length}` : `Move ${k + 1} of ${railed.length}`) : ''
+      railed.forEach((r, j) => {
+        const f = j < k ? 1 : j === k ? (bi + 1) / s.beats.length : 0
+        fills[r.id].firstElementChild.style.transform = `scaleX(${f})`
+        fills[r.id].classList.toggle('is-current', j === k)
       })
       hud?.onScene(si, bi)
+      root.dataset.phase = s.phase ?? ''
+      // The field's colour drifts era by era and stays until the next era.
+      const era = s.era ?? [...scenes].slice(0, si).reverse().find((x) => x.era)?.era ?? ''
+      if (root.dataset.era !== era) {
+        root.dataset.era = era
+        requestAnimationFrame(() => field?.theme())
+      }
+      root.classList.toggle('field-dim', s.dimFrom !== undefined && bi >= s.dimFrom)
+      mounted.get(si)?.onBeat?.(bi)
       if (sceneChanged) field?.morphTo(s.form)
     },
     onProgress(si, p) {
@@ -68,6 +85,16 @@ export function mount(root) {
   // and loads once the page has painted.
   document.fonts.ready.then(() => {
     scroll.start()
+    // Interactive scenes attach their behaviour once the story is live.
+    scenes.forEach((s, i) => {
+      if (!s.mount) return
+      s.mount(root.querySelector(`#scene-${s.id}`), { go: (bi) => scroll.goTo(i, bi) })
+        .then((api) => {
+          mounted.set(i, api)
+          if (scroll.state.scene === i) api?.onBeat?.(scroll.state.beat)
+        })
+        .catch((err) => console.error('[smartmotion] scene failed to mount', s.id, err))
+    })
     import('./field.js').then((m) => {
       field = m.createField(root.querySelector('.field'))
       field.morphTo(scenes[scroll.state.scene].form, { instant: true })

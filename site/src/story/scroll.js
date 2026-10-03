@@ -28,7 +28,7 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
 
   function prepare(beat) {
     if (beat._lines) return beat._lines
-    const targets = [...beat.querySelectorAll('h1, h2, h3, p, li')]
+    const targets = [...beat.querySelectorAll('h1, h2, h3, p, li')].filter((t) => !t.closest('[data-no-split]'))
     const split = SplitText.create(targets, { type: 'lines', mask: 'lines', linesClass: 'ln' })
     beat._lines = split.lines
     gsap.set(beat, { autoAlpha: 0 })
@@ -36,16 +36,71 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     return beat._lines
   }
 
+  /*
+    Entrances by ADDIE phase, so each part of the journey moves differently:
+      analyse    lines rise, the heading pulls into focus
+      design     lines rise, the panel's rules draw themselves
+      develop    the whole beat stacks up from below
+      implement  lines slide in from the side, inside the guardrail
+      evaluate   lines rise, every number counts up
+      era        the year counts across the gap, the quote settles slowly
+  */
   function showBeat(beat, animate) {
     const lines = prepare(beat)
     gsap.killTweensOf([beat, ...lines])
+    const scene = beat.closest('.scene')
+    const phase = scene?.classList.contains('scene--era') ? 'era' : scene?.dataset.phase || ''
+    const nums = [...beat.querySelectorAll('[data-year], [data-num]')]
     if (!animate || reduce()) {
-      gsap.set(lines, { yPercent: 0 })
+      gsap.set(lines, { yPercent: 0, xPercent: 0, filter: 'none' })
+      gsap.set(beat, { '--draw': 1, scale: 1, y: 0 })
+      if (beat.querySelector('.phase__letter')) gsap.set(beat.querySelector('.phase__letter'), { scale: 1, opacity: 0.12 })
+      nums.forEach((n) => (n.textContent = n.dataset.to ?? n.textContent))
       gsap.to(beat, { autoAlpha: 1, duration: reduce() ? 0.3 : 0 })
       return
     }
-    gsap.set(beat, { autoAlpha: 1 })
-    gsap.fromTo(lines, { yPercent: 110 }, { yPercent: 0, duration: 1.2, stagger: 0.09, ease: 'power4.out' })
+    gsap.set(beat, { autoAlpha: 1, '--draw': 0, scale: 1, y: 0 })
+    const rise = (delay = 0) =>
+      gsap.fromTo(lines, { yPercent: 110, xPercent: 0 }, { yPercent: 0, duration: 1.2, stagger: 0.09, ease: 'power4.out', delay })
+    const count = (dur = 1.4) =>
+      nums.forEach((n) => {
+        const to = +(n.dataset.to ?? n.textContent)
+        const from = +(n.dataset.from ?? 0)
+        const o = { v: from }
+        gsap.to(o, { v: to, duration: dur, ease: 'power3.out', snap: 'v', onUpdate: () => (n.textContent = o.v) })
+      })
+    const letter = beat.querySelector('.phase__letter')
+    if (letter) gsap.fromTo(letter, { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 0.12, duration: 1.6, ease: 'power3.out' })
+    switch (phase) {
+      case 'analyse': {
+        rise()
+        const h = beat.querySelector('h1, h2, h3')
+        if (h) gsap.fromTo(h, { filter: 'blur(14px)' }, { filter: 'blur(0px)', duration: 1.4, ease: 'power2.out' })
+        break
+      }
+      case 'design':
+        rise(0.15)
+        gsap.to(beat, { '--draw': 1, duration: 1.1, ease: 'power3.inOut' })
+        break
+      case 'develop':
+        gsap.set(lines, { yPercent: 0 })
+        gsap.fromTo(beat, { y: 48, scale: 0.97, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: 1.0, ease: 'power3.out' })
+        break
+      case 'implement':
+        gsap.fromTo(lines, { xPercent: -12, yPercent: 0, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 1.0, stagger: 0.08, ease: 'power3.out' })
+        gsap.to(beat, { '--draw': 1, duration: 1.4, ease: 'power2.out' })
+        break
+      case 'evaluate':
+        rise()
+        count()
+        break
+      case 'era':
+        rise()
+        count(1.8)
+        break
+      default:
+        rise()
+    }
   }
 
   function hideBeat(beat, animate) {
@@ -53,7 +108,7 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     gsap.killTweensOf([beat, ...lines])
     if (!animate || reduce()) return gsap.set(beat, { autoAlpha: 0 })
     gsap.to(lines, { yPercent: -60, duration: 0.4, ease: 'power2.in', stagger: { amount: 0.1 } })
-    gsap.to(beat, { autoAlpha: 0, duration: 0.4, onComplete: () => gsap.set(lines, { yPercent: 110 }) })
+    gsap.to(beat, { autoAlpha: 0, duration: 0.4, onComplete: () => gsap.set(lines, { yPercent: 110, xPercent: 0, filter: 'none' }) })
   }
 
   function setCurrent(si, bi, animate = true) {
@@ -129,7 +184,7 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
   }
 
   function fromHash() {
-    const m = location.hash.match(/^#(s\d+)(?:-(\d+))?$/)
+    const m = location.hash.match(/^#([a-z]+)(?:-(\d+))?$/)
     if (!m) return [0, 0]
     const si = scenes.findIndex((s) => s.id === m[1])
     return si < 0 ? [0, 0] : [si, (+m[2] || 1) - 1]

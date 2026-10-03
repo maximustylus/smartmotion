@@ -108,6 +108,44 @@ const forms = {
     }
     return a
   },
+  tree(n, r) {
+    // A folder tree: one root, three children, nine grandchildren.
+    const a = new Float32Array(n * 3)
+    const nodes = [[0, 0.85]]
+    for (let i = 0; i < 3; i++) nodes.push([(i - 1) * 1.0, 0.1])
+    for (let i = 0; i < 9; i++) nodes.push([(Math.floor(i / 3) - 1) * 1.0 + ((i % 3) - 1) * 0.3, -0.7])
+    for (let i = 0; i < n; i++) {
+      const onEdge = i % 4 === 0
+      if (onEdge) {
+        // Points along the links between levels.
+        const child = 1 + ((i >> 2) % 12)
+        const parent = child <= 3 ? 0 : 1 + Math.floor((child - 4) / 3)
+        const t = r()
+        const [px, py] = nodes[parent], [cx, cy] = nodes[child]
+        a[i * 3] = px + (cx - px) * t + gauss(r) * 0.01
+        a[i * 3 + 1] = py + (cy - py) * t + gauss(r) * 0.01
+      } else {
+        const [x, y] = nodes[i % nodes.length]
+        a[i * 3] = x + gauss(r) * 0.07
+        a[i * 3 + 1] = y + gauss(r) * 0.07
+      }
+      a[i * 3 + 2] = gauss(r) * 0.06
+    }
+    return a
+  },
+  rings(n, r) {
+    // Three concentric rings: alone, with help, out of reach.
+    const a = new Float32Array(n * 3)
+    for (let i = 0; i < n; i++) {
+      const ring = i % 3
+      const rad = [0.35, 0.7, 1.05][ring] + gauss(r) * 0.03
+      const t = r() * Math.PI * 2
+      a[i * 3] = Math.cos(t) * rad * 1.1
+      a[i * 3 + 1] = Math.sin(t) * rad * 0.85
+      a[i * 3 + 2] = gauss(r) * 0.05
+    }
+    return a
+  },
   timeline(n, r) {
     const a = new Float32Array(n * 3)
     for (let i = 0; i < n; i++) {
@@ -234,10 +272,12 @@ export function createField(host) {
   // ---------- Theme ----------
 
   function theme() {
-    const css = getComputedStyle(document.documentElement)
-    uniforms.uColor.value.set(css.getPropertyValue('--field').trim() || '#2f4bff')
+    const css = getComputedStyle(host.parentElement ?? document.documentElement)
+    const next = css.getPropertyValue('--field').trim() || '#2f4bff'
+    if (reduce()) uniforms.uColor.value.set(next)
+    else gsap.to(uniforms.uColor.value, { ...new THREE.Color(next), duration: 1.6, ease: 'power2.inOut', overwrite: true })
     uniforms.uAlpha.value = parseFloat(css.getPropertyValue('--field-alpha')) || 0.6
-    const dark = css.colorScheme.includes('dark')
+    const dark = getComputedStyle(document.documentElement).colorScheme.includes('dark')
     mat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending
     mat.needsUpdate = true
   }

@@ -1,5 +1,3 @@
-import { sections, totalMinutes } from './sections.js'
-
 /*
   Presenter chrome: rehearsal timer, overview with TODO count, keyboard
   help, blackout and full screen. Hidden until asked for, so an attendee
@@ -12,6 +10,7 @@ const mmss = (ms) => {
 }
 
 export function createHud(root, scenes, scroll) {
+  const totalMinutes = scenes.reduce((sum, s) => sum + (s.minutes || 0), 0)
   root.insertAdjacentHTML(
     'beforeend',
     `
@@ -35,6 +34,7 @@ export function createHud(root, scenes, scroll) {
 
   const timer = { start: null, section: 0, enteredAt: 0, spent: {} }
 
+  // n is the scene index. The clock starts when the cover is left.
   function trackSection(n) {
     const now = performance.now()
     if (timer.start === null && n > 0) {
@@ -56,13 +56,13 @@ export function createHud(root, scenes, scroll) {
     }
     const now = performance.now()
     const total = now - timer.start
-    const s = sections[timer.section]
+    const s = scenes[timer.section]
     const inSection = (timer.spent[timer.section] ?? 0) + (now - timer.enteredAt)
     const over = (ms, min) => (min && ms > min * 60000 ? 'over' : '')
     hud.innerHTML = `
       <span class="${over(total, totalMinutes)}"><strong>${mmss(total)}</strong> / ${totalMinutes}:00</span>
-      <span>Part ${s.n}</span>
-      <span class="${over(inSection, s.minutes)}"><strong>${mmss(inSection)}</strong> / ${s.minutes}:00</span>
+      <span>${s.title}</span>
+      <span class="${over(inSection, s.minutes)}"><strong>${mmss(inSection)}</strong> / ${s.minutes || 0}:00</span>
     `
   }
   setInterval(renderHud, 500)
@@ -80,11 +80,10 @@ export function createHud(root, scenes, scroll) {
       <div class="overview__grid">
         ${scenes
           .map((s, i) => {
-            const sec = sections[s.section]
             const beats = root.querySelectorAll(`#scene-${s.id} .beat`)
             const hasTodo = root.querySelector(`#scene-${s.id} .todo`)
             return `<div class="overview__scene" aria-current="${i === scene}">
-              <h3>${s.section ? `Part ${s.section}: ` : ''}${s.title}${sec.minutes ? `<span>${sec.minutes} min</span>` : ''}</h3>
+              <h3>${s.title}${s.minutes ? `<span>${s.minutes} min</span>` : ''}</h3>
               <div class="overview__beats">
                 ${[...beats]
                   .map(
@@ -117,6 +116,7 @@ export function createHud(root, scenes, scroll) {
       <dt><kbd>B</kbd> or <kbd>.</kbd></dt><dd>Black screen</dd>
       <dt><kbd>F</kbd></dt><dd>Full screen</dd>
       <dt><kbd>D</kbd></dt><dd>Dark or light</dd>
+      <dt><kbd>Z</kbd></dt><dd>Reset the room totals shown on this screen</dd>
       <dt><kbd>?</kbd></dt><dd>This help</dd>
     </dl>
   `
@@ -148,8 +148,10 @@ export function createHud(root, scenes, scroll) {
 
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return
-    if (ownsKeys(e.target) && !NEXT.has(e.key) && !PREV.has(e.key)) return
     if (e.target.closest?.('input, textarea, select, [contenteditable]')) return
+    // A focused button keeps Enter and Space for itself.
+    if (ownsKeys(e.target) && (e.key === 'Enter' || e.key === ' ')) return
+    if (ownsKeys(e.target) && !NEXT.has(e.key) && !PREV.has(e.key) && e.key !== 'Escape') return
     const overlayOpen = !overview.hidden || !help.hidden
 
     if (e.key === 'Escape') return toggleOverlay(overview, false)
@@ -170,13 +172,14 @@ export function createHud(root, scenes, scroll) {
       renderHud()
     } else if (e.key === 'R') {
       Object.assign(timer, { start: null, section: 0, enteredAt: 0, spent: {} })
-      trackSection(scenes[scroll.state.scene].section)
+      trackSection(scroll.state.scene)
       renderHud()
     } else if (e.key === 'b' || e.key === 'B' || e.key === '.') root.classList.toggle('is-blackout')
     else if (e.key === 'f' || e.key === 'F') {
       if (document.fullscreenElement) document.exitFullscreen()
       else document.documentElement.requestFullscreen?.().catch(() => {})
     } else if (e.key === 'd' || e.key === 'D') root.querySelector('.theme-toggle')?.click()
+    else if (e.key === 'z' || e.key === 'Z') window.dispatchEvent(new Event('smartmotion:reset-totals'))
   })
 
   root.querySelector('[data-nav="prev"]').addEventListener('click', scroll.prev)
@@ -193,7 +196,7 @@ export function createHud(root, scenes, scroll) {
   return {
     onScene(si, bi) {
       const s = scenes[si]
-      trackSection(s.section)
+      trackSection(si)
       live.textContent = `${s.title}, beat ${bi + 1}`
       if (!overview.hidden) renderOverview()
     },

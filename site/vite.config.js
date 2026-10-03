@@ -3,18 +3,19 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   build: { outDir: 'dist', emptyOutDir: true },
+  // Cheatsheets are read from ../workflows at the repository root.
+  server: { fs: { allow: ['..'] } },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'smartmotion: GAi GAi with me',
-        short_name: 'smartmotion',
-        description: 'A casual stroll into generative AI for educators. The talk and the audience quiz in one scrolling story.',
+        name: 'Smart Motion',
+        short_name: 'Smart Motion',
+        description: 'A digital interactive playbook of smart moves for building, teaching and presenting with AI assistants.',
         lang: 'en-GB',
-        // Attendees are the ones who install; the presenter is one shortcut away.
-        start_url: '/play',
+        start_url: '/',
         scope: '/',
         display: 'standalone',
         background_color: '#F6F5F2',
@@ -26,8 +27,9 @@ export default defineConfig({
           { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
         shortcuts: [
+          { name: 'Playbook', url: '/' },
+          { name: 'The talk', url: '/talk' },
           { name: 'Play the quiz', url: '/play' },
-          { name: 'Start of the talk', url: '/' },
         ],
       },
       workbox: {

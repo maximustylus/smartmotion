@@ -1,0 +1,160 @@
+/* The icebreaker quiz, section 1 of the story. */
+
+.qr {
+  width: min(44vmin, 260px);
+  aspect-ratio: 1;
+  color: var(--fg);
+}
+
+.qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.qr svg path:first-child { fill: none; }
+.qr svg path { fill: currentColor; }
+
+.scan {
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+  grid-template-columns: auto 1fr;
+}
+
+.scan__link {
+  font-weight: 600;
+  font-size: var(--text-lead);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+}
+
+/* Part 1: logo tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  max-width: 560px;
+}
+
+.tile {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 10%;
+  border-radius: var(--radius-m);
+  border: 1.5px solid var(--line);
+  background: var(--bg-2);
+  cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tile[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+
+.tile--todo span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--todo);
+  text-align: center;
+}
+
+.tile--todo { border-style: dashed; border-color: var(--todo); }
+
+.quiz__actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.quiz__count {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Part 2: options */
+.options {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 560px;
+}
+
+.option {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-m);
+  border: 1.5px solid var(--line);
+  background: var(--bg-2);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--dur-fast);
+}
+
+.option:hover { border-color: var(--accent); }
+.option__label { font-weight: 600; }
+.option__hint { font-size: 0.85em; color: var(--muted); line-height: 1.35; }
+
+.played { display: grid; gap: var(--space-3); }
+
+/* Result */
+.result { display: grid; gap: var(--space-1); }
+.result__line { color: var(--muted); }
+.result__big {
+  font-size: var(--text-h2);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.status { font-size: 0.9em; color: var(--muted); }
+
+/* Live totals */
+.totals {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 620px;
+}
+
+.totals__group { display: grid; gap: var(--space-2); }
+.totals__group h4 { font-size: var(--text-eyebrow); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+.bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3ch;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.bar__label { font-size: 0.95em; margin-bottom: 4px; }
+.bar__track { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.bar__fill { height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: var(--accent); border-radius: 999px; }
+.bar__num { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.totals__note { color: var(--muted); font-size: 0.9em; min-height: 1.4em; }
+
+/* The quiz scene uses the whole height on phones; the field sits behind, dimmed. */
+.scene--quiz .scene__pin {
+  grid-template-rows: auto;
+  align-content: start;
+  padding-top: calc(84px + env(safe-area-inset-top, 0px));
+}
+
+.scene--quiz .scene__copy { align-content: start; }
+.scene--quiz .beat { align-content: start; }
+
+.app.field-dim .field { opacity: 0.28; }
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .scene--quiz .scene__pin { grid-template-columns: minmax(0, 56%) 1fr; align-content: center; }
+  .scene--quiz .scene__copy, .scene--quiz .beat { align-content: center; }
+  .tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}

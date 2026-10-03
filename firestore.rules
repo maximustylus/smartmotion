@@ -1,0 +1,68 @@
+rules_version = '2';
+
+// smartmotion: anonymous quiz totals only.
+// One document, totals/room, holding counters. Anyone may read it. A client
+// may only add one submission: exactly one level counter and one type counter
+// go up by one, together with the submissions counter. Nothing else is
+// allowed anywhere in the database.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function levels() { return ['level_1', 'level_2', 'level_3']; }
+    function types() { return ['type_1', 'type_2', 'type_3', 'type_4']; }
+    function allKeys() { return levels().concat(types()).concat(['submissions']); }
+
+    function isCount(v) { return v is int && v >= 0; }
+
+    // Every counter in the incoming document is a non-negative integer.
+    function countersOk(d) {
+      return d.keys().hasOnly(allKeys())
+        && isCount(d.get('level_1', 0)) && isCount(d.get('level_2', 0)) && isCount(d.get('level_3', 0))
+        && isCount(d.get('type_1', 0)) && isCount(d.get('type_2', 0))
+        && isCount(d.get('type_3', 0)) && isCount(d.get('type_4', 0))
+        && isCount(d.get('submissions', 0));
+    }
+
+    function sumLevels(d) { return d.get('level_1', 0) + d.get('level_2', 0) + d.get('level_3', 0); }
+    function sumTypes(d) { return d.get('type_1', 0) + d.get('type_2', 0) + d.get('type_3', 0) + d.get('type_4', 0); }
+
+    // First submission creates the document with exactly one of each.
+    function firstSubmission(d) {
+      return countersOk(d)
+        && d.get('submissions', 0) == 1
+        && sumLevels(d) == 1
+        && sumTypes(d) == 1;
+    }
+
+    // Later submissions: three keys change, each by exactly one.
+    function oneSubmission(before, after) {
+      let changed = after.diff(before).affectedKeys();
+      return countersOk(after)
+        && changed.size() == 3
+        && changed.hasAll(['submissions'])
+        && changed.hasAny(levels())
+        && changed.hasAny(types())
+        && after.get('submissions', 0) == before.get('submissions', 0) + 1
+        && sumLevels(after) == sumLevels(before) + 1
+        && sumTypes(after) == sumTypes(before) + 1
+        && after.get('level_1', 0) >= before.get('level_1', 0)
+        && after.get('level_2', 0) >= before.get('level_2', 0)
+        && after.get('level_3', 0) >= before.get('level_3', 0)
+        && after.get('type_1', 0) >= before.get('type_1', 0)
+        && after.get('type_2', 0) >= before.get('type_2', 0)
+        && after.get('type_3', 0) >= before.get('type_3', 0)
+        && after.get('type_4', 0) >= before.get('type_4', 0);
+    }
+
+    match /totals/room {
+      allow read: if true;
+      allow create: if firstSubmission(request.resource.data);
+      allow update: if oneSubmission(resource.data, request.resource.data);
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -80,6 +80,7 @@
 .topbar > * { pointer-events: auto; }
 
 .wordmark {
+  white-space: nowrap;
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: -0.01em;
@@ -89,6 +90,7 @@
 
 .topbar__tag {
   margin-left: auto;
+  white-space: nowrap;
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -148,6 +150,7 @@
 
 .beat {
   grid-area: 1 / 1;
+  align-self: end;
   display: grid;
   gap: var(--space-3);
   align-content: end;
@@ -231,7 +234,7 @@
     align-content: center;
   }
 
-  .beat { gap: var(--space-5); }
+  .beat { gap: var(--space-5); align-self: center; }
   .speaker { font-size: 0.8em; }
 }
 
@@ -360,3 +363,216 @@
 .app.is-blackout .blackout { opacity: 1; pointer-events: auto; }
 
 html.overlay-open { overflow: hidden; }
+
+/* ---------- Smart Motion chrome and move beats ---------- */
+
+@media (max-width: 479px) {
+  .topbar__tag { display: none; }
+  .topbar__switch { margin-left: auto; }
+}
+
+.topbar__switch {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.45em 0.9em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 80%, transparent);
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+.topbar__tag { margin-left: auto; }
+
+.source {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: center;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.rows__meta { color: var(--muted); font-size: 0.75em; margin-left: 0.6em; }
+
+/* Cheatsheet */
+.sheet {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 62ch;
+}
+
+.sheet__text {
+  margin: 0;
+  max-height: 34svh;
+  overflow: auto;
+  padding: var(--space-4);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overscroll-behavior: contain;
+}
+
+.sheet__actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sheet__status { font-size: 0.85em; color: var(--muted); }
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .sheet__text { max-height: 46svh; }
+}
+
+/* ---------- The journey: one grammar per ADDIE phase, plus eras ---------- */
+
+.beat { --draw: 0; }
+
+/* Analyse: a single focus line grows beside the copy. */
+.scene[data-phase='analyse'] .beat { padding-left: var(--space-5); position: relative; }
+.scene[data-phase='analyse'] .beat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 3px;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(var(--draw));
+}
+.scene[data-phase='analyse'] h2 { font-size: var(--text-h1); letter-spacing: -0.04em; }
+
+/* Design: blueprint. A faint grid behind, corner marks that draw themselves. */
+.scene[data-phase='design'] .scene__pin {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--accent) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--accent) 12%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(80% 80% at 50% 50%, #000 30%, transparent 100%);
+}
+.scene[data-phase='design'] .beat { position: relative; padding: var(--space-5); }
+.scene[data-phase='design'] .beat::before,
+.scene[data-phase='design'] .beat::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--accent);
+  transform: scale(var(--draw));
+}
+.scene[data-phase='design'] .beat::before { top: 0; left: 0; border-right: 0; border-bottom: 0; transform-origin: top left; }
+.scene[data-phase='design'] .beat::after { bottom: 0; right: 0; border-left: 0; border-top: 0; transform-origin: bottom right; }
+
+/* Develop: stacked panels, each one a layer laid on the last. */
+.scene[data-phase='develop'] .beat {
+  padding: var(--space-5);
+  border-radius: var(--radius-m);
+  background: color-mix(in oklab, var(--bg-2) 85%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 0 -4px color-mix(in oklab, var(--bg-2) 70%, transparent), 0 20px 0 -8px color-mix(in oklab, var(--bg-2) 45%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* Implement: the guardrail. A rounded boundary that draws itself around the copy. */
+.scene[data-phase='implement'] .beat { position: relative; padding: var(--space-5); }
+.scene[data-phase='implement'] .beat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-m);
+  border: 2px solid var(--accent);
+  opacity: var(--draw);
+  clip-path: inset(0 calc((1 - var(--draw)) * 100%) 0 0 round var(--radius-m));
+}
+.scene[data-phase='implement'] .rows li::before { content: '\2713\00a0\00a0'; color: var(--second); font-weight: 700; }
+
+/* Evaluate: the ruler. Tick marks above the copy, tabular numbers. */
+.scene[data-phase='evaluate'] .beat { padding-top: var(--space-4); font-variant-numeric: tabular-nums; }
+.scene[data-phase='evaluate'] .beat::before {
+  content: '';
+  display: block;
+  height: 12px;
+  margin-bottom: var(--space-3);
+  background:
+    repeating-linear-gradient(90deg, var(--fg) 0 1px, transparent 1px 12px) bottom / 100% 6px no-repeat,
+    repeating-linear-gradient(90deg, var(--fg) 0 1px, transparent 1px 60px) bottom / 100% 12px no-repeat;
+  opacity: 0.45;
+  max-width: 420px;
+}
+
+/* Phase intro: the letter, large and faint, behind the name. */
+.phase__letter {
+  position: absolute;
+  right: 0;
+  top: -0.1em;
+  font-size: clamp(8rem, 36vmin, 22rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.12;
+  pointer-events: none;
+}
+.scene--phase .beat { position: relative; }
+.scene--phase .phase__letter { transform-origin: right top; }
+
+/* Eras: a giant year, a serif title, dated facts, and the quote. */
+.era__year {
+  font-size: clamp(4rem, 20vmin, 12rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.era__title {
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: var(--text-h1);
+}
+.facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+  max-width: 48ch;
+}
+.facts li {
+  display: grid;
+  grid-template-columns: 4.5ch 1fr;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: 0.35em 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.95em;
+}
+.facts__year { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted); }
+
+.quote {
+  margin: 0;
+  display: grid;
+  gap: var(--space-4);
+  max-width: 30ch;
+}
+.quote__text {
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-size: var(--text-h2);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.quote__who { display: grid; gap: 2px; font-weight: 600; }
+.quote__source { font-weight: 400; color: var(--muted); font-size: 0.85em; }

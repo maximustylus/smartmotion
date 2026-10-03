@@ -97,6 +97,30 @@
   color-scheme: dark;
 }
 
+/*
+  Era tints. The field is the one place colour runs free: it warms for the
+  robot heroes, cools through logic and chat, and settles on today's teal.
+*/
+.app[data-era='wonder'] { --field: #d9822b; }
+.app[data-era='logic'] { --field: #3b63b8; }
+.app[data-era='assistants'] { --field: #2f4bff; }
+.app[data-era='chat'] { --field: #7a44d6; }
+.app[data-era='agents'] { --field: #0f8f7e; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .app[data-era='wonder'] { --field: #ffb45c; }
+  :root:not([data-theme='light']) .app[data-era='logic'] { --field: #8fb0ff; }
+  :root:not([data-theme='light']) .app[data-era='assistants'] { --field: #7c90ff; }
+  :root:not([data-theme='light']) .app[data-era='chat'] { --field: #b48cff; }
+  :root:not([data-theme='light']) .app[data-era='agents'] { --field: #3fd6c1; }
+}
+
+:root[data-theme='dark'] .app[data-era='wonder'] { --field: #ffb45c; }
+:root[data-theme='dark'] .app[data-era='logic'] { --field: #8fb0ff; }
+:root[data-theme='dark'] .app[data-era='assistants'] { --field: #7c90ff; }
+:root[data-theme='dark'] .app[data-era='chat'] { --field: #b48cff; }
+:root[data-theme='dark'] .app[data-era='agents'] { --field: #3fd6c1; }
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --dur-fast: 0ms;
