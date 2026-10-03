@@ -261,11 +261,12 @@ function logoForm(n, r) {
 const PALETTE = { k: [0.07, 0.07, 0.09], w: [0.96, 0.96, 0.94], r: [0.93, 0.2, 0.2], b: [0.15, 0.45, 0.95], y: [1, 0.82, 0.25], s: [0.98, 0.8, 0.65], g: [0.55, 0.57, 0.62], c: [0.2, 0.7, 0.9] }
 const SPRITES = [
   // A boy robot: black spiked hair, a red belt and red boots.
-  ['....kk.k....', '...kkkkkk...', '..kkssssk...', '..ksssssk...', '..kskssks...', '...ssssss...', '....ssss....', '...ssssss...', '..ssssssss..', '..s.ssss.s..', '....rrrr....', '....ssss....', '....ssss....', '...rr..rr...', '..rrr..rrr..'],
+  ['......kk.k......', '.....kkkkkk.....', '....kkssssk.....', '....ksssssk.....', '....kskssks.....', '.....ssssss.....', '......ssss......', '.....ssssss.....', '....ssssssss....', '....s.ssss.s....', '......rrrr......', '......ssss......', '......ssss......', '.....rr..rr.....', '....rrr..rrr....', '....rrr..rrr....'],
   // A round blue cat robot with a white face and a yellow bell.
-  ['....bbbb....', '..bbbbbbbb..', '.bbwwwwwwbb.', '.bwwkwwkwwb.', 'bbwwwrwwwwbb', 'bbwwwwwwwwbb', '.bwwwwwwwwb.', '..bbwwwwbb..', '...rrrrrr...', '..bwwyywwb..', '.bbwwwwwwbb.', '.bbwwwwwwbb.', '..bbwwwwbb..', '...bb..bb...', '...ww..ww...'],
-  // A tall truck robot: blue helmet, red chest with windows, grey arms.
-  ['....bbbb....', '...bbbbbb...', '...bkccbk...', '...bbggbb...', '..ggrrrrgg..', '.ggrrccrrgg.', '.g.rrccrr.g.', '.g.rrrrrr.g.', '.g.rrrrrr.g.', '...bbbbbb...', '...bb..bb...', '...bb..bb...', '...bb..bb...', '..bbb..bbb..', '..kkk..kkk..'],
+  ['......bbbb......', '....bbbbbbbb....', '...bbwwwwwwbb...', '...bwwkwwkwwb...', '..bbwwwrwwwwbb..', '..bbwwwwwwwwbb..', '...bwwwwwwwwb...', '....bbwwwwbb....', '.....rrrrrr.....', '....bwwyywwb....', '...bbwwwwwwbb...', '...bbwwwwwwbb...', '....bbwwwwbb....', '.....bb..bb.....', '.....ww..ww.....', '.....ww..ww.....'],
+  // A truck robot, taller than the others: blue helmet with ear fins, a
+  // light-blue visor, a red chest with two windows, grey arms, blue legs.
+  ['......bbbb......', '.....bbbbbb.....', '..b..bbbbbb..b..', '..bb.bccccb.bb..', '..bb.bkkkkb.bb..', '...bbbbbbbbbb...', '....gggggggg....', '..ggrrrrrrrrgg..', '.gg.rrccccrr.gg.', '.gg.rrccccrr.gg.', '.gg.rrrrrrrr.gg.', '.g..rryyyyrr..g.', '.g..rrrrrrrr..g.', '....bbbbbbbb....', '....bbb..bbb....', '....bbb..bbb....', '....bbb..bbb....', '...bbbb..bbbb...', '...kkkk..kkkk...', '..kkkkk..kkkkk..'],
 ]
 
 // A horizontal timeline with the three figures standing on it. Their
@@ -282,7 +283,7 @@ function timeline80sForm(n, r) {
     a[i * 3 + 2] = (r() - 0.5) * 0.05
   }
   // Tick marks at the three years.
-  const xs = [-1.05, 0, 1.05].map(snapTo)
+  const xs = [-1.1, 0, 1.1].map(snapTo)
   let i = lineN
   const per = Math.floor((n - lineN) / 3)
   SPRITES.forEach((rows, si) => {
@@ -384,6 +385,7 @@ const fragment = /* glsl */ `
   varying float vThin;
   varying vec4 vColor;
   uniform float uUseColor;
+  uniform float uSplat;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
@@ -392,7 +394,7 @@ const fragment = /* glsl */ `
     float square = step(max(abs(c.x), abs(c.y)), 0.42);
     float dot = smoothstep(0.5, 0.42, d);
     float soft = smoothstep(0.5, 0.18, d);
-    float splat = exp(-d * d * 9.0) * 0.55;
+    float splat = exp(-d * d * 9.0) * uSplat;
     float shape = mix(mix(square, dot, smoothstep(0.0, 0.3, vFid)), mix(soft, splat, smoothstep(0.65, 1.0, vFid)), smoothstep(0.3, 0.65, vFid));
     float a = shape * uAlpha * (vFade + vLens * 0.8);
     if (vFid < 0.3 && vThin > 0.5) discard;
@@ -449,6 +451,7 @@ export function createField(host) {
     uPxPerUnit: { value: 100 },
     uUseColor: { value: 0 },
     uSnap: { value: 1 },
+    uSplat: { value: 0.55 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -472,6 +475,7 @@ export function createField(host) {
     uniforms.uAlpha.value = parseFloat(css.getPropertyValue('--field-alpha')) || 0.6
     const dark = getComputedStyle(document.documentElement).colorScheme.includes('dark')
     mat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending
+    uniforms.uSplat.value = dark ? 0.55 : 0.95
     mat.needsUpdate = true
   }
 

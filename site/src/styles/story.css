@@ -912,3 +912,18 @@ html.overlay-open { overflow: hidden; }
   .scene--centre .beat { align-self: start; }
 }
 .scene--cover.scene--centre .scene__pin { grid-template-rows: 54% minmax(0, 1fr); }
+
+/* Colophon, bottom left, out of the way. */
+.colophon {
+  position: fixed;
+  left: max(var(--space-5), env(safe-area-inset-left, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: var(--faint);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+.colophon__v { font-variant-numeric: tabular-nums; }

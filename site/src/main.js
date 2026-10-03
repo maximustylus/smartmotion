@@ -11,6 +11,10 @@ const path = location.pathname.replace(/\/+$/, '') || '/'
 
 if (path === '/styleguide') {
   import('./styleguide.js').then((m) => m.mount(app))
+} else if (path === '/glossary') {
+  import('./pages/pages.js').then((m) => m.mountGlossary(app))
+} else if (path === '/contact') {
+  import('./pages/pages.js').then((m) => m.mountContact(app))
 } else if (path === '/talk' || path.startsWith('/talk/') || path === '/play') {
   if (path !== '/play' && shouldSplash()) splash(app)
   // /talk is the first route. /play is the QR link: the same route, opened

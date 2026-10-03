@@ -7,6 +7,8 @@ source that is not listed here.
 
 | Status | Reference |
 | --- | --- |
+| proposed | Covey, S. R. (1989). *The 7 habits of highly effective people*. Free Press. Habit 2: Begin with the end in mind. |
+| owner | Muhammad Alif Bin Abu Bakar. (2026). Lines in his own voice in Smart Motion, including "Balancing is an act". |
 | proposed | Clarke, A. C. (1973). *Profiles of the future: An enquiry into the limits of the possible* (Rev. ed.). Harper & Row. Third law, footnote in "Hazards of prophecy: The failure of imagination". Earlier in a letter to *Science*, 19 January 1968. |
 | proposed | Turing, A. M. (1950). Computing machinery and intelligence. *Mind, 59*(236), 433–460. https://doi.org/10.1093/mind/LIX.236.433 |
 | proposed | Karpathy, A. [@karpathy]. (2025, February 2). There's a new kind of coding I call "vibe coding" [Post]. X. |

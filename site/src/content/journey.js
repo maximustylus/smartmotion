@@ -50,6 +50,7 @@ export const phases = [
     name: 'Evaluate',
     line: 'Measure utility, not applause.',
     moves: ['test', 'reality'],
+    quote: { text: 'Balancing is an act.', who: 'Muhammad Alif Bin Abu Bakar', source: 'Smart Motion, 2026' },
   },
 ]
 

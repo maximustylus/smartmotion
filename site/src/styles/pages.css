@@ -1,0 +1,57 @@
+/* Plain pages: glossary, contact. */
+.app--page { min-height: 100svh; }
+
+.page__top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) max(var(--space-5), env(safe-area-inset-right, 0px)) var(--space-4) max(var(--space-5), env(safe-area-inset-left, 0px));
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+.page__spacer { margin-left: auto; }
+.page__top .mark { width: 26px; height: 20px; }
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-6) max(var(--space-5), env(safe-area-inset-right, 0px)) var(--space-8) max(var(--space-5), env(safe-area-inset-left, 0px));
+  display: grid;
+  gap: var(--space-5);
+}
+.page h1 { font-size: var(--text-h2); }
+.page h2 { font-size: var(--text-h3); margin-top: var(--space-5); }
+.page .lead { max-width: 60ch; }
+.page a { color: var(--accent); }
+.page__search input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--fg);
+  font: inherit;
+}
+.page__foot { margin-top: var(--space-7); font-size: 0.75rem; color: var(--faint); display: flex; gap: 10px; }
+
+.gl { margin: 0; display: grid; gap: 0; }
+.gl__item { display: grid; gap: 4px; padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+.gl dt { font-weight: 700; }
+.gl dd { margin: 0; display: grid; gap: 6px; color: var(--muted); }
+.gl__links { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9em; }
+
+.sitemap { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.sitemap li { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; padding: 10px 0; border-top: 1px solid var(--line); }
+.sitemap li a { font-weight: 600; }
+.sitemap li span { color: var(--muted); font-size: 0.9em; }
+
+.contact { display: grid; grid-template-columns: 120px 1fr; gap: var(--space-5); align-items: start; }
+.contact__photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+.contact__name { font-weight: 700; font-size: 1.2rem; }
+.contact__roles { color: var(--accent); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.contact__links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.contact__links .btn { text-decoration: none; }
+@media (max-width: 599px) { .contact { grid-template-columns: 1fr; } }

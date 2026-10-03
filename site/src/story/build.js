@@ -194,7 +194,7 @@ export function playbookScenes(route) {
           <ul class="rows">
             <li><a href="/talk">${route.title}</a> <span class="rows__meta">${route.event}, ${route.when[0]}</span></li>
           </ul>
-          <p class="note">More routes can be added in site/src/content/routes.js.</p>
+          <p class="chips"><a class="chip chip--link" href="/glossary">Glossary and site map</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },
     ],

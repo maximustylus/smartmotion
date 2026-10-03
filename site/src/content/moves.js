@@ -21,9 +21,9 @@ export const moves = [
     principle:
       'A vibecoded tool drifts unless the finish line is written down first. For this app, done is one sentence in the brief: deployed, a full rehearsal on Zoom, no TODO in visible content, every claim traceable to a reference. Everything else is negotiable.',
     framework: {
-      name: 'Six Principles of Learning Design',
-      source: 'Bound and Chia',
-      note: 'Learning design that starts from the outcome and works backwards to the activity.',
+      name: 'Begin with the end in mind',
+      source: 'Stephen R. Covey, The 7 Habits of Highly Effective People (1989), Habit 2; Bound and Chia, Six Principles of Learning Design',
+      note: 'Covey\u2019s second habit: start with a clear picture of the destination. Learning design does the same, starting from the outcome and working back to the activity.',
       verify: true,
     },
     example: {

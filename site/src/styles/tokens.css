@@ -25,8 +25,8 @@
   --todo-soft: #fff1dc;
 
   /* Particle field colours, read by Three.js */
-  --field: #2f4bff;
-  --field-alpha: 0.55;
+  --field: #2b43e6;
+  --field-alpha: 0.82;
 
   --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-voice: 'Instrument Serif', Georgia, 'Times New Roman', serif;
@@ -105,11 +105,11 @@
   Era tints. The field is the one place colour runs free: it warms for the
   robot heroes, cools through logic and chat, and settles on today's teal.
 */
-.app[data-era='wonder'] { --field: #d9822b; }
-.app[data-era='logic'] { --field: #3b63b8; }
-.app[data-era='assistants'] { --field: #2f4bff; }
-.app[data-era='chat'] { --field: #7a44d6; }
-.app[data-era='agents'] { --field: #0f8f7e; }
+.app[data-era='wonder'] { --field: #d8600f; }
+.app[data-era='logic'] { --field: #1f4fb8; }
+.app[data-era='assistants'] { --field: #2b43e6; }
+.app[data-era='chat'] { --field: #6a2fd0; }
+.app[data-era='agents'] { --field: #0a8a76; }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .app[data-era='wonder'] { --field: #ffb45c; }

@@ -1,7 +1,11 @@
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { readFileSync } from 'node:fs'
+
+const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url)))
 
 export default defineConfig({
+  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   build: { outDir: 'dist', emptyOutDir: true },
   // Cheatsheets are read from ../workflows at the repository root.
   server: { fs: { allow: ['..'] }, proxy: { '/api': 'http://localhost:8787' } },
