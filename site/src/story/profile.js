@@ -17,7 +17,11 @@ export function createProfile(topbar, root) {
   btn.className = 'avatar'
   btn.setAttribute('aria-label', `About ${defaultRoute.speaker.name}`)
   btn.setAttribute('aria-expanded', 'false')
-  btn.innerHTML = `<img src="/profile/alif.jpg" alt="" width="44" height="44">`
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <circle cx="12" cy="8.5" r="3.6"/>
+      <path d="M4.5 19.5c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/>
+    </svg>`
   topbar.append(btn)
 
   const card = document.createElement('div')
@@ -29,7 +33,8 @@ export function createProfile(topbar, root) {
     <img class="pcard__photo" src="/profile/alif.jpg" alt="${defaultRoute.speaker.name}">
     <div class="pcard__body">
       <p class="pcard__name">${defaultRoute.speaker.name}</p>
-      ${defaultRoute.speaker.roles.map((r) => `<p class="pcard__role">${r}</p>`).join('')}
+      <p class="pcard__role">${defaultRoute.speaker.roles.join(' \u00b7 ')}</p>
+      <p class="pcard__summary">${defaultRoute.speaker.summary}</p>
       <a class="btn pcard__link" href="${LINK}" target="_blank" rel="noopener">All my links <span aria-hidden="true">&nearr;</span></a>
       <p class="pcard__handle">linktr.ee/muhammad.alif</p>
     </div>
