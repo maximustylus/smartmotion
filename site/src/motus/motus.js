@@ -122,9 +122,10 @@ export function createMotus(host, { onOpen } = {}) {
   }
   buildMesh()
   let faceName = 'smile'
+  let smoothReady = false
   function setFace(name) {
     faceName = name
-    if (typeof setSmoothFace === 'function') setSmoothFace(name)
+    if (smoothReady) setSmoothFace(name)
     const [eyes, mouth] = FACES[name]
     const cells = [...eyes.map((c) => [...c, 'eye']), ...mouth.map((c) => [...c, 'mouth'])]
     for (let q = 0; q < FACE_SLOTS; q++) {
@@ -197,6 +198,7 @@ export function createMotus(host, { onOpen } = {}) {
     eyeL.scale.set(1, eyes === 'wink' ? 0.12 : sy, 1)
     eyeR.scale.set(1, sy, 1)
   }
+  smoothReady = true
   setSmoothFace('smile')
 
   // The gradient is the brand, so it stays the same in both themes. The
