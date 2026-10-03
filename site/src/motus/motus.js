@@ -311,7 +311,7 @@ export function createMotus(host, { onOpen } = {}) {
 
   // ---------- Loop ----------
 
-  const clock = new THREE.Clock()
+  const timer = new THREE.Timer()
   let running = true
   let nextBlink = 2
   let nextFace = 6
@@ -319,7 +319,7 @@ export function createMotus(host, { onOpen } = {}) {
   function frame() {
     if (!running) return
     requestAnimationFrame(frame)
-    const t = clock.getElapsedTime()
+    const t = (timer.update(), timer.getElapsed())
     if (!reduce() && state.mode !== 'snooze') {
       const speed = state.talking ? 7 : 2.2
       const amp = state.talking ? 0.22 : 0.12

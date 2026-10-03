@@ -758,7 +758,7 @@ export function createField(host) {
 
   // ---------- Loop ----------
 
-  const clock = new THREE.Clock()
+  const timer = new THREE.Timer()
   let running = true
   let lastW = 0, lastH = 0
   let parallax = 0
@@ -793,7 +793,7 @@ export function createField(host) {
       lastH = host.clientHeight
       resize()
     }
-    uniforms.uTime.value = clock.getElapsedTime()
+    uniforms.uTime.value = (timer.update(), timer.getElapsed())
     uniforms.uPointer.value.lerp(target, 0.08)
     // While nested the whole cloud wanders on a slow figure of eight.
     const t = uniforms.uTime.value
