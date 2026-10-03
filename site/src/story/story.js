@@ -4,6 +4,7 @@ import { defaultRoute } from '../content/routes.js'
 import { createScroll } from './scroll.js'
 import { createHud } from './hud.js'
 import { themeToggle, onThemeChange } from '../lib/theme.js'
+import { createProfile } from './profile.js'
 
 const escapeAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
@@ -51,6 +52,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     <div class="cue" aria-hidden="true"><span></span></div>
   `
   root.querySelector('.topbar').append(themeToggle())
+  createProfile(root.querySelector('.topbar'), root)
   const dots = root.querySelector('.dots')
   const counterN = root.querySelector('.counter__n')
   dots.addEventListener('click', (e) => {
