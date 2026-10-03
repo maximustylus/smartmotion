@@ -174,5 +174,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     onThemeChange(() => motus.theme())
     motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
     motus.setFidelity(FIDELITY[root.dataset.era] ?? 1)
+    window.motus = motus
   })
 }

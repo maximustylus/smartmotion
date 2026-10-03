@@ -26,6 +26,8 @@
 .page h2 { font-size: var(--text-h3); margin-top: var(--space-5); }
 .page .lead { max-width: 60ch; }
 .page a { color: var(--accent); }
+.page a.btn { color: var(--accent-ink); text-decoration: none; }
+.page a.btn--ghost { color: var(--fg); }
 .page__search input {
   width: 100%;
   padding: 12px 14px;

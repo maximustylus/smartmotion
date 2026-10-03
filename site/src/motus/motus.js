@@ -81,7 +81,7 @@ export function createMotus(host, { onOpen } = {}) {
 
   // Rendered pixels. Motus starts coarse and sharpens as the eras pass.
   let SIZE = 96
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false })
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
   renderer.setPixelRatio(1)
   renderer.setSize(SIZE, SIZE, false)
   renderer.setClearColor(0x000000, 0)
@@ -95,6 +95,9 @@ export function createMotus(host, { onOpen } = {}) {
   const sun = new THREE.DirectionalLight(0xffffff, 1.1)
   sun.position.set(4, 8, 6)
   scene.add(sun)
+  const rim = new THREE.DirectionalLight(0xffffff, 0.8)
+  rim.position.set(-6, 2, -4)
+  scene.add(rim)
 
   let k = 1
   let voxels = buildBody(k)
@@ -121,6 +124,7 @@ export function createMotus(host, { onOpen } = {}) {
   let faceName = 'smile'
   function setFace(name) {
     faceName = name
+    if (typeof setSmoothFace === 'function') setSmoothFace(name)
     const [eyes, mouth] = FACES[name]
     const cells = [...eyes.map((c) => [...c, 'eye']), ...mouth.map((c) => [...c, 'mouth'])]
     for (let q = 0; q < FACE_SLOTS; q++) {
@@ -134,6 +138,66 @@ export function createMotus(host, { onOpen } = {}) {
   }
   setFace('smile')
   scene.add(rig)
+
+  // The 21st century Motus: a smooth sphere wearing the gradient, with
+  // round eyes and a sculpted mouth. Shown once the eras reach full fidelity.
+  const smooth = new THREE.Group()
+  smooth.visible = false
+  scene.add(smooth)
+  const sphereGeo = new THREE.SphereGeometry(4.6, 64, 48)
+  {
+    const pos = sphereGeo.attributes.position
+    const colors = new Float32Array(pos.count * 3)
+    for (let i = 0; i < pos.count; i++) {
+      const c = gradient((pos.getX(i) + 4.6) / 9.2)
+      colors.set([c.r, c.g, c.b], i * 3)
+    }
+    sphereGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+  }
+  const body = new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.32, metalness: 0.08 }))
+  smooth.add(body)
+  const inkMat = new THREE.MeshStandardMaterial({ color: '#111114', roughness: 0.5 })
+  const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 16), inkMat)
+  const eyeR = eyeL.clone()
+  eyeL.position.set(-1.5, 1.1, 4.25)
+  eyeR.position.set(1.5, 1.1, 4.25)
+  smooth.add(eyeL, eyeR)
+  const mouths = {}
+  const arc = (rise, width = 1.6) => {
+    const pts = []
+    for (let i = 0; i <= 16; i++) {
+      const t = i / 16
+      const x = (t - 0.5) * 2 * width
+      const y = -1.4 - Math.cos((t - 0.5) * Math.PI) * rise
+      pts.push(new THREE.Vector3(x, y, Math.sqrt(Math.max(0, 4.6 * 4.6 - x * x - y * y)) + 0.05))
+    }
+    return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, 0.22, 10, false), inkMat)
+  }
+  mouths.smile = arc(0.9)
+  mouths.grin = arc(1.3, 2.0)
+  mouths.flat = arc(0.05, 1.3)
+  mouths.hmm = arc(-0.3, 1.1)
+  mouths.o = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.2, 12, 24), inkMat)
+  mouths.o.position.set(0, -1.8, 4.2)
+  mouths.open = new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 14), inkMat)
+  mouths.open.scale.set(1.2, 0.8, 0.5)
+  mouths.open.position.set(0, -1.9, 4.25)
+  for (const m of Object.values(mouths)) {
+    m.visible = false
+    smooth.add(m)
+  }
+  const SMOOTH_FACES = {
+    smile: ['open', 'smile'], grin: ['happy', 'grin'], wink: ['wink', 'smile'], surprised: ['wide', 'o'],
+    thinking: ['open', 'hmm'], calm: ['open', 'flat'], sleepy: ['shut', 'flat'], talk: ['open', 'open'],
+  }
+  function setSmoothFace(name) {
+    const [eyes, mouth] = SMOOTH_FACES[name] ?? SMOOTH_FACES.smile
+    for (const [k, m] of Object.entries(mouths)) m.visible = k === mouth
+    const sy = eyes === 'shut' ? 0.12 : eyes === 'happy' ? 0.35 : eyes === 'wide' ? 1.35 : 1
+    eyeL.scale.set(1, eyes === 'wink' ? 0.12 : sy, 1)
+    eyeR.scale.set(1, sy, 1)
+  }
+  setSmoothFace('smile')
 
   // The gradient is the brand, so it stays the same in both themes. The
   // features flip between ink and paper so the face always reads.
@@ -221,6 +285,9 @@ export function createMotus(host, { onOpen } = {}) {
       mesh.position.y = Math.sin(t * speed) * amp
       rig.rotation.y = Math.sin(t * 0.6) * 0.3
       mesh.rotation.z = Math.sin(t * 1.3) * 0.03
+      smooth.position.y = rig.position.y + mesh.position.y
+      smooth.rotation.y = rig.rotation.y
+      smooth.rotation.z = rig.rotation.z
       if (state.talking) {
         if (t > talkTick) {
           setFace(faceName === 'talk' ? awakeFace : 'talk')
@@ -239,6 +306,8 @@ export function createMotus(host, { onOpen } = {}) {
       }
     } else if (state.mode === 'snooze' && !reduce()) {
       mesh.position.y = Math.sin(t * 1.1) * 0.05
+      smooth.position.y = rig.position.y + mesh.position.y
+      smooth.rotation.z = rig.rotation.z
     }
     if (state.mode === 'idle' && performance.now() - state.lastTouch > IDLE_MS) snooze()
     renderer.render(scene, camera)
@@ -279,6 +348,12 @@ export function createMotus(host, { onOpen } = {}) {
         buildMesh()
         theme()
         setFace(faceName)
+      }
+      const hi = f > 0.85
+      if (hi !== smooth.visible) {
+        smooth.visible = hi
+        rig.visible = !hi
+        if (!reduce()) gsap.fromTo(hi ? smooth.scale : rig.scale, { x: 0.7, y: 0.7, z: 0.7 }, { x: 1, y: 1, z: 1, duration: 0.7, ease: 'back.out(2)' })
       }
       if (px === SIZE) return
       SIZE = px
