@@ -108,6 +108,7 @@ export function eraScene(era, prevYear) {
   const [from, to] = era.years
   const beats = [
     {
+      years: `${from}${to !== from ? ` to ${to}` : ''}`,
       html: `
         ${eyebrow('The journey', `${from}${to !== from ? ` to ${to}` : ''}`)}
         <p class="era__year" aria-hidden="true" data-no-split><span data-year data-from="${prevYear}" data-to="${from}">${from}</span></p>
@@ -168,7 +169,7 @@ export function playbookScenes(route) {
     id: 'routes',
     title: 'Routes',
     minutes: 0,
-    form: 'timeline',
+    form: 'text:Smart\nMotion',
     beats: [
       {
         html: `
@@ -356,7 +357,7 @@ function questionsScene() {
     id: 'questions',
     title: 'Questions',
     minutes: 0,
-    form: 'cloud',
+    form: 'text:Smart\nMotion',
     beats: [
       {
         html: `

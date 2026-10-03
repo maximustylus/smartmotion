@@ -94,6 +94,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         requestAnimationFrame(() => field?.theme())
         field?.setFidelity(FIDELITY[era] ?? 1)
         motus?.setFidelity(FIDELITY[era] ?? 1)
+        // Motus announces the era as the picture changes resolution.
+        if (s.era) motus?.say(`${s.title}, ${s.beats[0]?.years ?? ''}`.replace(/, $/, ''), 3200)
       }
       root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)

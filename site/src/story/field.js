@@ -263,7 +263,7 @@ const vertex = /* glsl */ `
     float cellPx = uCell * uPxPerUnit * 0.82;
     float splat = base * (1.0 + 1.8 * smoothstep(0.7, 1.0, uFidelity));
     gl_PointSize = mix(cellPx, splat, smoothstep(0.0, 0.5, uFidelity)) * (1.0 + vLens * 1.4);
-    vFade = mix(0.5, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
+    vFade = mix(0.42, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
     vFid = uFidelity;
   }
 `
