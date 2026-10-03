@@ -17,13 +17,17 @@ const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').match
 // its face without rebuilding the mesh.
 const R = 4.6
 const FACE_SLOTS = 22
-function buildBody() {
+// k is the resolution: 1 is the coarse 1960s body, 3 is a fine 21st century one.
+// Coordinates stay in the same world units; the cubes get smaller.
+function buildBody(k = 1) {
   const v = []
-  for (let x = -5; x <= 5; x++)
-    for (let y = -5; y <= 5; y++)
-      for (let z = -5; z <= 5; z++) {
+  const n = Math.ceil(5 * k)
+  for (let i = -n; i <= n; i++)
+    for (let j = -n; j <= n; j++)
+      for (let l = -n; l <= n; l++) {
+        const x = i / k, y = j / k, z = l / k
         const d = Math.sqrt(x * x + y * y + z * z)
-        if (d > R || d < R - 1.6) continue
+        if (d > R || d < R - 1.6 / k) continue
         v.push([x, y, z, 'skin'])
       }
   v.push([-2, -5, 0, 'foot'], [-2, -5, 1, 'foot'], [2, -5, 0, 'foot'], [2, -5, 1, 'foot'])
@@ -75,7 +79,8 @@ export function createMotus(host, { onOpen } = {}) {
   const btn = wrap.querySelector('.motus__btn')
   const bubble = wrap.querySelector('.motus__bubble')
 
-  const SIZE = 96 // rendered pixels; CSS scales it up without smoothing
+  // Rendered pixels. Motus starts coarse and sharpens as the eras pass.
+  let SIZE = 96
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false })
   renderer.setPixelRatio(1)
   renderer.setSize(SIZE, SIZE, false)
@@ -91,35 +96,43 @@ export function createMotus(host, { onOpen } = {}) {
   sun.position.set(4, 8, 6)
   scene.add(sun)
 
-  const voxels = buildBody()
-  const geo = new THREE.BoxGeometry(1, 1, 1)
+  let k = 1
+  let voxels = buildBody(k)
   const mat = new THREE.MeshLambertMaterial()
-  const mesh = new THREE.InstancedMesh(geo, mat, voxels.length + FACE_SLOTS)
   const ink = new THREE.Color('#111114')
-  const colourAttr = new Float32Array((voxels.length + FACE_SLOTS) * 3)
-  mesh.instanceColor = new THREE.InstancedBufferAttribute(colourAttr, 3)
   const m = new THREE.Matrix4()
-  voxels.forEach(([x, y, z], i) => {
-    m.makeTranslation(x, y, z)
-    mesh.setMatrixAt(i, m)
-  })
+  const rig = new THREE.Group()
+  let mesh
+  function buildMesh() {
+    if (mesh) {
+      rig.remove(mesh)
+      mesh.geometry.dispose()
+    }
+    const cube = 1 / k
+    mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(cube, cube, cube), mat, voxels.length + FACE_SLOTS)
+    mesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array((voxels.length + FACE_SLOTS) * 3), 3)
+    voxels.forEach(([x, y, z], i) => {
+      m.makeTranslation(x, y, z)
+      mesh.setMatrixAt(i, m)
+    })
+    rig.add(mesh)
+  }
+  buildMesh()
   let faceName = 'smile'
   function setFace(name) {
     faceName = name
     const [eyes, mouth] = FACES[name]
     const cells = [...eyes.map((c) => [...c, 'eye']), ...mouth.map((c) => [...c, 'mouth'])]
-    for (let k = 0; k < FACE_SLOTS; k++) {
-      const i = voxels.length + k
-      const cell = cells[k]
-      if (cell) m.makeScale(1, 1, 1).setPosition(cell[0], cell[1], faceZ(cell[0], cell[1]))
+    for (let q = 0; q < FACE_SLOTS; q++) {
+      const i = voxels.length + q
+      const cell = cells[q]
+      if (cell) m.makeScale(k, k, k).setPosition(cell[0], cell[1], faceZ(cell[0], cell[1]))
       else m.makeScale(0.001, 0.001, 0.001).setPosition(0, 0, 0)
       mesh.setMatrixAt(i, m)
     }
     mesh.instanceMatrix.needsUpdate = true
   }
   setFace('smile')
-  const rig = new THREE.Group()
-  rig.add(mesh)
   scene.add(rig)
 
   // The gradient is the brand, so it stays the same in both themes. The
@@ -128,7 +141,7 @@ export function createMotus(host, { onOpen } = {}) {
     const dark = getComputedStyle(document.documentElement).colorScheme.includes('dark')
     ink.set(dark ? '#0b0b0e' : '#111114')
     voxels.forEach(([x, , , part], i) => mesh.setColorAt(i, part === 'skin' ? gradient((x + 5) / 10) : ink))
-    for (let k = 0; k < FACE_SLOTS; k++) mesh.setColorAt(voxels.length + k, ink)
+    for (let q = 0; q < FACE_SLOTS; q++) mesh.setColorAt(voxels.length + q, ink)
     mesh.instanceColor.needsUpdate = true
   }
   theme()
@@ -256,6 +269,22 @@ export function createMotus(host, { onOpen } = {}) {
 
   return {
     theme,
+    // 0: a 28 pixel sprite. 1: a smooth 256 pixel render.
+    setFidelity(f) {
+      const px = Math.round(28 + (256 - 28) * f)
+      const level = f < 0.3 ? 1 : f < 0.7 ? 2 : 3
+      if (level !== k) {
+        k = level
+        voxels = buildBody(k)
+        buildMesh()
+        theme()
+        setFace(faceName)
+      }
+      if (px === SIZE) return
+      SIZE = px
+      renderer.setSize(SIZE, SIZE, false)
+      renderer.domElement.style.imageRendering = f > 0.8 ? 'auto' : 'pixelated'
+    },
     // The story calls this when the scene changes: Motus hops along.
     travel(index, total, title) {
       wake()

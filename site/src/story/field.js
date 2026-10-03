@@ -217,8 +217,12 @@ const vertex = /* glsl */ `
   uniform vec2 uPointer;
   uniform float uPixelRatio;
   uniform float uLoupe;
+  uniform float uFidelity;
+  uniform float uCell;
+  uniform float uPxPerUnit;
   varying float vFade;
   varying float vLens;
+  varying float vFid;
 
   void main() {
     // Each point starts its journey a little after the last, by seed.
@@ -237,6 +241,11 @@ const vertex = /* glsl */ `
     p.xy = p.xy * uScale + uOffset;
     p.z *= uScale;
 
+    // Low fidelity snaps every point to a coarse grid: a dot matrix.
+    vec2 snapped = (floor(p.xy / uCell) + 0.5) * uCell;
+    p.xy = mix(snapped, p.xy, smoothstep(0.0, 0.45, uFidelity));
+    p.z = mix(0.0, p.z, smoothstep(0.1, 0.6, uFidelity));
+
     // The loupe: points under the pointer part like a lens and brighten.
     vec2 d = p.xy - uPointer;
     float dist = length(d);
@@ -248,8 +257,14 @@ const vertex = /* glsl */ `
     gl_Position = projectionMatrix * mv;
     // Nearer points are larger and brighter: a little depth of field.
     float depth = clamp(0.5 + p.z * 0.6, 0.35, 1.0);
-    gl_PointSize = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth) * (1.0 + vLens * 1.4);
-    vFade = (0.45 + 0.55 * aSeed) * depth;
+    // Size: fixed cells at low fidelity, varied and depth-sized at high, and
+    // large soft splats at the top end.
+    float base = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth);
+    float cellPx = uCell * uPxPerUnit * 0.82;
+    float splat = base * (1.0 + 1.8 * smoothstep(0.7, 1.0, uFidelity));
+    gl_PointSize = mix(cellPx, splat, smoothstep(0.0, 0.5, uFidelity)) * (1.0 + vLens * 1.4);
+    vFade = mix(0.5, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity));
+    vFid = uFidelity;
   }
 `
 
@@ -258,10 +273,18 @@ const fragment = /* glsl */ `
   uniform float uAlpha;
   varying float vFade;
   varying float vLens;
+  varying float vFid;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
-    float a = smoothstep(0.5, 0.18, d) * uAlpha * (vFade + vLens * 0.8);
+    // Four looks, blended by fidelity: a hard square pixel, a crisp dot, a
+    // soft disc, and a gaussian splat with a long faint skirt.
+    float square = step(max(abs(c.x), abs(c.y)), 0.42);
+    float dot = smoothstep(0.5, 0.42, d);
+    float soft = smoothstep(0.5, 0.18, d);
+    float splat = exp(-d * d * 9.0) * 0.55;
+    float shape = mix(mix(square, dot, smoothstep(0.0, 0.3, vFid)), mix(soft, splat, smoothstep(0.65, 1.0, vFid)), smoothstep(0.3, 0.65, vFid));
+    float a = shape * uAlpha * (vFade + vLens * 0.8);
     if (a < 0.01) discard;
     gl_FragColor = vec4(mix(uColor, vec3(1.0), vLens * 0.35), min(a, 1.0));
   }
@@ -308,6 +331,9 @@ export function createField(host) {
     uPointer: { value: new THREE.Vector2(99, 99) },
     uPixelRatio: { value: renderer.getPixelRatio() },
     uLoupe: { value: 0.6 },
+    uFidelity: { value: 1 },
+    uCell: { value: 0.12 },
+    uPxPerUnit: { value: 100 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -365,6 +391,9 @@ export function createField(host) {
     // The nest: tucked top right, under the top bar, out of the copy's way.
     view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
     uniforms.uLoupe.value = Math.min(visW, visH) * 0.14
+    // Dot-matrix cell: about 14 cells across the shorter edge of the stage form.
+    uniforms.uCell.value = Math.max(0.03, view.stage.s * 3.4 / 46)
+    uniforms.uPxPerUnit.value = (h * renderer.getPixelRatio()) / visH
     place(true)
   }
   resize()
@@ -441,6 +470,12 @@ export function createField(host) {
       gsap.to(uniforms.uSpin, { value: (p - 0.5) * (mode === 'nest' ? 1.2 : 0.5), duration: 0.6, ease: 'power2.out', overwrite: true })
     },
     get mode() { return mode },
+    // 0 is a dot matrix, 1 is soft high-resolution splats. Tweened so the
+    // picture resolves rather than switches.
+    setFidelity(f, { instant = false } = {}) {
+      if (instant || reduce()) uniforms.uFidelity.value = f
+      else gsap.to(uniforms.uFidelity, { value: f, duration: 2.4, ease: 'power2.inOut', overwrite: true })
+    },
     get count() { return N },
   }
 }

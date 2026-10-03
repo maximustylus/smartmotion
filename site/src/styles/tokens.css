@@ -6,6 +6,8 @@
 */
 @import '@fontsource-variable/geist';
 @import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource/press-start-2p';
+@import '@fontsource-variable/geist-mono';
 
 :root {
   /* Light: the bare root holds the full palette */
@@ -28,6 +30,8 @@
 
   --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-voice: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-pixel: 'Press Start 2P', 'Geist Mono Variable', monospace;
+  --font-mono: 'Geist Mono Variable', ui-monospace, Menlo, monospace;
 
   /* Spacing and radii */
   --space-1: 4px;

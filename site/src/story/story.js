@@ -59,6 +59,9 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     if (b) scroll.goTo(scroll.state.scene, +b.dataset.beat)
   })
 
+  // The fidelity arc: how the picture is rendered moves with the eras,
+  // from a 1960s dot matrix to today's soft high-resolution splats.
+  const FIDELITY = { '': 0, wonder: 0, logic: 0.25, assistants: 0.5, chat: 0.75, agents: 1 }
   const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
   let field = null
   let motus = null
@@ -89,6 +92,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       if (root.dataset.era !== era) {
         root.dataset.era = era
         requestAnimationFrame(() => field?.theme())
+        field?.setFidelity(FIDELITY[era] ?? 1)
+        motus?.setFidelity(FIDELITY[era] ?? 1)
       }
       root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
@@ -119,6 +124,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       field = m.createField(root.querySelector('.field'))
       const cur = scenes[scroll.state.scene]
       field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true })
+      field.setFidelity(FIDELITY[root.dataset.era] ?? 1, { instant: true })
       onThemeChange(() => field.theme())
       root.classList.add('has-field')
     })
@@ -134,5 +140,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     motus = m.createMotus(root)
     onThemeChange(() => motus.theme())
     motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
+    motus.setFidelity(FIDELITY[root.dataset.era] ?? 1)
   })
 }

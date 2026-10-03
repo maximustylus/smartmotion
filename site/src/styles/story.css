@@ -785,3 +785,60 @@ html.overlay-open { overflow: hidden; }
   .pcard { grid-template-columns: 64px 1fr; }
   .pcard__photo { width: 64px; height: 64px; }
 }
+
+
+/* ---------- The fidelity arc in type and texture ----------
+   Each era renders its own title and year in the typography of its time:
+   a bitmap face for the robot heroes, a terminal mono for the logic years,
+   a clean grotesk for the assistants, a serif for the age of chat, and the
+   brand gradient for the agents. The 1960s era also wears faint scanlines. */
+
+.scene--era#scene-wonder .era__year,
+.scene--era#scene-wonder .era__title {
+  font-family: var(--font-pixel);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+.scene--era#scene-wonder .era__year { font-size: clamp(2.4rem, 11vmin, 6.5rem); }
+.scene--era#scene-wonder .era__title { font-size: clamp(1.4rem, 5.5vmin, 3.2rem); text-transform: uppercase; }
+.scene--era#scene-wonder .facts__year { font-family: var(--font-pixel); font-size: 0.6em; }
+
+.scene--era#scene-logic .era__year,
+.scene--era#scene-logic .era__title,
+.scene--era#scene-logic .facts__year {
+  font-family: var(--font-mono);
+  font-style: normal;
+  letter-spacing: -0.02em;
+}
+.scene--era#scene-logic .era__title { font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--text-h2); }
+.scene--era#scene-logic .era__title::before { content: '> '; color: var(--accent); }
+
+.scene--era#scene-assistants .era__title { font-family: var(--font-sans); font-style: normal; font-weight: 300; letter-spacing: -0.02em; }
+
+.scene--era#scene-agents .era__title,
+.scene--era#scene-agents .era__year {
+  background: linear-gradient(90deg, #FF1FB3, #FF6A5A 36%, #FFD23F 68%, #A6FF1F);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.scene--era#scene-agents .era__title { font-family: var(--font-sans); font-style: normal; font-weight: 700; letter-spacing: -0.04em; }
+
+/* Scanlines while the picture is still a dot matrix. */
+.app[data-era='wonder'] .story::after,
+.app[data-era='']:not(.app--x) .story::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--fg) 6%, transparent) 3px 4px);
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+:root[data-theme='dark'] .app[data-era='wonder'] .story::after { mix-blend-mode: screen; opacity: 0.35; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .app[data-era='wonder'] .story::after { mix-blend-mode: screen; opacity: 0.35; }
+}
