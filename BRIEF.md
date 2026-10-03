@@ -1,5 +1,8 @@
 # smartmotion build brief
 
+Version 1.1, 3 October 2026. Read with HANDOVER.md and design.md. Where
+they differ, the newer file wins.
+
 ## Purpose
 A Progressive Web App (PWA) at smartmotion.web.app that is both the slides and
 the audience experience for a 60-minute talk: "GAi GAi with me: A Casual Stroll
@@ -112,3 +115,32 @@ Priority for 7 October: phases 1 to 3, then 4 if time allows.
 ## Done means
 Deployed at smartmotion.web.app, runs a full 60-minute rehearsal on Zoom, no
 TODO left in visible content, every claim traceable to references.md.
+
+## Change log
+
+### 1.1, 3 October 2026
+- The audience mainly wants practical how-tos. The four education
+  frameworks become a short "why this works" layer, not the main take-home.
+  The owner decides how much time section 6 keeps.
+- workflows/ is supplied by the owner (version 0.2) and is not rewritten.
+  Phase 4 becomes: link to the workflows from the take-home, add a "which
+  track are you on?" screen (TRACK-PERSONAL.md, TRACK-CORPORATE.md,
+  COMPARE.md), and build Claude skills in skills/ from the five workflow
+  files without changing them.
+- Every workflow has a personal track and a corporate track (Microsoft 365
+  Copilot, Pair, Agentsea). The site shows the distinction wherever it points
+  to a workflow.
+- Section 3, cost: two ideas from content/cost-evidence.md. Pick the model
+  that is good enough, not the top of the chart. Cost means total cost of
+  ownership, not the token bill.
+- A "gates" idea for section 3 or 4: tools make you wait, pay or accept less.
+  Video is the clearest example (figures in workflows/COMPARE.md).
+- Section 7 opens with the Will Smith spaghetti benchmark (links only), then
+  the Pandan Reservoir case (Mothership, 29 September 2026).
+- The slot is full. Anything added must say what it displaces.
+- content/use-cases.md is a template for the owner. Nothing in it is to be
+  invented.
+- Open items only the owner can supply are listed in HANDOVER.md section 6.
+
+### 1.0
+- First version.
