@@ -14,9 +14,9 @@ export const routes = {
     when: ['7 October 2026', '1 to 2 pm', 'Zoom'],
     speaker: {
       name: 'Muhammad Alif',
-      roles: ['Healthcare innovation, digital health and AI', 'Scientist and artist'],
+      roles: ['Innovator in digital health and emerging technologies', 'A scientist and an artist'],
       summary:
-        'Muhammad Alif works where healthcare, digital health and AI meet. He builds tools with and for clinical educators, among them NEXUS and AURA, C.A.R.E. and ImmersiFit, and teaches others to build their own with the same care: a clear brief, a solid framework and an honest test of utility. Scientist and artist, he treats a good talk and a good tool as the same craft.',
+        'Innovator in digital health and emerging technologies, a scientist and an artist. He builds tools with and for clinical educators and teaches others to build their own with the same care: a clear brief, a solid framework and an honest test of utility. Balancing is an act.',
     },
     // Time budget from brief.md. Moves carry their beats; the quiz is the hook.
     // Eras are short interludes between the budgeted steps, so the journey
