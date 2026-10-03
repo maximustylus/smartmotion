@@ -447,9 +447,15 @@ export function createField(host) {
 
   const clock = new THREE.Clock()
   let running = true
+  let lastW = 0, lastH = 0
   function frame() {
     if (!running) return
     requestAnimationFrame(frame)
+    if (host.clientWidth !== lastW || host.clientHeight !== lastH) {
+      lastW = host.clientWidth
+      lastH = host.clientHeight
+      resize()
+    }
     uniforms.uTime.value = clock.getElapsedTime()
     uniforms.uPointer.value.lerp(target, 0.08)
     renderer.render(scene, camera)

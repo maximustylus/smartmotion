@@ -1,4 +1,5 @@
 import '../styles/story.css'
+import { gsap } from 'gsap'
 import { playbookScenes, routeScenes } from './build.js'
 import { defaultRoute } from '../content/routes.js'
 import { createScroll } from './scroll.js'
@@ -46,6 +47,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         )
         .join('')}
     </main>
+    <div class="upgrade" aria-hidden="true"></div>
     <nav class="dots" aria-label="Beats in this scene"></nav>
     <div class="counter" aria-hidden="true"><span class="counter__n">01</span><span class="counter__of">/ ${String(scenes.length).padStart(2, '0')}</span></div>
     <div class="cue" aria-hidden="true"><span></span></div>
@@ -94,6 +96,11 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         requestAnimationFrame(() => field?.theme())
         field?.setFidelity(FIDELITY[era] ?? 1)
         motus?.setFidelity(FIDELITY[era] ?? 1)
+        // A scan passes over the picture as it changes resolution.
+        if (sceneChanged && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          const bar = root.querySelector('.upgrade')
+          gsap.fromTo(bar, { yPercent: -100, opacity: 1 }, { yPercent: 100, opacity: 1, duration: 1.1, ease: 'power2.inOut', overwrite: true, onComplete: () => gsap.set(bar, { opacity: 0 }) })
+        }
         // Motus announces the era as the picture changes resolution.
         if (s.era) motus?.say(`${s.title}, ${s.beats[0]?.years ?? ''}`.replace(/, $/, ''), 3200)
       }

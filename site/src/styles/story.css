@@ -842,3 +842,19 @@ html.overlay-open { overflow: hidden; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .app[data-era='wonder'] .story::after { mix-blend-mode: screen; opacity: 0.35; }
 }
+
+
+/* The resolution sweep: a soft band that passes down the screen when the
+   picture steps up a generation. */
+.upgrade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100svh;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--fg) 7%, transparent) 48%, color-mix(in oklab, var(--fg) 12%, transparent) 50%, color-mix(in oklab, var(--fg) 7%, transparent) 52%, transparent 100%);
+  mix-blend-mode: overlay;
+}
