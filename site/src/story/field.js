@@ -649,7 +649,7 @@ export function createField(host) {
     view.centre = { x: 0, y: visH * 0.25, s: Math.min((visW * 0.86) / 3.4, (visH * 0.38) / 2.4) }
     // Wide: the form fills the screen behind the copy.
     view.wide = { x: 0, y: visH * 0.06, s: Math.min((visW * 0.96) / 3.4, (visH * 0.72) / 2.2) }
-    uniforms.uLoupe.value = Math.min(visW, visH) * 0.045
+    uniforms.uLoupe.value = Math.min(visW, visH) * 0.028
     // Dot-matrix cell: about 14 cells across the shorter edge of the stage form.
     uniforms.uPxPerUnit.value = (h * renderer.getPixelRatio()) / visH
     place(true)

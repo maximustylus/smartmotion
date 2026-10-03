@@ -28,6 +28,9 @@
   --field: #2b43e6;
   --field-alpha: 0.82;
 
+  /* Ground: a soft gradient so the page has air, not a flat fill */
+  --ground: radial-gradient(120% 70% at 50% -10%, #ffffff 0%, #f6f5f2 55%, #ecebe6 100%);
+
   --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-voice: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-pixel: 'Press Start 2P', 'Geist Mono Variable', monospace;
@@ -79,6 +82,7 @@
     --todo-soft: #3a2a08;
     --field: #7c90ff;
     --field-alpha: 0.85;
+    --ground: radial-gradient(120% 70% at 50% -10%, #17171e 0%, #0b0b0e 55%, #050507 100%);
     color-scheme: dark;
   }
 }
@@ -98,6 +102,7 @@
   --todo-soft: #3a2a08;
   --field: #7c90ff;
   --field-alpha: 0.85;
+  --ground: radial-gradient(120% 70% at 50% -10%, #17171e 0%, #0b0b0e 55%, #050507 100%);
   color-scheme: dark;
 }
 

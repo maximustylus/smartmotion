@@ -866,8 +866,10 @@ html.overlay-open { overflow: hidden; }
   left: 0;
   top: 0;
   z-index: 40;
-  width: calc(9vmin);
-  height: calc(9vmin);
+  width: 3.4vmin;
+  height: 3.4vmin;
+  min-width: 22px;
+  min-height: 22px;
   border-radius: 50%;
   border: 1px solid color-mix(in oklab, var(--fg) 45%, transparent);
   pointer-events: none;
