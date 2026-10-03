@@ -269,6 +269,85 @@ const SPRITES = [
   ['......bbbb......', '.....bbbbbb.....', '..b..bbbbbb..b..', '..bb.bccccb.bb..', '..bb.bkkkkb.bb..', '...bbbbbbbbbb...', '....gggggggg....', '..ggrrrrrrrrgg..', '.gg.rrccccrr.gg.', '.gg.rrccccrr.gg.', '.gg.rrrrrrrr.gg.', '.g..rryyyyrr..g.', '.g..rrrrrrrr..g.', '....bbbbbbbb....', '....bbb..bbb....', '....bbb..bbb....', '....bbb..bbb....', '...bbbb..bbbb...', '...kkkk..kkkk...', '..kkkkk..kkkkk..'],
 ]
 
+// 1997: a chessboard seen from above, dark squares filled, with a few
+// pieces standing as small towers.
+function chessForm(n, r) {
+  const a = new Float32Array(n * 3)
+  const sq = 0.3
+  const pieces = [[0, 0], [1, 0], [2, 0], [5, 0], [6, 0], [7, 0], [3, 1], [4, 1], [1, 7], [6, 7], [3, 6], [4, 6], [2, 5], [5, 2]]
+  const boardN = Math.floor(n * 0.7)
+  for (let i = 0; i < boardN; i++) {
+    let cx, cy
+    do {
+      cx = Math.floor(r() * 8)
+      cy = Math.floor(r() * 8)
+    } while ((cx + cy) % 2 === 0)
+    a[i * 3] = (cx - 3.5) * sq + (r() - 0.5) * sq * 0.92
+    a[i * 3 + 1] = (cy - 3.5) * sq * 0.72 + (r() - 0.5) * sq * 0.66
+    a[i * 3 + 2] = (r() - 0.5) * 0.02
+  }
+  for (let i = boardN; i < n; i++) {
+    const [cx, cy] = pieces[Math.floor(r() * pieces.length)]
+    const t = r()
+    a[i * 3] = (cx - 3.5) * sq + gauss(r) * 0.03 * (1 - t)
+    a[i * 3 + 1] = (cy - 3.5) * sq * 0.72 + t * 0.42
+    a[i * 3 + 2] = 0.1 + gauss(r) * 0.03
+  }
+  return { positions: a }
+}
+
+// 2011: a phone, drawn as an outline, with a voice wave speaking inside it.
+function phoneForm(n, r) {
+  const a = new Float32Array(n * 3)
+  const w = 1.1, h = 2.1, rad = 0.22
+  const edgeN = Math.floor(n * 0.45)
+  for (let i = 0; i < edgeN; i++) {
+    // Walk the rounded rectangle by perimeter fraction.
+    const t = r()
+    const per = 2 * (w - 2 * rad) * 2 + 2 * (h - 2 * rad) * 2 + 2 * Math.PI * rad
+    let d = t * per
+    let x, y
+    const sw = 2 * (w - 2 * rad), sh = 2 * (h - 2 * rad), q = (Math.PI * rad) / 2
+    if (d < sw) { x = -(w - 2 * rad) + d; y = h } // top
+    else if ((d -= sw) < q) { const an = d / rad; x = (w - 2 * rad) + Math.sin(an) * rad; y = h - rad + Math.cos(an) * rad }
+    else if ((d -= q) < sh) { x = w; y = h - rad - d }
+    else if ((d -= sh) < q) { const an = d / rad; x = (w - 2 * rad) + Math.cos(an) * rad; y = -(h - rad) - Math.sin(an) * rad }
+    else if ((d -= q) < sw) { x = (w - 2 * rad) - d; y = -h }
+    else if ((d -= sw) < q) { const an = d / rad; x = -(w - 2 * rad) - Math.sin(an) * rad; y = -(h - rad) - Math.cos(an) * rad }
+    else if ((d -= q) < sh) { x = -w; y = -(h - rad) + d }
+    else { const an = (d - sh) / rad; x = -(w - 2 * rad) - Math.cos(an) * rad; y = h - rad + Math.sin(an) * rad }
+    a[i * 3] = x * 0.5 + gauss(r) * 0.012
+    a[i * 3 + 1] = y * 0.5 + gauss(r) * 0.012
+    a[i * 3 + 2] = gauss(r) * 0.02
+  }
+  for (let i = edgeN; i < n; i++) {
+    // Bars of a waveform across the middle of the screen.
+    const bar = Math.floor(r() * 9)
+    const amp = [0.12, 0.3, 0.5, 0.75, 0.95, 0.75, 0.5, 0.3, 0.12][bar]
+    a[i * 3] = (bar - 4) * 0.1 + (r() - 0.5) * 0.06
+    a[i * 3 + 1] = (r() - 0.5) * amp * 0.9
+    a[i * 3 + 2] = gauss(r) * 0.02
+  }
+  return { positions: a }
+}
+
+// 2022: a conversation. Speech bubbles stacking left and right.
+function bubblesForm(n, r) {
+  const a = new Float32Array(n * 3)
+  const bubbles = [[-0.55, 0.75, 1.5, 0.42], [0.55, 0.12, 1.3, 0.42], [-0.45, -0.52, 1.7, 0.42], [0.65, -1.0, 0.9, 0.3]]
+  for (let i = 0; i < n; i++) {
+    const [cx, cy, bw, bh] = bubbles[i % bubbles.length]
+    const x = (r() - 0.5) * bw, y = (r() - 0.5) * bh
+    // Rounded corners: reject points outside the rounded box.
+    const rx = Math.max(0, Math.abs(x) - bw / 2 + bh / 2), ry = Math.max(0, Math.abs(y) - 0)
+    if (rx * rx + ry * ry > (bh / 2) * (bh / 2) && Math.abs(y) > 0) { i--; continue }
+    a[i * 3] = cx + x
+    a[i * 3 + 1] = cy + y
+    a[i * 3 + 2] = gauss(r) * 0.02
+  }
+  return { positions: a }
+}
+
 // A horizontal timeline with the three figures standing on it. Their
 // points carry their own colours; the line takes the field colour.
 function timeline80sForm(n, r) {
@@ -324,6 +403,7 @@ const vertex = /* glsl */ `
   uniform float uCell;
   uniform float uPxPerUnit;
   uniform float uSnap;
+  uniform float uCollapse;
   varying float vFade;
   varying float vLens;
   varying float vFid;
@@ -336,6 +416,15 @@ const vertex = /* glsl */ `
     float m = clamp(uMix * 1.35 - aSeed * 0.35, 0.0, 1.0);
     m = m * m * (3.0 - 2.0 * m);
     vec3 p = mix(aFrom, aTo, m);
+
+    // The utility formula: the last factor drops to zero, then the product.
+    if (uCollapse > 0.0) {
+      float isLast = step(1.0, p.x);
+      float h = p.y + 0.9;
+      float lastScale = mix(1.0, 0.02, smoothstep(0.0, 0.55, uCollapse) * isLast);
+      float restScale = mix(1.0, 0.05, smoothstep(0.55, 1.0, uCollapse) * (1.0 - isLast));
+      p.y = -0.9 + h * lastScale * restScale;
+    }
 
     // Gentle life while the field rests.
     float t = uTime * 0.35 + aSeed * 6.2831;
@@ -452,6 +541,7 @@ export function createField(host) {
     uUseColor: { value: 0 },
     uSnap: { value: 1 },
     uSplat: { value: 0.55 },
+    uCollapse: { value: 0 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -514,7 +604,9 @@ export function createField(host) {
     // The nest: tucked top right, under the top bar, out of the copy's way.
     view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
     // Centre stage: the form sits in the upper middle with the copy beneath.
-    view.centre = { x: 0, y: visH * 0.14, s: Math.min((visW * 0.86) / 3.4, (visH * 0.5) / 2.4) }
+    view.centre = { x: 0, y: visH * 0.25, s: Math.min((visW * 0.86) / 3.4, (visH * 0.38) / 2.4) }
+    // Wide: the form fills the screen behind the copy.
+    view.wide = { x: 0, y: visH * 0.06, s: Math.min((visW * 0.96) / 3.4, (visH * 0.72) / 2.2) }
     uniforms.uLoupe.value = Math.min(visW, visH) * 0.045
     // Dot-matrix cell: about 14 cells across the shorter edge of the stage form.
     uniforms.uPxPerUnit.value = (h * renderer.getPixelRatio()) / visH
@@ -539,7 +631,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, chess: chessForm, phone: phoneForm, bubbles: bubblesForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     if (SPECIAL[name]) return SPECIAL[name](N, rng(name.length * 31))
@@ -548,7 +640,7 @@ export function createField(host) {
 
   function morphTo(name, { instant = false, anchor, enter } = {}) {
     if (!name.startsWith('text:') && !SPECIAL[name] && !forms[name]) return
-    const next = name === 'nest' ? 'nest' : anchor === 'centre' ? 'centre' : 'stage'
+    const next = name === 'nest' ? 'nest' : anchor === 'centre' ? 'centre' : anchor === 'wide' ? 'wide' : 'stage'
     if (next !== mode) {
       mode = next
       place(instant)
@@ -629,6 +721,10 @@ export function createField(host) {
       gsap.to(uniforms.uSpin, { value: (p - 0.5) * (mode === 'nest' ? 1.2 : 0.5), duration: 0.6, ease: 'power2.out', overwrite: true })
     },
     get mode() { return mode },
+    // Scroll-driven: 0 is the formula intact, 1 is everything flat.
+    setCollapse(v) {
+      gsap.to(uniforms.uCollapse, { value: v, duration: 0.35, ease: 'power2.out', overwrite: true })
+    },
     // 0 is a dot matrix, 1 is soft high-resolution splats. Tweened so the
     // picture resolves rather than switches.
     setFidelity(f, { instant = false } = {}) {

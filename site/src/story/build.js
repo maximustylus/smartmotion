@@ -121,17 +121,26 @@ export function eraScene(era, prevYear) {
     },
   ]
   if (era.quote) beats.push({ html: `${eyebrow(era.title)}${quoteBlock(era.quote)}` })
-  // The first era is a pixel timeline the heroes drop onto, centred.
-  const centred = era.id === 'wonder'
+  // Each era has its own composition and form, so the journey never
+  // repeats a layout: a timeline the heroes drop onto, a chessboard, a
+  // phone, a conversation, then the full-bleed splat field.
+  const LOOK = {
+    wonder: { form: 'timeline80s', anchor: 'centre', enter: 'drop', cls: 'scene--centre' },
+    logic: { form: 'chess', anchor: 'centre', cls: 'scene--centre' },
+    assistants: { form: 'phone', anchor: 'stage', cls: 'scene--right' },
+    chat: { form: 'bubbles', anchor: 'centre', cls: 'scene--centre' },
+    agents: { form: 'clusters', anchor: 'wide', cls: 'scene--wide' },
+  }
+  const look = LOOK[era.id] ?? { form: era.form }
   return {
     id: era.id,
     title: era.title,
     minutes: 0,
     era: era.id,
-    className: `scene--era${centred ? ' scene--centre' : ''}`,
-    form: centred ? 'timeline80s' : era.form,
-    anchor: centred ? 'centre' : undefined,
-    enter: centred ? 'drop' : undefined,
+    className: `scene--era ${look.cls ?? ''}`,
+    form: look.form,
+    anchor: look.anchor,
+    enter: look.enter,
     beats,
   }
 }

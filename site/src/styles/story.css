@@ -881,7 +881,7 @@ html.overlay-open { overflow: hidden; }
 
 /* ---------- Centred scenes: the form above, the copy beneath, both centred ---------- */
 .scene--centre .scene__pin {
-  grid-template-rows: 46% minmax(0, 1fr);
+  grid-template-rows: 50% minmax(0, 1fr);
   grid-template-columns: none;
   align-content: start;
 }
@@ -911,7 +911,7 @@ html.overlay-open { overflow: hidden; }
   .scene--centre .scene__copy { grid-column: 1; align-content: start; }
   .scene--centre .beat { align-self: start; }
 }
-.scene--cover.scene--centre .scene__pin { grid-template-rows: 54% minmax(0, 1fr); }
+.scene--cover.scene--centre .scene__pin { grid-template-rows: 56% minmax(0, 1fr); }
 
 /* Colophon, bottom left, out of the way. */
 .colophon {
@@ -927,3 +927,12 @@ html.overlay-open { overflow: hidden; }
   pointer-events: none;
 }
 .colophon__v { font-variant-numeric: tabular-nums; }
+
+
+/* A full-bleed scene: the field spans the screen, the copy sits low. */
+.scene--wide .scene__pin { grid-template-rows: 1fr auto; align-content: end; }
+.scene--wide .scene__copy { align-content: end; }
+@media (orientation: landscape) and (min-width: 900px) {
+  .scene--wide .scene__pin { grid-template-columns: minmax(0, 46%) 1fr; grid-template-rows: none; align-items: end; padding-bottom: calc(var(--space-7) + env(safe-area-inset-bottom, 0px)); }
+  .scene--wide .scene__copy { align-content: end; }
+}

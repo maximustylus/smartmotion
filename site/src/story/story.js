@@ -108,8 +108,13 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
     },
-    onProgress(si, p) {
-      if (si === scroll.state.scene) field?.setProgress(p)
+    onProgress(si, p, pb) {
+      if (si !== scroll.state.scene) return
+      field?.setProgress(p)
+      // The utility formula collapses as you scroll through its framework beat.
+      const s = scenes[si]
+      if (s.id === 'test') field?.setCollapse(scroll.state.beat === 1 ? Math.min(1, Math.max(0, (pb - 0.25) / 0.6)) : scroll.state.beat > 1 ? 1 : 0)
+      else field?.setCollapse(0)
     },
   })
   const hud = createHud(root, scenes, scroll)
