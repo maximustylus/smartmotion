@@ -1,7 +1,7 @@
 import { moves, moveById } from '../content/moves.js'
 import { examples } from '../content/examples.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
-import { tracks, workflows, compare, link } from '../content/tracks.js'
+import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
 
 /*
   Turns content into scenes. Two modes:
@@ -421,6 +421,32 @@ function takeHomeScene(step) {
               .join('')}
           </ol>
           <p class="note">All of it lives at <a href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>. Reuse and adapt with credit.</p>
+        `,
+      },
+      {
+        html: `
+          ${eyebrow('Take-home', 'The tool map')}
+          <h2>Build. Show. Move.</h2>
+          <p class="lead">Three lanes, from an agent that curates to a video that plays. Badges say which track.</p>
+          <div class="lanes" data-no-split>
+            ${lanes
+              .map(
+                (l) => `<section class="lane lane--${l.id}">
+                  <h3 class="lane__name">${l.name}</h3>
+                  <p class="lane__line">${l.line}</p>
+                  <ol class="lane__steps">
+                    ${l.steps
+                      .map(
+                        (st) => `<li><span class="lane__tool">${st.tool}</span><span class="badge badge--${st.track}">${st.track === 'both' ? 'both tracks' : st.track}</span><span class="lane__note">${st.note}${st.verify ? ` ${todo('verify route and limits')}` : ''}</span></li>`,
+                      )
+                      .join('')}
+                  </ol>
+                  <a class="lane__link" href="${link(workflows[l.workflow - 1].file)}" target="_blank" rel="noopener">Workflow 0${l.workflow}: ${workflows[l.workflow - 1].name} <span aria-hidden="true">&nearr;</span></a>
+                </section>`,
+              )
+              .join('')}
+          </div>
+          <p class="note">Tools and routes as used on 3 October 2026. Limits and prices change; check <a href="${link(compare.file)}" target="_blank" rel="noopener">COMPARE.md</a> before you rely on one.</p>
         `,
       },
     ],
