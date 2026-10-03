@@ -1114,3 +1114,11 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .lane { max-height: none; overflow: visible; }
 }
 @media (max-width: 599px) { .lane__steps li { font-size: 0.85em; } }
+
+/* Phones: the tool map beat trades its lead and heading size for room. */
+@media (max-width: 599px) {
+  .lane { max-height: 40svh; flex-basis: 84%; }
+  .beat:has(.lanes) h2 { font-size: var(--text-h3); }
+  .beat:has(.lanes) .lead { display: none; }
+  .beat:has(.lanes) .note { font-size: 0.75em; }
+}
