@@ -3,7 +3,7 @@ import { getFirestore, doc, setDoc, increment, onSnapshot } from 'firebase/fires
 
 /*
   Room totals in Firestore. One document, totals/room, holding only
-  counters: level_1 to level_3, type_1 to type_4, submissions. Clients can
+  counters: level_1 to level_4, type_1 to type_4, submissions. Clients can
   only increment them; see firestore.rules at the repository root.
 
   No names, no device identifiers, no free text ever leave the device.
@@ -17,7 +17,7 @@ const config = {
   authDomain: 'smartmotus.firebaseapp.com',
 }
 
-export const KEYS = ['level_1', 'level_2', 'level_3', 'type_1', 'type_2', 'type_3', 'type_4', 'submissions']
+export const KEYS = ['level_1', 'level_2', 'level_3', 'level_4', 'type_1', 'type_2', 'type_3', 'type_4', 'submissions']
 
 let db
 function ref() {

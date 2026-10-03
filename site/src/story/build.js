@@ -288,19 +288,15 @@ function quizScene(step) {
       {
         form: 'nest',
         html: `
-          ${eyebrow('Part 1', 'Tools')}
-          <h3>Tap the AI tools you know</h3>
+          ${eyebrow('Part 1', 'Readiness')}
+          <h3>Where would you place yourself today?</h3>
           <div data-no-split>
             <div class="played" hidden>
               <p>You have already played on this device.</p>
               <p><button type="button" class="btn btn--ghost" data-go>See your result</button></p>
             </div>
-            <div class="tiles" role="group" aria-label="AI tools"></div>
-            <p class="quiz__actions">
-              <button type="button" class="btn" data-next>Next</button>
-              <span class="quiz__count"><span data-count>0</span> selected</span>
-            </p>
-            <p class="note">${todo('Tool list and logos, owner to supply.')}</p>
+            <div class="options" role="group" aria-label="AI readiness levels"></div>
+            <p class="note">The four levels of the AI Ready Quiz by SkillsFuture Singapore and the Singapore Institute of Technology.</p>
           </div>
         `,
       },
@@ -326,7 +322,8 @@ function quizScene(step) {
           <div data-no-split>
             <div class="result"></div>
             <p class="status"></p>
-            <p><button type="button" class="btn" data-next>See the room</button></p>
+            <p class="chips"><button type="button" class="btn" data-next>See the room</button><a class="chip" href="#" data-airq target="_blank" rel="noopener">Take the full AI Ready Quiz <span aria-hidden="true">&nearr;</span></a></p>
+            <p class="note">The full quiz takes about fifteen minutes and emails you a profile. Do it in your own time.</p>
           </div>
         `,
       },
@@ -337,15 +334,15 @@ function quizScene(step) {
           <h3>Live totals</h3>
           <div class="totals" data-no-split>
             <div class="totals__group">
-              <h4>By level</h4>
-              ${bar('level_1', 'Level 1')}${bar('level_2', 'Level 2')}${bar('level_3', 'Level 3')}
+              <h4>By readiness</h4>
+              ${bar('level_1', 'AI not-yet Aware')}${bar('level_2', 'AI Aware')}${bar('level_3', 'AI Literate')}${bar('level_4', 'AI Fluent')}
             </div>
             <div class="totals__group">
               <h4>By type</h4>
               ${bar('type_1', 'Type 1')}${bar('type_2', 'Type 2')}${bar('type_3', 'Type 3')}${bar('type_4', 'Type 4')}
             </div>
             <p class="totals__note"></p>
-            <p class="note">${todo('Level and type names, owner to supply.')}</p>
+            <p class="note">${todo('Type names, owner to confirm.')}</p>
           </div>
         `,
       },

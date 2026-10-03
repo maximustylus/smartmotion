@@ -5,6 +5,7 @@
 */
 export const glossary = [
   { term: '6PoLD, Six Principles of Learning Design', def: 'Helen Bound and Arthur Chia’s six principles for designing learning that starts from the outcome.', scene: 'frameworks', source: null, sourceTodo: 'URL to Bound and Chia’s original publication' },
+  { term: 'AI Ready Quiz (AIRQ)', def: 'A twelve-question assessment of AI readiness by SkillsFuture Singapore and the Singapore Institute of Technology, with four levels: AI not-yet Aware, AI Aware, AI Literate, AI Fluent. Attendees take it in their own time.', scene: 'quiz', source: 'https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM' },
   { term: 'ADDIE', def: 'Analyse, Design, Develop, Implement, Evaluate. The spine of this playbook.', scene: 'phaseanalyse' },
   { term: 'AI psychosis', def: 'A press term from 2025 for delusions reported around heavy chatbot use. Not a clinical diagnosis. The hypothesis was raised by Østergaard in 2023.', scene: 'safe', source: 'https://doi.org/10.1093/schbul/sbad128', verify: true },
   { term: 'Agents', def: 'Assistants given a goal, tools and permission to take several steps on their own. Meta Muse, OpenAI Dots and Claude Code mods arrived in September and October 2026.', scene: 'agents' },

@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 import QRCode from 'qrcode'
 import '../styles/quiz.css'
-import { tools, PLACEHOLDER_COUNT, levels, levelFor, question, types, PLAY_URL } from './tools.js'
+import { levels, question, types, PLAY_URL, AIRQ_URL } from './tools.js'
 
 /*
   The icebreaker. Lives in section 1 of the story, one part per beat:
@@ -10,6 +10,9 @@ import { tools, PLACEHOLDER_COUNT, levels, levelFor, question, types, PLAY_URL }
     beat 2  part 2: which type are you
     beat 3  your result, sent to the room once
     beat 4  live room totals
+
+  Part 1 is a self-placement on the four AI Ready Quiz levels; the full quiz
+  is linked for attendees to take in their own time.
 
   Everything personal stays on this device. The room only ever receives
   three counters going up by one. One submission per device, remembered in
@@ -39,13 +42,12 @@ const store = {
 }
 
 const todo = (text) => `<span class="todo">${text}</span>`
-const levelLabel = (id) => levels[id - 1].label ?? todo(`Level ${id} label`)
+const levelLabel = (id) => levels[id - 1]?.label ?? todo(`Level ${id} label`)
 const typeLabel = (id) => types[id - 1].label ?? todo(`Type ${id} name`)
 
 export async function mountQuiz(sceneEl, { go }) {
   const beats = [...sceneEl.querySelectorAll('.beat')]
-  const total = tools.length || PLACEHOLDER_COUNT
-  const state = { known: new Set(), type: null, result: store.get() }
+  const state = { level: null, type: null, result: store.get() }
   let room = null
 
   // ---------- Beat 0: QR ----------
@@ -57,28 +59,24 @@ export async function mountQuiz(sceneEl, { go }) {
     qr.textContent = PLAY_URL
   }
 
-  // ---------- Beat 1: tools ----------
+  // ---------- Beat 1: readiness level ----------
 
-  const grid = beats[1].querySelector('.tiles')
-  const count = beats[1].querySelector('[data-count]')
-  const items = tools.length ? tools : Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ id: `todo-${i + 1}`, name: `LOGO ${String(i + 1).padStart(2, '0')}`, logo: null }))
-  grid.innerHTML = items
+  const levelsEl = beats[1].querySelector('.options')
+  levelsEl.innerHTML = levels
     .map(
-      (t) => `<button type="button" class="tile${t.logo ? '' : ' tile--todo'}" data-id="${t.id}" aria-pressed="false" aria-label="${t.name}">
-        ${t.logo ? `<img src="${new URL(`../../assets/logos/${t.logo}`, import.meta.url).href}" alt="">` : `<span>${t.name}</span>`}
+      (l) => `<button type="button" class="option" data-level="${l.id}">
+        <span class="option__label">${l.label}</span>
+        <span class="option__hint">${l.hint}</span>
       </button>`,
     )
     .join('')
-  grid.addEventListener('click', (e) => {
-    const tile = e.target.closest('.tile')
-    if (!tile) return
-    const on = tile.getAttribute('aria-pressed') !== 'true'
-    tile.setAttribute('aria-pressed', on)
-    on ? state.known.add(tile.dataset.id) : state.known.delete(tile.dataset.id)
-    count.textContent = state.known.size
-    if (!reduce()) gsap.fromTo(tile, { scale: 0.92 }, { scale: 1, duration: 0.4, ease: 'back.out(3)' })
+  levelsEl.addEventListener('click', (e) => {
+    const b = e.target.closest('.option')
+    if (!b) return
+    state.level = +b.dataset.level
+    go(2)
   })
-  beats[1].querySelector('[data-next]').addEventListener('click', () => go(2))
+  for (const a of sceneEl.querySelectorAll('[data-airq]')) a.href = AIRQ_URL
 
   // ---------- Beat 2: type ----------
 
@@ -106,7 +104,7 @@ export async function mountQuiz(sceneEl, { go }) {
   function renderResult() {
     const r = state.result
     resultEl.innerHTML = `
-      <p class="result__line">You know <strong>${r.count}</strong> of ${r.total} tools.</p>
+      <p class="result__line">You placed yourself at</p>
       <p class="result__big">${levelLabel(r.level)}</p>
       <p class="result__line">And you are</p>
       <p class="result__big">${typeLabel(r.type)}</p>
@@ -115,8 +113,11 @@ export async function mountQuiz(sceneEl, { go }) {
   }
 
   async function finish() {
-    const count = state.known.size
-    state.result = { count, total, level: levelFor(count, total), type: state.type, sent: false }
+    if (!state.level) {
+      go(1)
+      return
+    }
+    state.result = { level: state.level, type: state.type, sent: false }
     store.set(state.result)
     renderResult()
     go(3)
@@ -141,7 +142,7 @@ export async function mountQuiz(sceneEl, { go }) {
       b.querySelector('.played').hidden = false
       b.querySelector('.played [data-go]').addEventListener('click', () => go(3))
       // No second go: the room only counts a device once.
-      for (const el of b.querySelectorAll('.tiles, .quiz__actions, .options')) el.hidden = true
+      for (const el of b.querySelectorAll('.options')) el.hidden = true
     }
   }
   beats[3].querySelector('[data-next]').addEventListener('click', () => go(4))

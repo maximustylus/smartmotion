@@ -8,7 +8,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function levels() { return ['level_1', 'level_2', 'level_3']; }
+    function levels() { return ['level_1', 'level_2', 'level_3', 'level_4']; }
     function types() { return ['type_1', 'type_2', 'type_3', 'type_4']; }
     function allKeys() { return levels().concat(types()).concat(['submissions']); }
 
@@ -17,13 +17,13 @@ service cloud.firestore {
     // Every counter in the incoming document is a non-negative integer.
     function countersOk(d) {
       return d.keys().hasOnly(allKeys())
-        && isCount(d.get('level_1', 0)) && isCount(d.get('level_2', 0)) && isCount(d.get('level_3', 0))
+        && isCount(d.get('level_1', 0)) && isCount(d.get('level_2', 0)) && isCount(d.get('level_3', 0)) && isCount(d.get('level_4', 0))
         && isCount(d.get('type_1', 0)) && isCount(d.get('type_2', 0))
         && isCount(d.get('type_3', 0)) && isCount(d.get('type_4', 0))
         && isCount(d.get('submissions', 0));
     }
 
-    function sumLevels(d) { return d.get('level_1', 0) + d.get('level_2', 0) + d.get('level_3', 0); }
+    function sumLevels(d) { return d.get('level_1', 0) + d.get('level_2', 0) + d.get('level_3', 0) + d.get('level_4', 0); }
     function sumTypes(d) { return d.get('type_1', 0) + d.get('type_2', 0) + d.get('type_3', 0) + d.get('type_4', 0); }
 
     // First submission creates the document with exactly one of each.
@@ -48,6 +48,7 @@ service cloud.firestore {
         && after.get('level_1', 0) >= before.get('level_1', 0)
         && after.get('level_2', 0) >= before.get('level_2', 0)
         && after.get('level_3', 0) >= before.get('level_3', 0)
+        && after.get('level_4', 0) >= before.get('level_4', 0)
         && after.get('type_1', 0) >= before.get('type_1', 0)
         && after.get('type_2', 0) >= before.get('type_2', 0)
         && after.get('type_3', 0) >= before.get('type_3', 0)
