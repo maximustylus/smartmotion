@@ -73,8 +73,8 @@ export function createMotus(host, { onOpen } = {}) {
   btn.append(renderer.domElement)
 
   const scene = new THREE.Scene()
-  const camera = new THREE.OrthographicCamera(-8, 8, 8, -8, 0.1, 100)
-  camera.position.set(3, 4, 18)
+  const camera = new THREE.OrthographicCamera(-6.8, 6.8, 7.4, -6.2, 0.1, 100)
+  camera.position.set(2.5, 3, 18)
   camera.lookAt(0, 0.6, 0)
   scene.add(new THREE.AmbientLight(0xffffff, 1.1))
   const sun = new THREE.DirectionalLight(0xffffff, 1.1)
