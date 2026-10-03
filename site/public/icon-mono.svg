@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <mask id="cut"><rect width="512" height="512" fill="#fff"/><polygon points="203,396 309,396 256,276" fill="#000"/></mask>
+  <g mask="url(#cut)" fill="#ffffff">
+    <polygon points="76,384 190,128 304,384"/>
+    <polygon points="208,384 322,128 436,384"/>
+  </g>
+</svg>
