@@ -250,8 +250,8 @@ const vertex = /* glsl */ `
     vec2 d = p.xy - uPointer;
     float dist = length(d);
     float lens = smoothstep(uLoupe, 0.0, dist);
-    p.xy += normalize(d + 0.0001) * lens * uLoupe * 0.55;
-    vLens = lens;
+    p.xy += normalize(d + 0.0001) * lens * uLoupe * 0.35;
+    vLens = lens * 0.7;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
@@ -390,7 +390,7 @@ export function createField(host) {
     view.stage = { x: view.portrait ? 0 : visW * 0.25, y: view.portrait ? visH * 0.24 : 0, s: Math.min(availW / 3.4, availH / 2.2) }
     // The nest: tucked top right, under the top bar, out of the copy's way.
     view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
-    uniforms.uLoupe.value = Math.min(visW, visH) * 0.14
+    uniforms.uLoupe.value = Math.min(visW, visH) * 0.045
     // Dot-matrix cell: about 14 cells across the shorter edge of the stage form.
     uniforms.uCell.value = Math.max(0.03, view.stage.s * 3.4 / 46)
     uniforms.uPxPerUnit.value = (h * renderer.getPixelRatio()) / visH
