@@ -938,3 +938,38 @@ html.overlay-open { overflow: hidden; }
   .scene--wide .scene__pin { grid-template-columns: minmax(0, 46%) 1fr; grid-template-rows: none; align-items: end; padding-bottom: calc(var(--space-7) + env(safe-area-inset-bottom, 0px)); }
   .scene--wide .scene__copy { align-content: end; }
 }
+
+
+/* ---------- The ground ----------
+   A fixed layer beneath everything: a bloom at the top tinted by the
+   current era, falling to a deeper tone at the foot. It moves with the
+   journey, so the page is never a flat fill. */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 18%, var(--bg)) 0%, transparent 60%),
+    radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 8%, var(--bg)) 0%, transparent 60%),
+    linear-gradient(180deg, color-mix(in oklab, var(--fg) 0%, var(--bg)) 0%, color-mix(in oklab, var(--fg) 7%, var(--bg)) 100%);
+  transition: background 1.6s ease;
+}
+:root[data-theme='dark'] .app::before,
+:root:not([data-theme='light']) .app::before { }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .app::before {
+    background:
+      radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 16%, var(--bg)) 0%, transparent 60%),
+      radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 7%, var(--bg)) 0%, transparent 60%),
+      linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
+  }
+}
+:root[data-theme='dark'] .app::before {
+  background:
+    radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 16%, var(--bg)) 0%, transparent 60%),
+    radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 7%, var(--bg)) 0%, transparent 60%),
+    linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
+}
+.app--page::before { display: none; }
