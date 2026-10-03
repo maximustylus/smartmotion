@@ -58,7 +58,6 @@ export function splash(root) {
       <text class="sp__name" x="256" y="474" textLength="360" lengthAdjust="spacingAndGlyphs" text-anchor="middle">SMARTMOTION</text>
     </svg>
     <div class="sp__word"><span class="sp__tag">A playbook of smart moves</span></div>
-    <button type="button" class="sp__skip">Skip</button>
   `
   root.before(el)
   const q = (s) => el.querySelectorAll(s)
@@ -75,13 +74,12 @@ export function splash(root) {
     done = true
     gsap.to(el, { autoAlpha: 0, duration: reduce() ? 0.2 : 0.9, ease: 'power2.inOut', onComplete: () => el.remove() })
   }
-  el.querySelector('.sp__skip').addEventListener('click', finish)
   const skip = (e) => {
     if (e.type === 'keydown' && e.key === 'Tab') return
     finish()
   }
   window.addEventListener('keydown', skip, { once: true })
-  el.addEventListener('pointerdown', (e) => !e.target.closest('button') && finish())
+  el.addEventListener('pointerdown', finish)
 
   if (reduce()) {
     gsap.set([q('.sp__ray'), q('.sp__horizon'), q('.sp__fill'), q('.sp__glow'), q('.sp__core'), q('.sp__word')], { opacity: 1 })
