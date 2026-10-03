@@ -379,6 +379,7 @@ export function createMotus(host, { onOpen } = {}) {
 
   return {
     theme,
+    openChat: () => chat.toggle(true),
     // 0: a 28 pixel sprite. 1: a smooth 256 pixel render.
     // Fidelity 0 to 1 maps to five stages. A change walks through the
     // stages one at a time, each with a small pop, and the last stage

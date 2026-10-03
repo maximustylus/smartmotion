@@ -62,13 +62,20 @@
 }
 
 .tile--todo span {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  line-height: 1.6;
   color: var(--todo);
   text-align: center;
 }
 
-.tile--todo { border-style: dashed; border-color: var(--todo); }
+.tile--todo {
+  border-style: dashed;
+  border-color: color-mix(in oklab, var(--todo) 60%, transparent);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--fg) 4%, transparent) 3px 4px),
+    var(--bg-2);
+}
 
 .quiz__actions {
   display: flex;

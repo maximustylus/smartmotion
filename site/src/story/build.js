@@ -393,7 +393,8 @@ function questionsScene() {
         html: `
           ${eyebrow('Thank you')}
           <h2>Questions</h2>
-          <p class="lead">The moves, the frameworks and the cheatsheets stay at <a href="/">smartmotion.web.app</a>.</p>
+          <p class="lead">Ask the room, or ask Motus. The moves, the frameworks and the cheatsheets stay at <a href="/">smartmotion.web.app</a>.</p>
+          <p class="chips" data-no-split><button type="button" class="chip chip--link" data-ask>Ask Motus</button><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
           <p class="note">Install it from your browser menu to keep the playbook on your home screen.</p>
         `,
       },

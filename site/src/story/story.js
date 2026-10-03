@@ -54,6 +54,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     <div class="cue" aria-hidden="true"><span></span></div>
   `
   root.querySelector('.topbar').append(themeToggle())
+  root.addEventListener('click', (e) => e.target.closest('[data-ask]') && motus?.openChat())
   createProfile(root.querySelector('.topbar'), root)
   const dots = root.querySelector('.dots')
   dots.addEventListener('click', (e) => {
@@ -107,6 +108,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       mounted.get(si)?.onBeat?.(bi)
       field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined, slot: si * 3 + bi })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
+      if (sceneChanged && s.id === 'questions') setTimeout(() => motus?.say('Questions? Ask me, or ask the room.', 4000), 1200)
     },
     onProgress(si, p, pb) {
       if (si !== scroll.state.scene) return

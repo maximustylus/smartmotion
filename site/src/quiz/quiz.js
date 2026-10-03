@@ -61,7 +61,7 @@ export async function mountQuiz(sceneEl, { go }) {
 
   const grid = beats[1].querySelector('.tiles')
   const count = beats[1].querySelector('[data-count]')
-  const items = tools.length ? tools : Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ id: `todo-${i + 1}`, name: `Logo ${i + 1}`, logo: null }))
+  const items = tools.length ? tools : Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ id: `todo-${i + 1}`, name: `LOGO ${String(i + 1).padStart(2, '0')}`, logo: null }))
   grid.innerHTML = items
     .map(
       (t) => `<button type="button" class="tile${t.logo ? '' : ' tile--todo'}" data-id="${t.id}" aria-pressed="false" aria-label="${t.name}">
