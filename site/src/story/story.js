@@ -61,6 +61,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
   const tag = root.querySelector('.topbar__tag')
   let field = null
+  let motus = null
   const mounted = new Map()
 
   const scroll = createScroll(root, scenes, {
@@ -100,7 +101,10 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       }
       root.classList.toggle('field-dim', s.dimFrom !== undefined && bi >= s.dimFrom)
       mounted.get(si)?.onBeat?.(bi)
-      if (sceneChanged) field?.morphTo(s.form)
+      if (sceneChanged) {
+        field?.morphTo(s.form)
+        motus?.travel(si, scenes.length, s.title)
+      }
     },
     onProgress(si, p) {
       if (si === scroll.state.scene) field?.setProgress(p)
@@ -133,5 +137,12 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   const todoCount = root.querySelectorAll('.story .todo').length
   if (todoCount) console.info(`[smartmotion] ${todoCount} TODO markers in visible content. Press O for the overview.`)
 
+  // Motus joins once the story is live. Its chat reads the scene list.
+  scroll.scenes = scenes
   window.story = scroll
+  import('../motus/motus.js').then((m) => {
+    motus = m.createMotus(root)
+    onThemeChange(() => motus.theme())
+    motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
+  })
 }

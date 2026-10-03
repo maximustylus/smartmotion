@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   build: { outDir: 'dist', emptyOutDir: true },
   // Cheatsheets are read from ../workflows at the repository root.
-  server: { fs: { allow: ['..'] } },
+  server: { fs: { allow: ['..'] }, proxy: { '/api': 'http://localhost:8787' } },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',

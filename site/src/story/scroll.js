@@ -205,5 +205,5 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     if (si !== state.scene || bi !== state.beat) goTo(si, bi, { instant: true })
   })
 
-  return { next, prev, goTo, start, get state() { return state }, refresh: () => ScrollTrigger.refresh() }
+  return { next, prev, goTo, start, scenes, get state() { return state }, refresh: () => ScrollTrigger.refresh() }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "smartmotion-functions",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22" },
+  "main": "index.js",
+  "scripts": {
+    "local": "node local.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "firebase-functions": "^6.4.0"
+  }
+}

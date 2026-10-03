@@ -1,0 +1,176 @@
+/* Motus, the companion, and its chat. */
+
+.motus {
+  --drift: 0px;
+  position: fixed;
+  right: max(var(--space-4), env(safe-area-inset-right, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 12;
+  transform: translateX(var(--drift));
+  display: grid;
+  justify-items: end;
+  gap: var(--space-2);
+}
+
+.motus__btn {
+  width: 112px;
+  height: 112px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: end center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.motus__btn:hover { transform: translateY(-3px); }
+.motus__btn:active { transform: scale(0.96); }
+
+.motus__btn canvas {
+  width: 112px;
+  height: 112px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.motus__zz {
+  position: absolute;
+  right: 18px;
+  bottom: 86px;
+  display: none;
+  pointer-events: none;
+  font-family: var(--font-voice);
+  font-style: italic;
+  color: var(--muted);
+}
+
+.motus.is-snoozing .motus__zz { display: block; }
+.motus__zz span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 14px;
+  animation: zz 2.4s ease-out infinite;
+}
+.motus__zz span:nth-child(2) { animation-delay: 0.8s; font-size: 17px; }
+.motus__zz span:nth-child(3) { animation-delay: 1.6s; font-size: 20px; }
+
+@keyframes zz {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(14px, -34px); opacity: 0; }
+}
+
+.motus__bubble {
+  position: absolute;
+  right: 100px;
+  bottom: 70px;
+  padding: 6px 10px;
+  border-radius: 10px 10px 2px 10px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.motus.is-saying .motus__bubble { opacity: 1; transform: translateY(0); }
+
+/* The chat window */
+.mchat {
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(70svh, 560px);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto auto;
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 94%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px -20px color-mix(in oklab, var(--fg) 35%, transparent);
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+.mchat__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.mchat__name { font-weight: 700; }
+.mchat__where { color: var(--muted); font-size: 0.8rem; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mchat__close { border: 0; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; color: var(--muted); }
+
+.mchat__log {
+  overflow: auto;
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  min-height: 160px;
+  overscroll-behavior: contain;
+}
+
+.mchat__msg { max-width: 92%; display: grid; gap: 6px; line-height: 1.45; }
+.mchat__msg p, .mchat__msg ul, .mchat__msg ol { margin: 0; }
+.mchat__msg ul, .mchat__msg ol { padding-left: 1.2em; }
+.mchat__msg--user { justify-self: end; padding: 8px 12px; border-radius: 14px 14px 2px 14px; background: var(--accent); color: var(--accent-ink); }
+.mchat__msg--assistant { justify-self: start; }
+.mchat__msg--assistant a { color: var(--accent); font-weight: 500; }
+.mchat__msg.is-typing:empty::after,
+.mchat__msg.is-typing p:empty::after { content: '…'; color: var(--muted); }
+.mchat__err { color: var(--todo); }
+
+.mchat__starters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0 var(--space-4) var(--space-3);
+}
+.mchat__starters .chip { cursor: pointer; font-size: 0.8rem; background: var(--bg-2); }
+
+.mchat__form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.mchat__form input {
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+}
+
+.mchat__form .btn { min-height: 40px; padding: 0.4em 1em; }
+
+.mchat__note {
+  padding: 0 var(--space-4) var(--space-3);
+  font-size: 0.72rem;
+  color: var(--faint);
+}
+
+@media (max-width: 599px) {
+  .motus { right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+  .motus__btn, .motus__btn canvas { width: 88px; height: 88px; }
+  .motus__bubble { right: 80px; bottom: 56px; }
+  .mchat { max-height: min(78svh, 560px); }
+}
+
+/* Keep copy clear of Motus on narrow screens. */
+@media (max-width: 899px) {
+  .scene__copy { padding-right: 84px; }
+  .scene--quiz .scene__copy { padding-right: 0; }
+}
