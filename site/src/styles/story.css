@@ -732,7 +732,7 @@ html.overlay-open { overflow: hidden; }
   background: transparent;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 0 0 1.5px var(--line), 0 0 0 4px color-mix(in oklab, var(--bg) 80%, transparent);
+  box-shadow: 0 0 0 1px var(--line);
   transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast);
 }
 
@@ -743,7 +743,7 @@ html.overlay-open { overflow: hidden; }
   object-fit: cover;
 }
 
-.avatar:hover { transform: translateY(-1px); box-shadow: 0 0 0 1.5px var(--accent), 0 0 0 4px color-mix(in oklab, var(--bg) 80%, transparent); }
+.avatar:hover { transform: translateY(-1px); box-shadow: 0 0 0 1.5px var(--accent); }
 .avatar[aria-expanded='true'] { box-shadow: 0 0 0 2px var(--accent); }
 
 .pcard {

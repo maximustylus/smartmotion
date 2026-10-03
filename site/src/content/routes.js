@@ -15,7 +15,8 @@ export const routes = {
     speaker: {
       name: 'Muhammad Alif',
       roles: [
-        'Lead and Senior Clinical Exercise Physiologist, KK Women’s and Children’s Hospital',
+        'Healthcare innovation, digital health and AI',
+        'Scientist and artist',
         'Vice Chair, Educational Innovation and Research, SingHealth College of Allied Health',
       ],
     },
