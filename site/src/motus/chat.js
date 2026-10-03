@@ -37,9 +37,12 @@ export function openChat(host, { onTalking, onOpen }) {
   panel.setAttribute('aria-label', 'Chat with Motus')
   panel.innerHTML = `
     <header class="mchat__head">
-      <span class="mchat__name">Motus</span>
-      <span class="mchat__where"></span>
-      <button type="button" class="mchat__close" aria-label="Close the chat">&times;</button>
+      <span class="mchat__lights">
+        <button type="button" class="mchat__light mchat__light--close" aria-label="Close the chat"></button>
+        <button type="button" class="mchat__light mchat__light--min" aria-label="Minimise the chat"></button>
+        <button type="button" class="mchat__light mchat__light--max" aria-label="Maximise the chat"></button>
+      </span>
+      <span class="mchat__title"><span class="mchat__name">Motus</span><span class="mchat__where"></span></span>
     </header>
     <div class="mchat__log" aria-live="polite"></div>
     <div class="mchat__starters"></div>
@@ -169,7 +172,17 @@ export function openChat(host, { onTalking, onOpen }) {
     e.preventDefault()
     ask(input.value)
   })
-  panel.querySelector('.mchat__close').addEventListener('click', () => toggle(false))
+  panel.querySelector('.mchat__light--close').addEventListener('click', () => toggle(false))
+  panel.querySelector('.mchat__light--min').addEventListener('click', () => {
+    panel.classList.toggle('is-min')
+    panel.classList.remove('is-max')
+  })
+  panel.querySelector('.mchat__light--max').addEventListener('click', () => {
+    panel.classList.toggle('is-max')
+    panel.classList.remove('is-min')
+    log.scrollTop = log.scrollHeight
+  })
+  panel.querySelector('.mchat__head').addEventListener('dblclick', (e) => !e.target.closest('button') && panel.classList.toggle('is-max'))
   window.addEventListener('keydown', (e) => e.key === 'Escape' && !panel.hidden && toggle(false))
 
   function toggle(force) {

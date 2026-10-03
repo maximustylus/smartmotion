@@ -146,6 +146,19 @@ const forms = {
     }
     return a
   },
+  // The nest: a small, tight cloud the field rests in while a beat is copy only.
+  nest(n, r) {
+    const a = new Float32Array(n * 3)
+    for (let i = 0; i < n; i++) {
+      const t = r() * Math.PI * 2, u = r() * 2 - 1
+      const rad = 0.9 * Math.cbrt(r())
+      const sq = Math.sqrt(1 - u * u)
+      a[i * 3] = Math.cos(t) * sq * rad * 1.2
+      a[i * 3 + 1] = u * rad + gauss(r) * 0.04
+      a[i * 3 + 2] = Math.sin(t) * sq * rad
+    }
+    return a
+  },
   timeline(n, r) {
     const a = new Float32Array(n * 3)
     for (let i = 0; i < n; i++) {
@@ -203,7 +216,9 @@ const vertex = /* glsl */ `
   uniform float uScale;
   uniform vec2 uPointer;
   uniform float uPixelRatio;
+  uniform float uLoupe;
   varying float vFade;
+  varying float vLens;
 
   void main() {
     // Each point starts its journey a little after the last, by seed.
@@ -219,19 +234,21 @@ const vertex = /* glsl */ `
     float c = cos(uSpin), s = sin(uSpin);
     p.xz = mat2(c, -s, s, c) * p.xz;
 
-    // The pointer pushes nearby points away.
-    vec2 d = p.xy - uPointer;
-    float dist = length(d);
-    p.xy += normalize(d + 0.0001) * smoothstep(0.5, 0.0, dist) * 0.25;
-
     p.xy = p.xy * uScale + uOffset;
     p.z *= uScale;
+
+    // The loupe: points under the pointer part like a lens and brighten.
+    vec2 d = p.xy - uPointer;
+    float dist = length(d);
+    float lens = smoothstep(uLoupe, 0.0, dist);
+    p.xy += normalize(d + 0.0001) * lens * uLoupe * 0.55;
+    vLens = lens;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
     // Nearer points are larger and brighter: a little depth of field.
     float depth = clamp(0.5 + p.z * 0.6, 0.35, 1.0);
-    gl_PointSize = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth);
+    gl_PointSize = aSize * uPixelRatio * uScale * (9.0 / -mv.z) * (0.7 + 0.6 * depth) * (1.0 + vLens * 1.4);
     vFade = (0.45 + 0.55 * aSeed) * depth;
   }
 `
@@ -240,12 +257,13 @@ const fragment = /* glsl */ `
   uniform vec3 uColor;
   uniform float uAlpha;
   varying float vFade;
+  varying float vLens;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
-    float a = smoothstep(0.5, 0.18, d) * uAlpha * vFade;
+    float a = smoothstep(0.5, 0.18, d) * uAlpha * (vFade + vLens * 0.8);
     if (a < 0.01) discard;
-    gl_FragColor = vec4(uColor, a);
+    gl_FragColor = vec4(mix(uColor, vec3(1.0), vLens * 0.35), min(a, 1.0));
   }
 `
 
@@ -289,6 +307,7 @@ export function createField(host) {
     uScale: { value: 1 },
     uPointer: { value: new THREE.Vector2(99, 99) },
     uPixelRatio: { value: renderer.getPixelRatio() },
+    uLoupe: { value: 0.6 },
     uColor: { value: new THREE.Color('#2f4bff') },
     uAlpha: { value: 0.6 },
   }
@@ -317,7 +336,18 @@ export function createField(host) {
 
   // ---------- Layout: portrait stacks, landscape splits ----------
 
-  const view = { w: 1, h: 1, portrait: false }
+  const view = { w: 1, h: 1, portrait: false, stage: { x: 0, y: 0, s: 1 }, nest: { x: 0, y: 0, s: 1 } }
+  let mode = 'stage'
+  function place(instant = false) {
+    const t = view[mode]
+    if (instant || reduce()) {
+      uniforms.uOffset.value.set(t.x, t.y)
+      uniforms.uScale.value = t.s
+      return
+    }
+    gsap.to(uniforms.uOffset.value, { x: t.x, y: t.y, duration: 1.8, ease: 'power3.inOut', overwrite: true })
+    gsap.to(uniforms.uScale, { value: t.s, duration: 1.8, ease: 'power3.inOut', overwrite: true })
+  }
   function resize() {
     const w = host.clientWidth, h = host.clientHeight
     renderer.setSize(w, h, false)
@@ -331,8 +361,11 @@ export function createField(host) {
     // Forms are about 3.2 by 2. Fit them into the half the copy leaves free.
     const availW = view.portrait ? visW * 0.92 : visW * 0.46
     const availH = view.portrait ? visH * 0.46 : visH * 0.8
-    uniforms.uScale.value = Math.min(availW / 3.4, availH / 2.2)
-    uniforms.uOffset.value.set(view.portrait ? 0 : visW * 0.25, view.portrait ? visH * 0.24 : 0)
+    view.stage = { x: view.portrait ? 0 : visW * 0.25, y: view.portrait ? visH * 0.24 : 0, s: Math.min(availW / 3.4, availH / 2.2) }
+    // The nest: tucked top right, under the top bar, out of the copy's way.
+    view.nest = { x: visW * 0.36, y: visH * 0.3, s: Math.min(visW, visH) * 0.085 }
+    uniforms.uLoupe.value = Math.min(visW, visH) * 0.14
+    place(true)
   }
   resize()
   theme()
@@ -344,7 +377,7 @@ export function createField(host) {
   const toWorld = (x, y) => {
     const px = (x / innerWidth - 0.5) * view.w
     const py = -(y / innerHeight - 0.5) * view.h
-    target.set((px - uniforms.uOffset.value.x) / uniforms.uScale.value, (py - uniforms.uOffset.value.y) / uniforms.uScale.value)
+    target.set(px, py)
   }
   addEventListener('pointermove', (e) => toWorld(e.clientX, e.clientY), { passive: true })
   addEventListener('pointerleave', () => target.set(99, 99))
@@ -357,7 +390,12 @@ export function createField(host) {
     const isText = name.startsWith('text:')
     if ((!isText && !forms[name]) || name === current) return
     current = name
-    const next = (cache[name] ??= isText ? textForm(name.slice(5), N, rng(name.length * 31)) : forms[name](N, rng(name.length * 31)))
+    const next = name === 'nest' ? 'nest' : 'stage'
+    if (next !== mode) {
+      mode = next
+      place(instant)
+    }
+    const target = (cache[name] ??= isText ? textForm(name.slice(5), N, rng(name.length * 31)) : forms[name](N, rng(name.length * 31)))
     // Freeze wherever the points are right now, then head for the new form.
     const fromA = geo.attributes.aFrom.array
     const toA = geo.attributes.aTo.array
@@ -367,7 +405,7 @@ export function createField(host) {
       m = m * m * (3 - 2 * m)
       for (let k = 0; k < 3; k++) fromA[i * 3 + k] = fromA[i * 3 + k] + (toA[i * 3 + k] - fromA[i * 3 + k]) * m
     }
-    toA.set(next)
+    toA.set(target)
     geo.attributes.aFrom.needsUpdate = true
     geo.attributes.aTo.needsUpdate = true
     gsap.killTweensOf(uniforms.uMix)
@@ -400,8 +438,9 @@ export function createField(host) {
     // Scroll progress within a scene turns the field a little, so it is
     // never a still image on the shared screen.
     setProgress(p) {
-      gsap.to(uniforms.uSpin, { value: (p - 0.5) * 0.5, duration: 0.6, ease: 'power2.out', overwrite: true })
+      gsap.to(uniforms.uSpin, { value: (p - 0.5) * (mode === 'nest' ? 1.2 : 0.5), duration: 0.6, ease: 'power2.out', overwrite: true })
     },
+    get mode() { return mode },
     get count() { return N },
   }
 }

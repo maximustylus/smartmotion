@@ -30,6 +30,8 @@ function cheatsheet(id) {
 
 const eyebrow = (a, b) => `<p class="eyebrow">${a}${b ? ` <span class="eyebrow__sep">·</span> ${b}` : ''}</p>`
 
+// Particles are B-roll: they come out for the framework diagram and nest
+// for the beats that are copy.
 export function moveBeats(m, n) {
   const sheet = cheatsheet(m.cheatsheet)
   const source = m.framework.source
@@ -37,6 +39,7 @@ export function moveBeats(m, n) {
     : ''
   return [
     {
+      form: 'nest',
       html: `
         ${eyebrow(`Move ${n} of ${moves.length}`)}
         <h2>${m.name}</h2>
@@ -45,6 +48,7 @@ export function moveBeats(m, n) {
       `,
     },
     {
+      form: m.form,
       html: `
         ${eyebrow(m.name, 'Framework')}
         <h3>${m.framework.name}</h3>
@@ -53,6 +57,7 @@ export function moveBeats(m, n) {
       `,
     },
     {
+      form: 'nest',
       html: `
         ${eyebrow(m.name, 'Worked example')}
         <h3>${m.example.title}</h3>
@@ -60,6 +65,7 @@ export function moveBeats(m, n) {
       `,
     },
     {
+      form: 'nest',
       html: `
         ${eyebrow(m.name, 'Cheatsheet')}
         <h3>${sheet.title}</h3>
@@ -131,7 +137,7 @@ export function phaseScene(phase) {
     },
   ]
   if (phase.quote) beats.push({ html: `${eyebrow('ADDIE', phase.name)}${quoteBlock(phase.quote)}` })
-  return { id: `phase${phase.id}`, title: phase.name, minutes: 0, phase: phase.id, className: 'scene--phase', form: 'cloud', beats }
+  return { id: `phase${phase.id}`, title: phase.name, minutes: 0, phase: phase.id, className: 'scene--phase', form: 'nest', beats }
 }
 
 // ---------- Playbook ----------
@@ -237,6 +243,7 @@ function quizScene(step) {
     mount: (el, ctx) => import('../quiz/quiz.js').then((m) => m.mountQuiz(el, ctx)),
     beats: [
       {
+        form: 'grid',
         html: `
           ${eyebrow('The hook', `${step.minutes} min`)}
           <h2>Scan and play</h2>
@@ -250,6 +257,7 @@ function quizScene(step) {
         `,
       },
       {
+        form: 'nest',
         html: `
           ${eyebrow('Part 1', 'Tools')}
           <h3>Tap the AI tools you know</h3>
@@ -268,6 +276,7 @@ function quizScene(step) {
         `,
       },
       {
+        form: 'nest',
         html: `
           ${eyebrow('Part 2', 'You')}
           <h3>Which of these sounds most like you?</h3>
@@ -282,6 +291,7 @@ function quizScene(step) {
         `,
       },
       {
+        form: 'nest',
         html: `
           ${eyebrow('Your result')}
           <div data-no-split>
@@ -292,6 +302,7 @@ function quizScene(step) {
         `,
       },
       {
+        form: 'nest',
         html: `
           ${eyebrow('The room', '<span data-submissions>0</span> played')}
           <h3>Live totals</h3>
@@ -329,6 +340,7 @@ function examplesScene(step) {
         `,
       },
       ...examples.map((e) => ({
+        form: 'nest',
         html: `
           ${eyebrow(step.title)}
           <h3>${e.name}</h3>

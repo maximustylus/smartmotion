@@ -8,27 +8,16 @@ import '../styles/splash.css'
   the light at the far end of the path comes up, and the wordmark follows.
   Then everything gives way to the story.
 
-  Shown once per session. Tap, click or any key skips it.
+  Shown on every load. Tap, click or any key skips it.
 */
 
-const KEY = 'smartmotion.splash'
 const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export function shouldSplash() {
-  if (new URLSearchParams(location.search).has('splash')) return true
-  try {
-    return !sessionStorage.getItem(KEY)
-  } catch {
-    return true
-  }
+  return !new URLSearchParams(location.search).has('nosplash')
 }
 
 export function splash(root) {
-  try {
-    sessionStorage.setItem(KEY, '1')
-  } catch {
-    /* ignore */
-  }
   const VP = [256, 276] // the vanishing point, as in the icon
   // Perspective lines fan out from the vanishing point to the edges of a
   // wider frame, so the walls read as standing on a floor that recedes.

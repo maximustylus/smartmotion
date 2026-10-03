@@ -99,12 +99,10 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         root.dataset.era = era
         requestAnimationFrame(() => field?.theme())
       }
-      root.classList.toggle('field-dim', s.dimFrom !== undefined && bi >= s.dimFrom)
+      root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
-      if (sceneChanged) {
-        field?.morphTo(s.form)
-        motus?.travel(si, scenes.length, s.title)
-      }
+      field?.morphTo(s.beats[bi]?.form ?? s.form)
+      if (sceneChanged) motus?.travel(si, scenes.length, s.title)
     },
     onProgress(si, p) {
       if (si === scroll.state.scene) field?.setProgress(p)
@@ -128,7 +126,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     })
     import('./field.js').then((m) => {
       field = m.createField(root.querySelector('.field'))
-      field.morphTo(scenes[scroll.state.scene].form, { instant: true })
+      const cur = scenes[scroll.state.scene]
+      field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true })
       onThemeChange(() => field.theme())
       root.classList.add('has-field')
     })

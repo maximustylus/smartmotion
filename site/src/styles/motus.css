@@ -81,32 +81,73 @@
 
 .motus.is-saying .motus__bubble { opacity: 1; transform: translateY(0); }
 
-/* The chat window */
+/* The chat window, in the manner of a desktop window: traffic lights, a
+   centred title, a soft frame. Minimise keeps the title bar; maximise
+   fills most of the screen. */
 .mchat {
-  width: min(380px, calc(100vw - 32px));
-  max-height: min(70svh, 560px);
+  width: min(400px, calc(100vw - 32px));
+  max-height: min(72svh, 600px);
   display: grid;
   grid-template-rows: auto 1fr auto auto auto;
-  border-radius: var(--radius-m);
-  border: 1px solid var(--line);
-  background: color-mix(in oklab, var(--bg) 94%, transparent);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 24px 60px -20px color-mix(in oklab, var(--fg) 35%, transparent);
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--fg) 14%, transparent);
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  backdrop-filter: blur(22px) saturate(1.4);
+  box-shadow:
+    0 0 0 0.5px color-mix(in oklab, var(--fg) 8%, transparent),
+    0 28px 70px -18px color-mix(in oklab, var(--fg) 40%, transparent);
   overflow: hidden;
   font-size: 0.95rem;
+  transition: width var(--dur-base) var(--ease-out), max-height var(--dur-base) var(--ease-out);
 }
+
+.mchat.is-min { max-height: 44px; }
+.mchat.is-min > :not(.mchat__head) { visibility: hidden; }
+.mchat.is-max { width: min(720px, calc(100vw - 32px)); max-height: calc(100svh - 120px); }
 
 .mchat__head {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--line);
+  height: 44px;
+  padding: 0 var(--space-4);
+  background: color-mix(in oklab, var(--bg-2) 70%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--fg) 10%, transparent);
+  user-select: none;
 }
 
-.mchat__name { font-weight: 700; }
-.mchat__where { color: var(--muted); font-size: 0.8rem; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mchat__close { border: 0; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; color: var(--muted); }
+.mchat__lights { display: flex; gap: 8px; }
+.mchat__light {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: filter var(--dur-fast);
+}
+.mchat__lights:hover .mchat__light { filter: brightness(0.92); }
+.mchat__light--close { background: #ff5f57; }
+.mchat__light--min { background: #febc2e; }
+.mchat__light--max { background: #28c840; }
+.mchat__light:focus-visible { outline-offset: 2px; }
+
+.mchat__title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.85rem;
+}
+
+.mchat__name { font-weight: 600; }
+.mchat__where { color: var(--muted); font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; }
 
 .mchat__log {
   overflow: auto;
@@ -117,6 +158,8 @@
   min-height: 160px;
   overscroll-behavior: contain;
 }
+
+.mchat.is-max .mchat__log { min-height: 50svh; }
 
 .mchat__msg { max-width: 92%; display: grid; gap: 6px; line-height: 1.45; }
 .mchat__msg p, .mchat__msg ul, .mchat__msg ol { margin: 0; }
@@ -167,6 +210,7 @@
   .motus__btn, .motus__btn canvas { width: 88px; height: 88px; }
   .motus__bubble { right: 80px; bottom: 56px; }
   .mchat { max-height: min(78svh, 560px); }
+  .mchat.is-max { max-height: calc(100svh - 110px); }
 }
 
 /* Keep copy clear of Motus on narrow screens. */

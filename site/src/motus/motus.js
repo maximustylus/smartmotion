@@ -12,12 +12,13 @@ import { openChat } from './chat.js'
 
 const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// Voxel map. Each entry: [x, y, z, part]. y up. A round face, like a
-// robot emoji: a voxel sphere wearing the brand gradient left to right,
-// two eyes, a smile, and an antenna whose tip is the light from the logo.
-function buildVoxels() {
+// Voxel map. The round body is fixed; the face is drawn from a pool of
+// feature voxels that each expression repositions, so Motus can change
+// its face without rebuilding the mesh.
+const R = 4.6
+const FACE_SLOTS = 22
+function buildBody() {
   const v = []
-  const R = 4.6
   for (let x = -5; x <= 5; x++)
     for (let y = -5; y <= 5; y++)
       for (let z = -5; z <= 5; z++) {
@@ -25,16 +26,25 @@ function buildVoxels() {
         if (d > R || d < R - 1.6) continue
         v.push([x, y, z, 'skin'])
       }
-  // Face features sit proud of the sphere on the +z side.
-  const face = (x, y) => Math.round(Math.sqrt(Math.max(0, R * R - x * x - y * y)))
-  for (const [x, y] of [[-2, 1], [-1, 1], [2, 1], [1, 1]]) v.push([x, y, face(x, y) + 1, 'eye'])
-  for (const [x, y] of [[-3, -1], [-2, -2], [-1, -3], [0, -3], [1, -3], [2, -2], [3, -1]]) v.push([x, y, face(x, y) + 1, 'mouth'])
-  // Antenna and tip.
-  v.push([0, 5, 0, 'stem'], [0, 6, 0, 'stem'], [0, 7, 0, 'tip'])
-  // Feet, so it can stand and squash.
   v.push([-2, -5, 0, 'foot'], [-2, -5, 1, 'foot'], [2, -5, 0, 'foot'], [2, -5, 1, 'foot'])
   return v
 }
+const faceZ = (x, y) => Math.round(Math.sqrt(Math.max(0, R * R - x * x - y * y))) + 1
+
+// Each expression: a list of [x, y] feature cells on the face.
+const EYES = { open: [[-2, 1], [-1, 1], [1, 1], [2, 1]], wide: [[-2, 2], [-2, 1], [-1, 2], [-1, 1], [1, 2], [1, 1], [2, 2], [2, 1]], happy: [[-3, 1], [-2, 2], [-1, 1], [1, 1], [2, 2], [3, 1]], wink: [[-2, 1], [-1, 1], [1, 1], [2, 1], [3, 1]], shut: [[-2, 1], [-1, 1], [1, 1], [2, 1]] }
+const MOUTHS = { smile: [[-3, -1], [-2, -2], [-1, -3], [0, -3], [1, -3], [2, -2], [3, -1]], grin: [[-3, -1], [-3, -2], [-2, -3], [-1, -3], [0, -3], [1, -3], [2, -3], [3, -2], [3, -1], [-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1]], o: [[-1, -2], [0, -1], [1, -2], [0, -3]], flat: [[-2, -2], [-1, -2], [0, -2], [1, -2], [2, -2]], hmm: [[-2, -3], [-1, -2], [0, -2], [1, -2]], open: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, -2], [-1, -3], [0, -3], [1, -3], [2, -2]] }
+const FACES = {
+  smile: [EYES.open, MOUTHS.smile],
+  grin: [EYES.happy, MOUTHS.grin],
+  wink: [EYES.wink, MOUTHS.smile],
+  surprised: [EYES.wide, MOUTHS.o],
+  thinking: [EYES.open, MOUTHS.hmm],
+  calm: [EYES.open, MOUTHS.flat],
+  sleepy: [EYES.shut, MOUTHS.flat],
+  talk: [EYES.open, MOUTHS.open],
+}
+const AWAKE_FACES = ['smile', 'grin', 'wink', 'surprised', 'thinking', 'calm']
 
 // The logo gradient, fuchsia to lime, sampled by x.
 const STOPS = [
@@ -81,20 +91,33 @@ export function createMotus(host, { onOpen } = {}) {
   sun.position.set(4, 8, 6)
   scene.add(sun)
 
-  const voxels = buildVoxels()
+  const voxels = buildBody()
   const geo = new THREE.BoxGeometry(1, 1, 1)
   const mat = new THREE.MeshLambertMaterial()
-  const mesh = new THREE.InstancedMesh(geo, mat, voxels.length)
-  const colours = { eye: new THREE.Color('#111114'), mouth: new THREE.Color('#111114'), stem: new THREE.Color('#111114'), tip: new THREE.Color('#FFF8E1'), foot: new THREE.Color('#111114') }
-  const colourAttr = new Float32Array(voxels.length * 3)
+  const mesh = new THREE.InstancedMesh(geo, mat, voxels.length + FACE_SLOTS)
+  const ink = new THREE.Color('#111114')
+  const colourAttr = new Float32Array((voxels.length + FACE_SLOTS) * 3)
   mesh.instanceColor = new THREE.InstancedBufferAttribute(colourAttr, 3)
   const m = new THREE.Matrix4()
-  const eyes = []
-  voxels.forEach(([x, y, z, part], i) => {
+  voxels.forEach(([x, y, z], i) => {
     m.makeTranslation(x, y, z)
     mesh.setMatrixAt(i, m)
-    if (part === 'eye') eyes.push(i)
   })
+  let faceName = 'smile'
+  function setFace(name) {
+    faceName = name
+    const [eyes, mouth] = FACES[name]
+    const cells = [...eyes.map((c) => [...c, 'eye']), ...mouth.map((c) => [...c, 'mouth'])]
+    for (let k = 0; k < FACE_SLOTS; k++) {
+      const i = voxels.length + k
+      const cell = cells[k]
+      if (cell) m.makeScale(1, 1, 1).setPosition(cell[0], cell[1], faceZ(cell[0], cell[1]))
+      else m.makeScale(0.001, 0.001, 0.001).setPosition(0, 0, 0)
+      mesh.setMatrixAt(i, m)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+  }
+  setFace('smile')
   const rig = new THREE.Group()
   rig.add(mesh)
   scene.add(rig)
@@ -103,9 +126,9 @@ export function createMotus(host, { onOpen } = {}) {
   // features flip between ink and paper so the face always reads.
   function theme() {
     const dark = getComputedStyle(document.documentElement).colorScheme.includes('dark')
-    const ink = new THREE.Color(dark ? '#0b0b0e' : '#111114')
-    for (const k of ['eye', 'mouth', 'stem', 'foot']) colours[k].copy(ink)
-    voxels.forEach(([x, , , part], i) => mesh.setColorAt(i, part === 'skin' ? gradient((x + 5) / 10) : colours[part]))
+    ink.set(dark ? '#0b0b0e' : '#111114')
+    voxels.forEach(([x, , , part], i) => mesh.setColorAt(i, part === 'skin' ? gradient((x + 5) / 10) : ink))
+    for (let k = 0; k < FACE_SLOTS; k++) mesh.setColorAt(voxels.length + k, ink)
     mesh.instanceColor.needsUpdate = true
   }
   theme()
@@ -115,13 +138,16 @@ export function createMotus(host, { onOpen } = {}) {
   const state = { mode: 'idle', blink: 0, lastTouch: performance.now(), talking: false }
   const IDLE_MS = 28000
 
+  let awakeFace = 'smile'
   function setEyes(open) {
-    for (const i of eyes) {
-      const [x, y, z] = voxels[i]
-      m.makeScale(1, open ? 1 : 0.15, 1).setPosition(x, y, z)
-      mesh.setMatrixAt(i, m)
-    }
-    mesh.instanceMatrix.needsUpdate = true
+    setFace(open ? awakeFace : 'sleepy')
+  }
+  // A new face every so often while awake, with a little squash to sell it.
+  function changeFace() {
+    const pick = AWAKE_FACES.filter((f) => f !== awakeFace)
+    awakeFace = pick[Math.floor(Math.random() * pick.length)]
+    setFace(awakeFace)
+    if (!reduce()) gsap.fromTo(rig.scale, { y: 0.9, x: 1.08 }, { y: 1, x: 1, duration: 0.5, ease: 'elastic.out(1, 0.5)' })
   }
 
   function snooze() {
@@ -170,6 +196,8 @@ export function createMotus(host, { onOpen } = {}) {
   const clock = new THREE.Clock()
   let running = true
   let nextBlink = 2
+  let nextFace = 6
+  let talkTick = 0
   function frame() {
     if (!running) return
     requestAnimationFrame(frame)
@@ -180,10 +208,21 @@ export function createMotus(host, { onOpen } = {}) {
       mesh.position.y = Math.sin(t * speed) * amp
       rig.rotation.y = Math.sin(t * 0.6) * 0.3
       mesh.rotation.z = Math.sin(t * 1.3) * 0.03
-      if (t > nextBlink) {
-        setEyes(false)
-        setTimeout(() => state.mode !== 'snooze' && setEyes(true), 120)
-        nextBlink = t + 2.5 + Math.random() * 4
+      if (state.talking) {
+        if (t > talkTick) {
+          setFace(faceName === 'talk' ? awakeFace : 'talk')
+          talkTick = t + 0.18
+        }
+      } else {
+        if (t > nextBlink) {
+          setFace('sleepy')
+          setTimeout(() => state.mode !== 'snooze' && !state.talking && setFace(awakeFace), 110)
+          nextBlink = t + 2.5 + Math.random() * 4
+        }
+        if (t > nextFace) {
+          changeFace()
+          nextFace = t + 5 + Math.random() * 7
+        }
       }
     } else if (state.mode === 'snooze' && !reduce()) {
       mesh.position.y = Math.sin(t * 1.1) * 0.05
