@@ -48,6 +48,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         .join('')}
     </main>
     <div class="upgrade" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
     <nav class="dots" aria-label="Beats in this scene"></nav>
     <div class="counter" aria-hidden="true"><span class="counter__n">01</span><span class="counter__of">/ ${String(scenes.length).padStart(2, '0')}</span></div>
     <div class="cue" aria-hidden="true"><span></span></div>
@@ -141,6 +142,31 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
 
   const todoCount = root.querySelectorAll('.story .todo').length
   if (todoCount) console.info(`[smartmotion] ${todoCount} TODO markers in visible content. Press O for the overview.`)
+
+  // A small ring follows the pointer: the loupe, made visible. Pointer
+  // devices only; it hides over anything you can press.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const ring = root.querySelector('.cursor')
+    const pos = { x: -100, y: -100 }
+    const cur = { x: -100, y: -100 }
+    let shown = false
+    window.addEventListener('pointermove', (e) => {
+      pos.x = e.clientX
+      pos.y = e.clientY
+      const over = e.target.closest?.('button, a, input, textarea, .mchat, .pcard, .overlay, .motus')
+      ring.classList.toggle('is-hidden', !!over)
+      if (!shown) {
+        shown = true
+        ring.classList.add('is-on')
+      }
+    }, { passive: true })
+    document.addEventListener('pointerleave', () => ring.classList.remove('is-on'))
+    gsap.ticker.add(() => {
+      cur.x += (pos.x - cur.x) * 0.22
+      cur.y += (pos.y - cur.y) * 0.22
+      ring.style.transform = `translate(${cur.x}px, ${cur.y}px) translate(-50%, -50%)`
+    })
+  }
 
   // Motus joins once the story is live. Its chat reads the scene list.
   scroll.scenes = scenes

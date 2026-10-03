@@ -271,7 +271,7 @@
 
 .nav-buttons {
   position: fixed;
-  right: 16px;
+  right: 136px;
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   z-index: 10;
   display: flex;
@@ -858,3 +858,22 @@ html.overlay-open { overflow: hidden; }
   background: linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--fg) 7%, transparent) 48%, color-mix(in oklab, var(--fg) 12%, transparent) 50%, color-mix(in oklab, var(--fg) 7%, transparent) 52%, transparent 100%);
   mix-blend-mode: overlay;
 }
+
+
+/* The loupe ring: a hairline circle the size of the lens, trailing the pointer. */
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  width: calc(9vmin);
+  height: calc(9vmin);
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--fg) 45%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base), width var(--dur-base), height var(--dur-base);
+  mix-blend-mode: difference;
+}
+.cursor.is-on { opacity: 1; }
+.cursor.is-on.is-hidden { opacity: 0; }
