@@ -26,11 +26,27 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
 
   // ---------- Beat copy: masked line reveals ----------
 
+  // Lines are split again whenever the web font arrives or the width
+  // changes (a rotated phone, a resized window, the fit guard), so the
+  // breaks always match what is on screen. After a re-split the lines of a
+  // visible beat are simply shown; hidden beats wait below their masks.
   function prepare(beat) {
     if (beat._lines) return beat._lines
     const targets = [...beat.querySelectorAll('h1, h2, h3, p, li')].filter((t) => !t.closest('[data-no-split]'))
-    const split = SplitText.create(targets, { type: 'lines', mask: 'lines', linesClass: 'ln' })
-    beat._lines = split.lines
+    beat._lines = []
+    if (targets.length) {
+      SplitText.create(targets, {
+        type: 'lines',
+        mask: 'lines',
+        linesClass: 'ln',
+        autoSplit: true,
+        onSplit(self) {
+          beat._lines = self.lines
+          const shown = gsap.getProperty(beat, 'visibility') === 'visible'
+          gsap.set(self.lines, { yPercent: shown ? 0 : 110, xPercent: 0, autoAlpha: 1 })
+        },
+      })
+    }
     gsap.set(beat, { autoAlpha: 0 })
     gsap.set(beat._lines, { yPercent: 110 })
     return beat._lines

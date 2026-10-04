@@ -1,35 +1,38 @@
 /*
   The playbook. Eight moves, each with the same anatomy:
-    principle   the move and its angle, in the owner's voice
-    framework   the named framework behind it, with its source
-    example     a worked case, from the use cases or from building this app
-    cheatsheet  a workflow prompt in workflows/ that pastes into any assistant
+    name, angle, principle   the move, its one-line picture and why it matters
+    framework                the idea behind it, with its source ("See why")
+    example                  a worked case, usually this app itself ("See how")
+    promptHeading            the moment to use the prompt ("Try it")
+    cheatsheet               the prompt file in ./cheatsheets, copied from the page
 
-  Content rules from brief.md apply: nothing invented, anything unsourced is
-  marked TODO. Sources listed here must be verified against the originals in
+  Copy is plain text. [[TODO: ...]] marks something the owner still has to
+  supply and shows as a TODO chip; {{active}}, {{elapsed}}, {{commits}},
+  {{prompts}} and {{sittings}} are live figures kept by scripts/steward.mjs.
+  See render.js. Content rules from BRIEF.md apply: nothing invented, and
+  sources listed here must be verified against the originals in
   references.md before publishing.
 */
-
-const todo = (text) => `<span class="todo">${text}</span>`
 
 export const moves = [
   {
     id: 'end',
     phase: 'analyse',
     name: 'Begin with the end in mind',
-    angle: 'Decide what done means before you open a single file.',
+    angle: 'Decide what done looks like while the page is still blank.',
     principle:
-      'A vibecoded tool drifts unless the finish line is written down first. For this app, done is one sentence in the brief: deployed, a full rehearsal on Zoom, no TODO in visible content, every claim traceable to a reference. Everything else is negotiable.',
+      'There is always one more thing to add. Unless you write down what done means, the work drifts. A few yes-or-no checks will do: the assistant works towards them, and you decide when they are met.',
     framework: {
-      name: 'Begin with the end in mind',
+      name: 'Covey’s second habit',
       source: 'Stephen R. Covey, The 7 Habits of Highly Effective People (1989), Habit 2; Bound and Chia, Six Principles of Learning Design',
-      note: 'Covey\u2019s second habit: start with a clear picture of the destination. Learning design does the same, starting from the outcome and working back to the activity.',
+      note: 'The habit: start with a clear picture of your destination. Learning design does the same, working back from the outcome to the activity. If you write learning outcomes before you plan a session, you already do this. With an assistant, that picture is a one-page brief.',
       verify: true,
     },
     example: {
-      title: 'The brief that built this app',
-      body: 'brief.md names the purpose, the audience, the stack, the running order, the data rules and the definition of done. The app was built in phases against it, stopping for approval after each.',
+      title: 'The brief behind this app',
+      body: 'This app was built from a written brief, in phases, with a stop for approval after each. Done is one sentence with four checks: live on the web, rehearsed in full on Zoom, no placeholders marked TODO in view, every claim traceable to a reference. Everything else is negotiable.',
     },
+    promptHeading: 'Turn your idea into a brief',
     cheatsheet: 'begin-with-the-end',
     form: 'brain',
   },
@@ -37,59 +40,62 @@ export const moves = [
     id: 'angle',
     phase: 'analyse',
     name: 'Have an angle',
-    angle: 'Vibe times coding. Garbage in, garbage out. Both factors are needed.',
+    angle: 'An assistant multiplies what you bring. Vague brief, confident guess.',
     principle:
-      'An assistant multiplies what you bring. A sharp intent with weak execution stalls, and strong execution of a vague intent builds the wrong thing. The angle is the half you own.',
+      'A draft can look finished and still have no point. Let the assistant help with the making. The angle is the half you own.',
     framework: {
-      name: 'Garbage in, garbage out',
+      name: 'Intent times execution',
       source: null,
-      note: todo('Framework and source for this move, owner to confirm.'),
+      note: 'A rule of thumb. Intent is your angle: what you want and why. Execution is how well it gets built. Multiply them: if either is near zero, so is the result. Building software by describing it, without reading the code, is vibe coding. Think of vibe as intent and coding as execution. Both count. [[TODO: owner to confirm the framework and its source]]',
       verify: true,
     },
     example: {
       title: 'The stroll',
-      body: `A light aside on strolling and wandering minds. ${todo('Killingsworth and Gilbert (2010): verify the finding and cite the original before publishing.')}`,
+      body: 'The talk behind this playbook has a topic: generative AI for educators. Its angle is in the title: a casual stroll, or GAi GAi in Singlish. A stroll does not try to see everything. A topic tells you what to cover. An angle tells you what to leave out. [[TODO: Killingsworth and Gilbert (2010): verify the finding and cite the original before publishing]]',
     },
+    promptHeading: 'When the draft feels generic',
     cheatsheet: 'have-an-angle',
     form: 'angle',
   },
   {
     id: 'hook',
     phase: 'design',
-    name: 'Know the hook, keep the engagement',
-    angle: 'Open with something people do, not something they watch.',
+    name: 'Find the hook, hold the room',
+    angle: 'Open with something the room does, not something it watches.',
     principle:
-      'The first eight minutes of the talk are a quiz on your own phone. The hook is participation, and the engagement is seeing the room’s totals move while you sit in it.',
+      'Attention is lent, not owed. A hook earns it at the start, and seeing everyone\'s answers add up holds it. An assistant can suggest both, but you know the room, so you choose.',
     framework: {
       name: 'Zone of Proximal Development',
       source: 'Vygotsky (1978)',
-      note: 'Engagement lives at the edge of what someone can do alone and what they can do with help.',
+      note: 'Vygotsky\'s zone is the gap between what a learner can do alone and what they can do with help. We borrow it for openings. Set a task everyone can start, pitched a little beyond easy, with help close by. The aim: nobody bored, nobody lost.',
       verify: true,
     },
     example: {
       title: 'The icebreaker quiz',
-      body: 'Tap the tools you know, answer one question, see where the room stands. Aggregate counters only, one play per device, and the personal result still shows if the room is unreachable.',
+      body: 'The talk\'s first eight minutes are a quiz on your own phone. Place yourself on four levels of AI readiness, pick the type that sounds like you, then watch the room\'s totals move. Taking part is the hook. The totals hold the room. One go per device, anonymous totals only.',
     },
+    promptHeading: 'Plan your opening',
     cheatsheet: 'know-the-hook',
     form: 'target',
   },
   {
     id: 'architecture',
     phase: 'design',
-    name: 'Understand the file system and architecture',
-    angle: 'If you cannot draw the folders, you cannot steer the build.',
+    name: 'Know your way around the files',
+    angle: 'Think of a resuscitation trolley: you did not build it, but you know which drawer holds what.',
     principle:
-      'Vibecoding does not excuse you from knowing where things live. A readable tree, one responsibility per file, and content kept apart from code are what let you ask for a change and recognise whether it landed.',
+      'Building an app by describing it, without reading the code, is called vibe coding. The assistant does the filing. You still need to learn where things live, so you can ask for a change and check it was made.',
     framework: {
-      name: 'Separation of content, structure and behaviour',
+      name: 'Keep content, structure and behaviour apart',
       source: null,
-      note: todo('Framework and source for this move, owner to confirm.'),
+      note: 'Content is what a page says. Structure is how it is put together and how it looks. Behaviour is what happens when you tap or type. Give each its own place, and give every file one job. Then you know where to look, and a change to the words leaves the rest alone. [[TODO: owner to confirm the framework and its source]]',
       verify: true,
     },
     example: {
-      title: 'This app’s own tree',
-      body: 'site/src/content holds the moves and routes. site/src/story turns them into scenes. site/src/quiz talks to Firestore. workflows/ holds the cheatsheets. firestore.rules says what a client may write. Nothing else.',
+      title: 'This app, in three folders',
+      body: 'The eight moves and their order live in site/src/content. In site/src/story they become the scenes you scroll through. The app\'s quiz talks to its database through site/src/quiz. Ask to reword a move and only the content folder should change. If another folder changes too, ask why.',
     },
+    promptHeading: 'Before you ask for changes',
     cheatsheet: 'know-the-architecture',
     form: 'tree',
   },
@@ -97,19 +103,20 @@ export const moves = [
     id: 'frameworks',
     phase: 'develop',
     name: 'Build on solid frameworks',
-    angle: 'Borrow structure from people who tested theirs.',
+    angle: 'The assistant is new. The questions about good teaching are not.',
     principle:
-      'Education already has frameworks for competence, feedback and design. A tool that maps onto one of them inherits its evidence and its vocabulary, and the people in the room already speak it.',
+      'A solid framework is someone’s careful thinking, in words your colleagues already know. Set the teaching tool you build beside one: see what it covers and what it misses. The assistant suggests the fit. You decide whether it holds.',
     framework: {
-      name: 'Miller’s pyramid, R2C2, 6PoLD, Zone of Proximal Development',
+      name: 'Four frameworks, one job each',
       source: 'Miller (1990); Sargeant et al. (2015); Bound and Chia; Vygotsky (1978)',
-      note: 'Knows, knows how, shows how, does. Relationship, reaction, content, coaching. Six principles. The zone.',
+      note: 'For competence, Miller’s pyramid: knows, knows how, shows how, does. For feedback, R2C2: relationship, reaction, content, coaching. For design, the Six Principles of Learning Design (6PoLD). For support, the Zone of Proximal Development: what a learner can do with help, but not yet alone. Each gives you a question to ask.',
       verify: true,
     },
     example: {
-      title: 'Mapping a tool to Miller',
-      body: todo('Worked example, owner to supply from the use cases.'),
+      title: 'One tool on Miller’s pyramid',
+      body: '[[TODO: worked example, owner to supply from the use cases]]',
     },
+    promptHeading: 'Before your tool reaches learners',
     cheatsheet: 'build-on-frameworks',
     form: 'pyramid',
   },
@@ -117,62 +124,65 @@ export const moves = [
     id: 'safe',
     phase: 'implement',
     name: 'Use it safely',
-    angle: 'The tools got good enough to fool a room. Plan for that.',
+    angle: 'An answer can sound sure. An image can look real. Either can be false.',
     principle:
-      'What was an obvious fake in 2023 is convincing in 2025. Safe use is a habit, not a filter: know the source, keep patient data out, and treat a striking image as a claim to check.',
+      'Safe use is a habit, not a switch: know the source, keep patient data out of the chat, and treat a striking image as a claim to check. The assistant drafts. You countersign.',
     framework: {
-      name: 'From hallucination to AI psychosis',
+      name: 'From made-up answers to "AI psychosis"',
       source: 'Østergaard (2023); Mata v. Avianca (2023)',
-      note: 'In 2023 a chatbot invented six court cases and a lawyer filed them. The same year a psychiatrist asked whether chatbots could feed delusions in people already prone to them. By 2025 the press called it AI psychosis. It is not a diagnosis, and the research is thin, which is exactly why the habit matters.',
+      note: 'In 2023 a chatbot invented six court cases and a lawyer filed them. Such answers are called hallucinations. That year a psychiatrist asked whether chatbots could feed delusions in people already prone to them. By 2025 the press called that worry "AI psychosis". It is not a diagnosis. The research is thin. Check anyway.',
       verify: true,
     },
     example: {
-      title: 'From spaghetti to crocodiles',
-      body: `${todo('Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify.')} Then the Pandan Reservoir image case, reported by Mothership on 29 September 2026, in which a person was charged over an image that allegedly showed a crocodile at the reservoir. ${todo('Link to the article.')}`,
+      title: 'Spaghetti, then a crocodile',
+      body: 'The same spaghetti scene, made by AI: an obvious fake in 2023, convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, Mothership reported that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. [[TODO: link to the article]] The picture that makes a room gasp is the one to check first.',
     },
+    promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
     form: 'rings',
   },
-
   {
     id: 'test',
     phase: 'evaluate',
-    name: 'Test it with the utility formula',
-    angle: 'Utility = Validity × Reliability × Educational Impact × Acceptability × Cost.',
+    name: 'Test for usefulness, not applause',
+    angle: 'Score a tool on five questions, then multiply. One zero, and the rest counts for nothing.',
     principle:
-      'Adapted from assessment to vibecoded tools. It is a product, not a sum. Set any factor to zero and the whole thing collapses, however impressive the rest.',
+      'A tool built with an assistant can look finished before it is useful, and applause cannot tell the difference. Let the assistant sort your evidence and show the gaps. You check it and give the verdict.',
     framework: {
       name: 'Utility of assessment',
       source: 'van der Vleuten (1996)',
-      note: 'Cost is the whole cost of ownership, not the token bill.',
+      note: 'Van der Vleuten described an assessment\'s usefulness as five qualities multiplied, not added. Asked of a tool: does it do what it claims? Every time? Does it help anyone learn? Will people use it? Is it affordable to own, not only to buy? Utility = Validity × Reliability × Educational Impact × Acceptability × Cost.',
       verify: true,
     },
     example: {
-      title: 'Capability versus cost',
-      body: todo('Cost (a): capability versus cost per task from the live Artificial Analysis page, with retrieval date. Cost (b): total cost of ownership from content/cost-evidence.md. Owner to supply.'),
+      title: 'Two ways to count cost',
+      body: 'Take one factor, cost. First per task: what an assistant can do, set against what each task costs. Then in full: what the tool costs to own. [[TODO: cost examples, owner to supply: capability versus cost per task with a retrieval date, and total cost of ownership]]',
     },
+    promptHeading: 'Score it before you say yes',
     cheatsheet: 'test-with-utility',
     form: 'columns',
   },
   {
     id: 'reality',
     phase: 'evaluate',
-    name: 'Reality check',
-    angle: 'Idea in five minutes. Working demo in two hours. The final 10% takes six months.',
+    name: 'Give it a reality check',
+    angle: 'An idea in five minutes. A working demo in two hours. The final 10% takes six months.',
     principle:
-      'The demo is not the product. Each extra nine of reliability costs as much as everything before it, and that is where most vibecoded tools stop.',
+      'A demo works once, for you, on a good day. A tool people rely on keeps working, for a stranger, on a bad day. The assistant makes the demo quick, and you decide how much more the idea deserves.',
     framework: {
       name: 'The march of nines',
       source: 'Karpathy on the Dwarkesh Podcast (2025)',
-      note: todo('Cite the interview itself, not summaries of it. Verify the wording.'),
+      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. Andrej Karpathy’s claim: each extra nine takes as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: cite the interview itself and verify the wording]]',
       verify: true,
     },
     example: {
       title: 'This app’s own timeline',
-      body: todo('Hours from brief to first deploy, and what the last stretch was spent on. Owner to supply from the commit history.'),
+      body: 'From new project to first working version: 1 h 29 min. Then came redesigns, a quiz, a companion robot and many refinements. So far: {{active}} of building, {{prompts}} prompts to the assistant, {{sittings}} sittings, and still not finished. The demo was the quick part. Leave time for the rest.',
     },
+    promptHeading: 'When a demo looks finished',
     cheatsheet: 'reality-check',
     form: 'bar',
-  },]
+  },
+]
 
 export const moveById = Object.fromEntries(moves.map((m) => [m.id, m]))

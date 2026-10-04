@@ -36,10 +36,10 @@ export const levels = [
 export const question = 'Which of these sounds most like you?'
 
 export const types = [
-  { id: 1, label: null, hint: 'R, Python, Stata, SPSS. You trust a clean dataset and a good test.' },
-  { id: 2, label: null, hint: 'Canva, CMYK, RGB, aspect ratios. You notice when the margins are off.' },
-  { id: 3, label: null, hint: 'Protocols and workflows. You want the steps written down and followed.' },
-  { id: 4, label: null, hint: 'The storyteller. You remember the case, not the table.' },
+  { id: 1, label: null, hint: 'R, Python, Stata, SPSS. You ask for the sample size first.' },
+  { id: 2, label: null, hint: 'Canva, CMYK, RGB, aspect ratios. You notice the font before you read the words.' },
+  { id: 3, label: null, hint: 'Protocols, workflows, checklists. You sleep better once the steps are written down.' },
+  { id: 4, label: null, hint: 'Stories, cases, a good analogy. You remember the case, not the numbers.' },
 ]
 
 // The logo grid is no longer part of the icebreaker. The list stays here in

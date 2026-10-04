@@ -45,7 +45,7 @@ add(
 const r = routes['gai-gai']
 add(
   'app/map.md',
-  `# Map of the app\n\nPlaybook at / : scene ids in order: cover, ${phases.flatMap((p) => [eras.find((e) => e.before === p.id)?.id, `phase${p.id}`, ...p.moves]).filter(Boolean).join(', ')}, routes.\n\nTalk route "${r.title}" at /talk (${r.event}, ${r.when.join(', ')}): scene ids in order: ${r.steps.map((s) => s.scene ?? s.era ?? s.move).join(', ')}. The quiz (scene id: quiz) is the icebreaker: tap the AI tools you know, answer one question, see live room totals. /play opens the talk on the quiz.\n\nSpeaker: ${r.speaker.name}. ${r.speaker.roles.join('. ')}.\n\nKeys on the shared screen: arrows move between beats, O overview, T timer, B blackout, F full screen, D theme, Z reset room totals, ? help. Motus (that is you) sits at the bottom right; clicking you opens this chat.`,
+  `# Map of the app\n\nPlaybook at / : scene ids in order: cover, ${phases.flatMap((p) => [eras.find((e) => e.before === p.id)?.id, `phase${p.id}`, ...p.moves]).filter(Boolean).join(', ')}, routes.\n\nTalk route "${r.title}" at /talk (${r.event}, ${r.when.join(', ')}): scene ids in order: ${r.steps.map((s) => s.scene ?? s.era ?? s.move).join(', ')}. The quiz (scene id: quiz) is the icebreaker: place yourself on four levels of AI readiness, pick the type that sounds like you, then see the room's live, anonymous totals. /play opens the talk on the quiz.\n\nSpeaker: ${r.speaker.name}. ${r.speaker.roles.join('. ')}.\n\nKeys on the shared screen: arrows move between beats, O overview, T timer, B blackout, F full screen, D theme, Z reset room totals, ? help. Motus (that is you) sits at the bottom right; clicking you opens this chat.`,
 )
 
 add(

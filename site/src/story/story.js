@@ -72,6 +72,36 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   let motus = null
   const mounted = new Map()
 
+  // Fit guard: on a short screen a long beat shrinks just enough to stay
+  // on screen, rather than running off the top. Measured from the beat's
+  // own children, so entrance animations on the beat do not skew it.
+  let current = null
+  let fitTimer = 0
+  const beatHeight = (el) => {
+    const kids = [...el.children].filter((k) => getComputedStyle(k).position !== 'absolute' && k.getClientRects().length)
+    if (!kids.length) return 0
+    const rects = kids.map((k) => k.getBoundingClientRect())
+    const cs = getComputedStyle(el)
+    const zoom = parseFloat(el.style.zoom) || 1
+    return Math.max(...rects.map((r) => r.bottom)) - Math.min(...rects.map((r) => r.top)) + (parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) * zoom
+  }
+  function fitBeat(el) {
+    if (!el) return
+    el.style.zoom = ''
+    const room = window.innerHeight - 68 - 36
+    if (beatHeight(el) <= room) return
+    // Find the largest size that fits, between 72% and full size.
+    let lo = 0.72, hi = 1
+    for (let i = 0; i < 5; i++) {
+      const mid = (lo + hi) / 2
+      el.style.zoom = mid
+      if (beatHeight(el) <= room) lo = mid
+      else hi = mid
+    }
+    el.style.zoom = lo.toFixed(3)
+  }
+  window.addEventListener('resize', () => fitBeat(current))
+
   const scroll = createScroll(root, scenes, {
     onScene(si, bi, sceneChanged) {
       const s = scenes[si]
@@ -115,6 +145,11 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       }
       root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
+      current = root.querySelector(`#scene-${s.id} .beat[data-beat="${bi}"]`)
+      fitBeat(current)
+      // Once more after the lines have re-split at the new size.
+      clearTimeout(fitTimer)
+      fitTimer = setTimeout(() => fitBeat(current), 450)
       field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined, slot: si * 3 + bi })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
       if (sceneChanged && s.id === 'questions') setTimeout(() => motus?.say('Questions? Ask me, or ask the room.', 4000), 1200)

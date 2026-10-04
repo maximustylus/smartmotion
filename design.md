@@ -15,18 +15,25 @@ are a move you can open and read, and so is the brief that built it.
 
 ### Moves
 
-Eight moves, in this order. Each has the same anatomy: principle and
-angle, the framework behind it with its source, a worked example, and a
-cheatsheet that pastes into any assistant.
+Eight moves, in this order. Each has the same anatomy, shown as four
+beats: the move (name, one-line angle, principle), "See why" (the framework
+behind it with its source), "See how" (a worked example) and "Try it" (a
+prompt that pastes into an assistant).
 
 1. Begin with the end in mind
 2. Have an angle
-3. Know the hook, keep the engagement
-4. Understand the file system and architecture
+3. Find the hook, hold the room
+4. Know your way around the files
 5. Build on solid frameworks
-6. Test it with the utility formula
-7. Reality check
-8. Use it safely
+6. Use it safely
+7. Test for usefulness, not applause
+8. Give it a reality check
+
+Names 3, 4, 7 and 8 were made plainer in the content pass of 5 October
+2026 (previously: Know the hook, keep the engagement; Understand the file
+system and architecture; Test it with the utility formula; Reality check).
+Scene ids, links and file names did not change. The voice rules agreed in
+that pass are in content/voice.md.
 
 ### Routes
 

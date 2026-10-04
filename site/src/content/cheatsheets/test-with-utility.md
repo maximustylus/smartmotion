@@ -1,11 +1,19 @@
-# Test it with the utility formula
+# Test for usefulness, not applause
 
 Paste this before you commit to a tool, yours or anyone else's.
 
 ---
 
-Score [the tool] on this formula, adapted from van der Vleuten (1996):
+Help me test whether [tool name] is useful, not only impressive. It should help [who] to [do what]. Use only this evidence: [results, feedback, costs, or none yet].
 
-Utility = Validity × Reliability × Educational Impact × Acceptability × Cost
+Score it on five questions, adapted from van der Vleuten's utility of assessment (1996). For each, give a score from 0 (no) to 1 (yes), the evidence and what would raise it. With no evidence, write "unknown" and do not guess.
 
-For each factor give a score from 0 to 1, the evidence for the score, and what would move it up. Treat it as a product: if any factor is near zero say plainly that the utility is near zero regardless of the others. Cost means total cost of ownership over a year: the people, the checking, the maintenance and the exit, not the subscription or the tokens. Where you have no evidence, score it as unknown and mark TODO rather than guessing.
+Validity: does it do what it claims, and get it right?
+Reliability: does it work every time?
+Educational Impact: do people learn better because of it?
+Acceptability: will learners, colleagues and my organisation accept it?
+Cost: is it affordable to own for a year? Count people's time, checking, upkeep and the cost of switching away, not only the subscription or usage bill.
+
+Then multiply the scores. If any is near zero, say plainly that the tool's usefulness is near zero, whatever the rest. Otherwise, one unknown makes the result unknown.
+
+End with what I should find out and check myself.

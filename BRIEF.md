@@ -1,6 +1,6 @@
 # smartmotion build brief
 
-Version 1.1, 3 October 2026. Read with HANDOVER.md and design.md. Where
+Version 1.2, 5 October 2026. Read with HANDOVER.md and design.md. Where
 they differ, the newer file wins.
 
 ## Purpose
@@ -117,6 +117,18 @@ Deployed at smartmotion.web.app, runs a full 60-minute rehearsal on Zoom, no
 TODO left in visible content, every claim traceable to references.md.
 
 ## Change log
+
+### 1.2, 5 October 2026
+- Content pass. Every line of on-screen copy was rewritten so a lay reader
+  gets it at first read and a technical reader still respects it. The
+  phrase "Garbage in, garbage out" is replaced by "Vague brief, confident
+  guess" beside "An assistant multiplies what you bring".
+- Four moves have plainer names (see design.md). The beats under each move
+  are labelled See why, See how and Try it. What sits under a move is
+  called a prompt on screen.
+- The voice rules agreed in that pass are in content/voice.md. No fact was
+  added: every TODO that awaited the owner still awaits the owner.
+- On the talk route the moves are numbered by the route, 1 to 5 of 5.
 
 ### 1.1, 3 October 2026
 - The audience mainly wants practical how-tos. The four education

@@ -1,9 +1,17 @@
-# Understand the file system and architecture
+# Know your way around the files
 
-Paste this into any project, before asking for changes.
+Paste this when your assistant is building an app and can see its files.
 
 ---
 
-Draw me the folder tree of this project, two levels deep, and next to each folder write one line on what lives there and one line on what must never live there. Then list the three files I would open first to change: the words people read, the look, and the behaviour.
+This project is [what it is, in one line]. I am [your role] and I do not write code, so use plain words and explain each technical term once.
 
-Where content, structure and behaviour are mixed in one file, say so and propose how to separate them. Do not change anything yet. End with the one question whose answer would most change the tree.
+Do not change anything yet. Look through this project's files. If you cannot see them, say so and stop. Do not guess.
+
+Then:
+1. Draw the folders as a tree, two levels deep. Beside each folder, write one line on what lives there and one on what does not belong there.
+2. Name the file or folder I would open first to change each of these: the words people read, the look and layout, and what it does.
+3. Where one file does more than one of those jobs, say so and propose how to split it.
+4. Suppose I ask for this: [one small change, such as rewording one heading]. Which files should it touch, so I know where to check?
+
+End by asking me the one question whose answer would most change the tree you drew.
