@@ -292,22 +292,23 @@ const SPRITES = [
   // light-blue visor, a red chest with two windows, grey arms, blue legs.
   ['......bbbb......', '.....bbbbbb.....', '..b..bbbbbb..b..', '..bb.bccccb.bb..', '..bb.bkkkkb.bb..', '...bbbbbbbbbb...', '....gggggggg....', '..ggrrrrrrrrgg..', '.gg.rrccccrr.gg.', '.gg.rrccccrr.gg.', '.gg.rrrrrrrr.gg.', '.g..rryyyyrr..g.', '.g..rrrrrrrr..g.', '....bbbbbbbb....', '....bbb..bbb....', '....bbb..bbb....', '....bbb..bbb....', '...bbbb..bbbb...', '...kkkk..kkkk...', '..kkkkk..kkkkk..'],
 ]
-// The same truck robot in vehicle mode, seen from the side and facing left:
-// a red cab with a light-blue windscreen and a yellow headlight, blue
-// fenders and chassis, a long grey trailer, black wheels. It drives in
-// along the timeline, then transforms into the standing figure above.
+// The same truck robot in vehicle mode, seen from the side and facing
+// left: just the cab, no trailer. A red cab with a light-blue windscreen
+// and side window, a blue stripe and ear-fin stacks, a yellow headlight,
+// a blue chassis and black wheels. It drives in along the timeline, then
+// transforms into the standing figure above.
 const TRUCK = [
-  '........gggggggggggggg',
-  '........gggggggggggggg',
-  '..g.....gggggggggggggg',
-  '.rrrrrr.gggggggggggggg',
-  '.rccccr.gggggggggggggg',
-  '.rccccr.gggggggggggggg',
-  '.rrrrrrrgggggggggggggg',
-  'yrrrrrrrgggggggggggggg',
-  'bbbbbbbbbbbbbbbbbbbbbb',
-  '.kkk.kkk......kkk.kkk.',
-  '.kkk.kkk......kkk.kkk.',
+  '....b....b..',
+  '....b....b..',
+  '.rrrrrrrrrr.',
+  '.rccccrrccr.',
+  '.rccccrrccr.',
+  '.rrrrrrrrrr.',
+  'yrbbbbbbbbrr',
+  'yrrrrrrrrrr.',
+  'bbbbbbbbbbbb',
+  '.kkk....kkk.',
+  '.kkk....kkk.',
 ]
 
 // 1997: a chessboard seen from above, dark squares filled, with a few
