@@ -149,6 +149,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     })
     import('./field.js').then((m) => {
       field = m.createField(root.querySelector('.field'))
+      window.field = field
       const cur = scenes[scroll.state.scene]
       field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true, anchor: cur.beats[scroll.state.beat]?.anchor ?? cur.anchor, slot: scroll.state.scene * 3 + scroll.state.beat })
       field.setFidelity(FIDELITY[root.dataset.era] ?? 1, { instant: true })

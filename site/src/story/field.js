@@ -292,6 +292,23 @@ const SPRITES = [
   // light-blue visor, a red chest with two windows, grey arms, blue legs.
   ['......bbbb......', '.....bbbbbb.....', '..b..bbbbbb..b..', '..bb.bccccb.bb..', '..bb.bkkkkb.bb..', '...bbbbbbbbbb...', '....gggggggg....', '..ggrrrrrrrrgg..', '.gg.rrccccrr.gg.', '.gg.rrccccrr.gg.', '.gg.rrrrrrrr.gg.', '.g..rryyyyrr..g.', '.g..rrrrrrrr..g.', '....bbbbbbbb....', '....bbb..bbb....', '....bbb..bbb....', '....bbb..bbb....', '...bbbb..bbbb...', '...kkkk..kkkk...', '..kkkkk..kkkkk..'],
 ]
+// The same truck robot in vehicle mode, seen from the side and facing left:
+// a red cab with a light-blue windscreen and a yellow headlight, blue
+// fenders and chassis, a long grey trailer, black wheels. It drives in
+// along the timeline, then transforms into the standing figure above.
+const TRUCK = [
+  '........gggggggggggggg',
+  '........gggggggggggggg',
+  '..g.....gggggggggggggg',
+  '.rrrrrr.gggggggggggggg',
+  '.rccccr.gggggggggggggg',
+  '.rccccr.gggggggggggggg',
+  '.rrrrrrrgggggggggggggg',
+  'yrrrrrrrgggggggggggggg',
+  'bbbbbbbbbbbbbbbbbbbbbb',
+  '.kkk.kkk......kkk.kkk.',
+  '.kkk.kkk......kkk.kkk.',
+]
 
 // 1997: a chessboard seen from above, dark squares filled, with a few
 // pieces standing as small towers.
@@ -372,38 +389,56 @@ function bubblesForm(n, r) {
   return { positions: a }
 }
 
-// A horizontal timeline with the three figures standing on it. Their
-// points carry their own colours; the line takes the field colour.
-function timeline80sForm(n, r) {
+// A long horizontal timeline, running off both edges of the screen with a
+// tick every decade, and the three figures standing on it. Their points
+// carry their own colours; the line takes the field colour. The third
+// station holds the truck in vehicle mode by default, or the standing
+// robot once it has transformed. Both variants share the line and the
+// first two figures point for point, so only the truck's points move.
+const STATIONS = [-1.2, 0, 1.2]
+const LINE_HALF = 3.4
+function timeline80sForm(n, r, stage = 'truck') {
   const a = new Float32Array(n * 3)
   const col = new Float32Array(n * 4)
   const cell = 3.4 / 46
   const snapTo = (v) => Math.round(v / cell) * cell
-  const lineN = Math.floor(n * 0.34)
+  const lineN = Math.floor(n * 0.36)
+  const tickN = Math.floor(n * 0.04)
   for (let i = 0; i < lineN; i++) {
-    a[i * 3] = (r() - 0.5) * 3.3
-    a[i * 3 + 1] = (r() - 0.5) * 0.05
+    a[i * 3] = (r() - 0.5) * LINE_HALF * 2
+    a[i * 3 + 1] = -0.7 + (r() - 0.5) * 0.05
     a[i * 3 + 2] = (r() - 0.5) * 0.05
   }
-  // Tick marks at the three years.
-  const xs = [-1.1, 0, 1.1].map(snapTo)
-  let i = lineN
-  const per = Math.floor((n - lineN) / 3)
-  SPRITES.forEach((rows, si) => {
+  // Decade ticks, short uprights spaced along the whole line.
+  const ticks = []
+  for (let x = -LINE_HALF + 0.1; x <= LINE_HALF; x += 0.6) ticks.push(snapTo(x))
+  for (let i = lineN; i < lineN + tickN; i++) {
+    a[i * 3] = ticks[Math.floor(r() * ticks.length)] + (r() - 0.5) * 0.02
+    a[i * 3 + 1] = -0.7 - cell * (0.6 + r() * 2.2)
+    a[i * 3 + 2] = (r() - 0.5) * 0.04
+  }
+  const xs = STATIONS.map(snapTo)
+  // The figures stand on the line, so the whole picture sits a little
+  // low to keep its centre of mass in the middle of the stage.
+  const BASE = -0.7
+  let i = lineN + tickN
+  const per = Math.floor((n - i) / 3)
+  const figures = [SPRITES[0], SPRITES[1], stage === 'robot' ? SPRITES[2] : TRUCK]
+  figures.forEach((rows, si) => {
     const cells = []
     rows.forEach((row, y) => [...row].forEach((ch, x) => ch !== '.' && cells.push([x, y, PALETTE[ch]])))
     const h = rows.length, w = rows[0].length
     for (let j = 0; j < per && i < n; j++, i++) {
       const [cx, cy, rgb] = cells[Math.floor(r() * cells.length)]
       a[i * 3] = xs[si] + (cx - Math.floor(w / 2) + 0.5) * cell
-      a[i * 3 + 1] = (h - cy + 0.5) * cell
+      a[i * 3 + 1] = BASE + (h - cy + 0.5) * cell
       a[i * 3 + 2] = (r() - 0.5) * 0.04
       col.set([rgb[0], rgb[1], rgb[2], 1], i * 4)
     }
   })
   for (; i < n; i++) {
-    a[i * 3] = (r() - 0.5) * 3.3
-    a[i * 3 + 1] = (r() - 0.5) * 0.05
+    a[i * 3] = (r() - 0.5) * LINE_HALF * 2
+    a[i * 3 + 1] = -0.7 + (r() - 0.5) * 0.05
   }
   return { positions: a, colors: col }
 }
@@ -690,15 +725,76 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, chess: chessForm, phone: phoneForm, bubbles: bubblesForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
-    if (SPECIAL[name]) return SPECIAL[name](N, rng(name.length * 31))
+    // Variants after the colon share the base form's seed, so their
+    // common points land in the same places.
+    if (SPECIAL[name]) return SPECIAL[name](N, rng(name.split(':')[0].length * 31))
     return { positions: forms[name](N, rng(name.length * 31)) }
   }
 
   const NESTS = ['nest', 'nestring', 'nesttri']
+  // Freeze every point where it is right now, so the next move starts
+  // from what is on screen rather than from the last target.
+  function freeze() {
+    const fromA = geo.attributes.aFrom.array
+    const toA = geo.attributes.aTo.array
+    const mix = uniforms.uMix.value
+    for (let i = 0; i < N; i++) {
+      let m = Math.min(1, Math.max(0, mix * 1.35 - seeds[i] * 0.35))
+      m = m * m * (3 - 2 * m)
+      for (let k = 0; k < 3; k++) fromA[i * 3 + k] = fromA[i * 3 + k] + (toA[i * 3 + k] - fromA[i * 3 + k]) * m
+    }
+  }
+  // Move to a new set of positions without changing the current form name.
+  function retarget(positions, duration, ease) {
+    freeze()
+    geo.attributes.aTo.array.set(positions)
+    geo.attributes.aFrom.needsUpdate = true
+    geo.attributes.aTo.needsUpdate = true
+    gsap.killTweensOf(uniforms.uMix)
+    uniforms.uMix.value = 0
+    gsap.to(uniforms.uMix, { value: 1, duration, ease })
+  }
+  // Timed follow-ups to an entrance, cleared whenever the form changes.
+  let chain = []
+  const later = (delay, fn) => chain.push(gsap.delayedCall(delay, fn))
+  const clearChain = () => { chain.forEach((c) => c.kill()); chain = [] }
+
+  // 1984: the truck waits off screen to the right while the others drop in,
+  // drives along the line to its station, bursts into parts and reassembles
+  // as the standing robot.
+  function truckSequence(target) {
+    const toA = geo.attributes.aTo.array
+    const fromA = geo.attributes.aFrom.array
+    const parked = Float32Array.from(target.positions)
+    const isTruck = (i) => target.colors[i * 4 + 3] > 0 && target.positions[i * 3] > 0.55
+    for (let i = 0; i < N; i++) {
+      if (!isTruck(i)) continue
+      parked[i * 3] += 3.8
+      fromA[i * 3] = toA[i * 3] = parked[i * 3]
+      fromA[i * 3 + 1] = toA[i * 3 + 1]
+    }
+    const robot = (cache['timeline80s:robot'] ??= build('timeline80s:robot')).positions
+    const burst = Float32Array.from(robot)
+    const rr = rng(1984)
+    for (let i = 0; i < N; i++) {
+      if (!isTruck(i)) continue
+      burst[i * 3] += gauss(rr) * 0.22
+      burst[i * 3 + 1] += 0.18 + Math.abs(gauss(rr)) * 0.22
+      burst[i * 3 + 2] += gauss(rr) * 0.12
+    }
+    later(2.1, () => retarget(target.positions, 1.8, 'power2.out'))
+    later(4.5, () => {
+      retarget(burst, 0.55, 'power2.in')
+      gsap.fromTo(uniforms.uSpin, { value: 0.025 }, { value: 0, duration: 0.7, ease: 'elastic.out(1, 0.3)' })
+    })
+    later(5.1, () => retarget(robot, 1.1, 'power3.out'))
+  }
+
   function morphTo(name, { instant = false, anchor, enter, slot = 0 } = {}) {
+    clearChain()
     // Each nesting picks a perch and a shape from the slot, so the field
     // never returns to the same corner twice in a row.
     if (name === 'nest') {
@@ -715,16 +811,15 @@ export function createField(host) {
     }
     if (name === current) return
     current = name
-    const target = (cache[name] ??= build(name))
+    // Without the drive-in, the 1984 station shows the robot already standing.
+    const animated = enter === 'drop' && !instant && !reduce()
+    const target = name === 'timeline80s' && !animated
+      ? (cache['timeline80s:robot'] ??= build('timeline80s:robot'))
+      : (cache[name] ??= build(name))
     // Freeze wherever the points are right now, then head for the new form.
+    freeze()
     const fromA = geo.attributes.aFrom.array
     const toA = geo.attributes.aTo.array
-    const mix = uniforms.uMix.value
-    for (let i = 0; i < N; i++) {
-      let m = Math.min(1, Math.max(0, mix * 1.35 - seeds[i] * 0.35))
-      m = m * m * (3 - 2 * m)
-      for (let k = 0; k < 3; k++) fromA[i * 3 + k] = fromA[i * 3 + k] + (toA[i * 3 + k] - fromA[i * 3 + k]) * m
-    }
     toA.set(target.positions)
     // Per-point colours, or none.
     const colA = geo.attributes.aColor.array
@@ -747,6 +842,7 @@ export function createField(host) {
         }
       }
     }
+    if (name === 'timeline80s' && animated) truckSequence(target)
     geo.attributes.aFrom.needsUpdate = true
     geo.attributes.aTo.needsUpdate = true
     gsap.killTweensOf(uniforms.uMix)
@@ -838,5 +934,6 @@ export function createField(host) {
       else gsap.to(uniforms.uFidelity, { value: f, duration: 2.4, ease: 'power2.inOut', overwrite: true })
     },
     get count() { return N },
+    get debug() { return { mode, current, uniforms, geo } },
   }
 }
