@@ -171,3 +171,21 @@
 }
 .flow h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
 .flow p { color: var(--muted); }
+
+/* Rendered markdown: the Motus info card. */
+.md { display: grid; gap: var(--space-4); min-width: 0; }
+.md h2 { font-size: var(--text-h3); margin-top: var(--space-6); }
+.md h3 { font-size: 1.1rem; font-weight: 700; margin-top: var(--space-4); }
+.md h4 { font-size: 1rem; font-weight: 700; }
+.md p, .md li { line-height: 1.55; }
+.md ul, .md ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+.md code { font-family: var(--font-mono); font-size: 0.88em; padding: 0.05em 0.35em; border-radius: 6px; background: var(--accent-soft); overflow-wrap: anywhere; }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: var(--space-4) 0 0; width: 100%; }
+.md blockquote { margin: 0; padding: var(--space-3) var(--space-4); border-left: 3px solid var(--accent); background: color-mix(in oklab, var(--bg) 70%, transparent); border-radius: 0 var(--radius-m) var(--radius-m) 0; }
+.md s { color: var(--muted); }
+.md__table { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-m); background: color-mix(in oklab, var(--bg) 70%, transparent); }
+.md table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+.md th, .md td { text-align: left; vertical-align: top; padding: 10px 12px; border-top: 1px solid var(--line); min-width: 9ch; }
+.md thead th { border-top: 0; font-weight: 700; background: color-mix(in oklab, var(--accent-soft) 60%, transparent); }
+.md tbody tr:first-child td { border-top: 0; }
+.md thead + tbody tr:first-child td { border-top: 1px solid var(--line); }

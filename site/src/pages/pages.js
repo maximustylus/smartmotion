@@ -4,6 +4,7 @@ import { defaultRoute } from '../content/routes.js'
 import { themeToggle } from '../lib/theme.js'
 import effort from '../content/effort.json'
 import { copy } from '../content/copy.js'
+import motusCard from '../../../MOTUS-INFO-CARD.md?raw'
 
 /*
   Plain pages: glossary with site map, and contact. Readable top to bottom,
@@ -152,4 +153,89 @@ export function mountContact(root) {
     status.hidden = false
     status.textContent = copied ? `${address} copied. Paste it into your mail app if one did not open.` : address
   })
+}
+
+// ---------- Motus info card ----------
+
+/*
+  The card is rendered from MOTUS-INFO-CARD.md itself, so the page and the
+  controlled document can never say different things. The renderer covers the
+  small subset the card uses: headings, paragraphs, lists, tables, quotes,
+  rules, bold, italic, code, strikethrough and links.
+*/
+function inlineMd(t) {
+  return esc(t)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/~~([^~]+)~~/g, '<s>$1</s>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[\s(])\*([^*\s][^*]*?)\*(?=[\s).,;:]|$)/g, '$1<em>$2</em>')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) => {
+      const url = /^(https?:|\/|#)/.test(href) ? href : `https://github.com/maximustylus/smartmotion/blob/main/${href}`
+      const ext = /^https?:/.test(url)
+      return `<a href="${url}"${ext ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`
+    })
+}
+
+export function renderMarkdown(md) {
+  const lines = md.replace(/\r/g, '').split('\n')
+  const out = []
+  let i = 0
+  const isBlockStart = (l) => /^(#{1,4}\s|>\s?|\||---\s*$|\s*[-*]\s|\s*\d+\.\s)/.test(l)
+  while (i < lines.length) {
+    const l = lines[i]
+    if (!l.trim()) { i++; continue }
+    let m
+    if ((m = l.match(/^(#{1,4})\s+(.*)$/))) {
+      // The card's own title is the page heading, so ## is a section (h2).
+      const n = Math.min(4, Math.max(2, m[1].length))
+      out.push(`<h${n}>${inlineMd(m[2])}</h${n}>`)
+      i++
+    } else if (/^---\s*$/.test(l)) {
+      out.push('<hr>')
+      i++
+    } else if (l.startsWith('|')) {
+      const rows = []
+      while (i < lines.length && lines[i].startsWith('|')) rows.push(lines[i++])
+      const cells = (r) => r.replace(/^\||\|\s*$/g, '').split('|').map((c) => c.trim())
+      // The divider row is pipes, colons and dashes, with at least one dash;
+      // an empty header row (| | |) is not a divider.
+      const body = rows.filter((r) => !(/^\|[\s:|-]+\|?\s*$/.test(r) && r.includes('-')))
+      const [head, ...rest] = body
+      const th = cells(head).map((c) => `<th>${inlineMd(c)}</th>`).join('')
+      const tb = rest.map((r) => `<tr>${cells(r).map((c) => `<td>${inlineMd(c)}</td>`).join('')}</tr>`).join('')
+      out.push(`<div class="md__table"><table>${th.replace(/<th><\/th>/g, '').length ? `<thead><tr>${th}</tr></thead>` : ''}<tbody>${tb}</tbody></table></div>`)
+    } else if (/^>\s?/.test(l)) {
+      const q = []
+      while (i < lines.length && /^>\s?/.test(lines[i])) q.push(lines[i++].replace(/^>\s?/, ''))
+      out.push(`<blockquote>${renderMarkdown(q.join('\n'))}</blockquote>`)
+    } else if (/^\s*([-*]|\d+\.)\s/.test(l)) {
+      const ordered = /^\s*\d+\./.test(l)
+      const items = []
+      while (i < lines.length && (/^\s*([-*]|\d+\.)\s/.test(lines[i]) || (/^\s{2,}\S/.test(lines[i]) && items.length))) {
+        if (/^\s*([-*]|\d+\.)\s/.test(lines[i])) items.push([lines[i].replace(/^\s*([-*]|\d+\.)\s+/, '')])
+        else items[items.length - 1].push(lines[i].trim())
+        i++
+        if (i < lines.length && !lines[i].trim() && i + 1 < lines.length && /^\s{2,}\S/.test(lines[i + 1])) i++
+      }
+      const tag = ordered ? 'ol' : 'ul'
+      out.push(`<${tag}>${items.map((it) => {
+        const text = it.join('\n')
+        return `<li>${text.includes('\n>') ? renderMarkdown(text) : inlineMd(it.join(' '))}</li>`
+      }).join('')}</${tag}>`)
+    } else {
+      const p = []
+      while (i < lines.length && lines[i].trim() && !isBlockStart(lines[i])) p.push(lines[i++])
+      if (!p.length) p.push(lines[i++])
+      out.push(`<p>${inlineMd(p.join(' '))}</p>`)
+    }
+  }
+  return out.join('\n')
+}
+
+export function mountMotusInfo(root) {
+  document.title = 'Motus info card · Smart Motion'
+  const body = motusCard.replace(/^# .*\n/, '')
+  root.className = 'app app--page'
+  root.innerHTML = shell('Chatbot info card', 'Motus', `<div class="md">${renderMarkdown(body)}</div>`)
+  chrome(root)
 }

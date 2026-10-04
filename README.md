@@ -54,7 +54,18 @@ cd functions && ANTHROPIC_API_KEY=... node local.mjs
 ```
 
 Motus answers only from `functions/kb.json`, which is built from README,
-design.md, BRIEF.md, HANDOVER.md, references.md, content/, workflows/ and
-the app's own moves and journey. Fill content/profile.md so it can answer
-about the owner. Conversations are not stored.
+design.md, BRIEF.md, HANDOVER.md, references.md, content/ (except the
+unverified cost evidence), workflows/, the info card and the app's own
+moves and journey. Fill content/profile.md so it can answer about the
+owner. Conversations are not stored.
+
+Governance follows the owner's NEXUS pattern for AURA:
+`MOTUS-GUARDRAILS.md` (the sixteen rules, and what is enforced versus only
+asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
+Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). Both
+are drafts until the owner signs them. Tests: `cd functions && npm test`.
+
+Before Motus goes live: verify the two phone numbers in the crisis reply
+(`functions/guardrails.js`), sign both documents, and read a set of real
+turns as NEXUS did.
 - REHEARSAL.md: the checklist for the shared screen.

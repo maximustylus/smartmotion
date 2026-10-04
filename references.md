@@ -7,6 +7,7 @@ source that is not listed here.
 
 | Status | Reference |
 | --- | --- |
+| proposed | Infocomm Media Development Authority. (2026, July 20). *Transparency guidelines for generative AI chatbots*. Annex B sample format followed by MOTUS-INFO-CARD.md. Citation taken from the owner's AURA info card in NEXUS; not re-read for Smart Motion. Owner to verify. |
 | proposed | Covey, S. R. (1989). *The 7 habits of highly effective people*. Free Press. Habit 2: Begin with the end in mind. |
 | owner | Muhammad Alif Bin Abu Bakar. (2026). Lines in his own voice in Smart Motion, including "Balancing is an act". |
 | proposed | SkillsFuture Singapore, Workforce Development Agency, & Singapore Institute of Technology. (2026). *AI Ready Quiz* [Online assessment]. https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM (opening page read 3 October 2026) |

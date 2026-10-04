@@ -208,6 +208,50 @@
   font-size: 0.72rem;
   color: var(--faint);
 }
+.mchat__note a, .mchat__notice a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
+
+/* The info card, always one tap away: a small round "i" at the head's right. */
+.mchat__info {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font: italic 600 0.78rem/1 var(--font-voice);
+  color: var(--fg);
+  text-decoration: none;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.mchat__info:hover, .mchat__info:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
+
+/* The first-use safety statement: shown until dismissed, after IMDA. */
+.mchat__notice {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+.mchat__notice p { margin: 0; }
+.mchat__notice-x {
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Provenance under each reply (Rule 12). */
+.mchat__prov { font-size: 0.68rem; color: var(--faint); font-family: var(--font-mono); letter-spacing: 0.01em; }
 
 @media (max-width: 599px) {
   .motus { right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }

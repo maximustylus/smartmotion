@@ -29,6 +29,13 @@ a motion graphic, not a slide deck.
 - workflows/ is the owner's (version 0.2). Never edit it.
 - functions/: Motus's Cloud Function. Not deployed; it needs the Blaze plan
   and an Anthropic key that only the owner sets. Never handle the key.
+  functions/guardrails.js carries the owner's sixteen rules (from NEXUS's
+  AURA), the NRIC/FIN and crisis screens and the provenance stamp; run
+  `cd functions && npm test` after touching it.
+- MOTUS-GUARDRAILS.md (rules verbatim plus an honest conformance table) and
+  MOTUS-INFO-CARD.md (public card after the IMDA Transparency Guidelines for
+  Generative AI Chatbots, served at /motus-info) must change with the code.
+  Both are drafts awaiting the owner's sign-off; never mark them signed.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
   are absent, so it keeps the last measured active time. Never edit the

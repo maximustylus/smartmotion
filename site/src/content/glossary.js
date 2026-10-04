@@ -33,5 +33,6 @@ export const sitemap = [
   { path: '/play', label: 'Play the quiz', note: 'The icebreaker, on your phone' },
   { path: '/glossary', label: 'Glossary', note: 'This page' },
   { path: '/contact', label: 'Contact', note: 'Muhammad Alif' },
+  { path: '/motus-info', label: 'Motus info card', note: 'How the AI companion works, its limits and your data' },
   { path: '/styleguide', label: 'Design system', note: 'Colour, type and components' },
 ]
