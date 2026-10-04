@@ -135,7 +135,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       // Framework diagrams build with the scroll: the pyramid rises, the tree
       // grows down, the rings spread, the bar and timeline sweep across.
       const form = s.beats[bi]?.form ?? s.form
-      const MODE = { pyramid: 1, tree: 2, rings: 3, bar: 4, timeline: 4, grid: 1, pair: 3 }
+      const MODE = { pyramid: 1, tree: 2, rings: 3, bar: 4, timeline: 4, grid: 1, pair: 3, target: 3 }
       if (bi === 1 && s.phase && MODE[form]) field?.setReveal(MODE[form], Math.min(1, Math.max(0, 0.15 + pb * 1.4)))
       else field?.setReveal(0, 1)
     },

@@ -123,3 +123,51 @@
 .contact__links .btn { text-decoration: none; }
 .contact__mail { color: var(--muted); font-size: 0.9em; }
 @media (max-width: 599px) { .contact { grid-template-columns: 1fr; } }
+
+/* How it was built: the effort in four figures, then the workflow. */
+.stats { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.stats > div {
+  display: grid;
+  gap: 4px;
+  padding: var(--space-4);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 70%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+.stats dt { order: 2; color: var(--muted); font-size: 0.82rem; }
+.stats dd { margin: 0; font-size: clamp(1.4rem, 5vmin, 2.2rem); font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.stats > div:first-child dd {
+  background: linear-gradient(100deg, #ff1fb3 0%, #ff6a5a 36%, #ffb020 68%, #6fbf00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (min-width: 700px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.page .note { color: var(--muted); font-size: 0.85rem; }
+
+.flow { list-style: none; counter-reset: step; margin: 0; padding: 0; display: grid; }
+.flow li {
+  counter-increment: step;
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: var(--space-4) 0 var(--space-4) 56px;
+  border-top: 1px solid var(--line);
+}
+.flow li:last-child { border-bottom: 1px solid var(--line); }
+.flow li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 0.25em 0.6em;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+}
+.flow h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+.flow p { color: var(--muted); }

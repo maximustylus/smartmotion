@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "steward": "node ../scripts/steward.mjs",
+    "prebuild": "node ../scripts/steward.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "icons": "pwa-assets-generator"

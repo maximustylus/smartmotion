@@ -1,0 +1,29 @@
+{
+  "activeMinutes": 363,
+  "elapsedMinutes": 2272,
+  "start": "2026-10-02T14:35:08.000Z",
+  "end": "2026-10-04T04:27:17.028Z",
+  "sittings": 8,
+  "prompts": 54,
+  "commits": 59,
+  "days": [
+    {
+      "day": "2026-10-02",
+      "minutes": 17
+    },
+    {
+      "day": "2026-10-03",
+      "minutes": 283
+    },
+    {
+      "day": "2026-10-04",
+      "minutes": 64
+    }
+  ],
+  "firstCommit": "2026-10-02T22:35:08+08:00",
+  "lastCommit": "2026-10-04T12:18:13+08:00",
+  "firstEvent": "2026-10-02T14:41:36.830Z",
+  "lastEvent": "2026-10-04T04:27:17.028Z",
+  "idleMinutes": 10,
+  "measuredAt": "2026-10-04T04:27:18.054Z"
+}

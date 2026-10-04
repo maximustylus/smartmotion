@@ -498,6 +498,33 @@ function drawing(parts, { rot = 0 } = {}) {
   }
 }
 
+// Zone of Proximal Development: a target. Three rings for the three zones,
+// a solid bullseye, and an arrow that has landed in the middle.
+const targetForm = (() => {
+  const cx = -0.25, cy = -0.05
+  // The arrow comes in from the upper right and stops at the centre.
+  const dx = 0.82, dy = 0.57
+  const tail = [cx + dx * 1.75, cy + dy * 1.75]
+  const feather = (side, back) => {
+    const base = [cx + dx * (1.45 + back), cy + dy * (1.45 + back)]
+    return seg(base[0], base[1], base[0] + dx * 0.28 - dy * 0.2 * side, base[1] + dy * 0.28 + dx * 0.2 * side, 0.012)
+  }
+  return drawing([
+    [22, arc(cx, cy, 0.95, 0, TAU, 0.02)],
+    [18, arc(cx, cy, 0.64, 0, TAU, 0.02)],
+    [13, arc(cx, cy, 0.34, 0, TAU, 0.018)],
+    [10, disc(cx, cy, 0.12)],
+    [16, seg(cx, cy, tail[0], tail[1], 0.016)],
+    [3, feather(1, 0)],
+    [3, feather(-1, 0)],
+    [3, feather(1, 0.14)],
+    [3, feather(-1, 0.14)],
+    // Stand legs, so it reads as a target and not just rings.
+    [4, seg(cx - 0.45, cy - 0.84, cx - 0.7, cy - 1.02, 0.016)],
+    [4, seg(cx + 0.45, cy - 0.84, cx + 0.7, cy - 1.02, 0.016)],
+  ])
+})()
+
 // Have an angle: two arms meeting at a vertex, the arc that measures the
 // gap between them with a protractor's ticks, and a beam of light filling
 // the wedge. The two arms are the two factors; the angle is yours.
@@ -997,7 +1024,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their

@@ -71,7 +71,7 @@ export const moves = [
       body: 'Tap the tools you know, answer one question, see where the room stands. Aggregate counters only, one play per device, and the personal result still shows if the room is unreachable.',
     },
     cheatsheet: 'know-the-hook',
-    form: 'grid',
+    form: 'target',
   },
   {
     id: 'architecture',

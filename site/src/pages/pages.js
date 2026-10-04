@@ -2,6 +2,7 @@ import '../styles/pages.css'
 import { glossary, sitemap } from '../content/glossary.js'
 import { defaultRoute } from '../content/routes.js'
 import { themeToggle } from '../lib/theme.js'
+import effort from '../content/effort.json'
 
 /*
   Plain pages: glossary with site map, and contact. Readable top to bottom,
@@ -10,6 +11,8 @@ import { themeToggle } from '../lib/theme.js'
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 const todo = (t) => `<span class="todo">${t}</span>`
+const hm = (m) => (m == null ? 'not measured' : `${Math.floor(m / 60)} h ${m % 60} min`)
+const day = (iso) => (iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Singapore' }) : 'not yet')
 const sceneHref = (id) => (['quiz', 'examples', 'questions'].includes(id.split('-')[0]) ? `/talk#${id}` : `/#${id}`)
 
 const MARK = `<svg class="mark" viewBox="60 110 392 300" aria-hidden="true"><defs><linearGradient id="mark-g" gradientUnits="userSpaceOnUse" x1="76" y1="0" x2="436" y2="0"><stop offset="0" stop-color="#FF1FB3"/><stop offset="0.36" stop-color="#FF6A5A"/><stop offset="0.68" stop-color="#FFD23F"/><stop offset="1" stop-color="#A6FF1F"/></linearGradient><mask id="mark-cut"><rect x="0" y="0" width="512" height="512" fill="#fff"/><polygon points="203,396 309,396 256,276" fill="#000"/></mask></defs><g mask="url(#mark-cut)" fill="url(#mark-g)"><polygon points="76,384 190,128 304,384"/><polygon points="208,384 322,128 436,384"/></g><circle cx="256" cy="276" r="7" fill="#FFF8E1"/></svg>`
@@ -110,15 +113,53 @@ export function mountContact(root) {
         <p class="contact__roles">${sp.roles.map(esc).join(' · ')}</p>
         <p>${esc(sp.summary)}</p>
         <p class="contact__links">
-          <a class="btn" href="mailto:muhammad.alif@me.com">Email me</a>
+          <a class="btn" href="mailto:muhammad.alif@me.com" data-mail="muhammad.alif@me.com">Email me</a>
           <a class="btn btn--ghost" href="https://linktr.ee/muhammad.alif" target="_blank" rel="noopener">All my links <span aria-hidden="true">&nearr;</span></a>
         </p>
-        <p class="contact__mail">Email <a href="mailto:muhammad.alif@me.com">muhammad.alif@me.com</a></p>
+        <p class="contact__mail" role="status" aria-live="polite" hidden></p>
       </div>
     </div>
     <h2>About this site</h2>
-    <p>Smart Motion is a digital playbook of smart moves for building, teaching and presenting with AI assistants. It was itself built with an AI assistant against a written brief, in phases, with every claim traced to <a href="https://github.com/maximustylus/smartmotion/blob/main/references.md" target="_blank" rel="noopener">references.md</a>. The source is public at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
+    <p>Smart Motion is a digital playbook of smart moves for building, teaching and presenting with AI assistants. It was itself built with an AI assistant, so the site is its own worked example. The source is public at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
+
+    <h2>How it was built</h2>
+    <dl class="stats">
+      <div><dt>Active build time</dt><dd>${hm(effort.activeMinutes)}</dd></div>
+      <div><dt>From first commit to latest</dt><dd>${hm(effort.elapsedMinutes)}</dd></div>
+      <div><dt>Prompts from me</dt><dd>${effort.prompts ?? '?'}</dd></div>
+      <div><dt>Commits</dt><dd>${effort.commits ?? '?'}</dd></div>
+    </dl>
+    <p class="note">Counted by the project's steward script from the assistant's session logs and the git history, last measured ${day(effort.measuredAt)}. Active time is the time the build was moving, mine and the assistant's together, with any pause longer than ${effort.idleMinutes} minutes left out as a break. It was spread over ${effort.sittings} sittings${effort.days?.length ? ` across ${effort.days.length} days` : ''}.</p>
+    <ol class="flow">
+      ${[
+        ['Write the brief', 'One page before any code: purpose, audience, stack, running order, data rules, content rules and what done means. The assistant reads it first, every time.'],
+        ['Be interviewed', 'Before redesigning, the assistant asked me about layout, motion, theme and devices, showed options, and I chose. Decisions went back into the brief and a design file.'],
+        ['Build in phases', 'Design system and shell, then the quiz and live totals, then content. Each phase stops for my approval, with a list of what is built, what is verified and what is still to do.'],
+        ['Direct in plain language', 'I describe what I want or what looks wrong. The assistant proposes, builds and explains what it did.'],
+        ['Check in a real browser', 'Changes are opened in a browser, at phone size and wider, and looked at before they are saved. Errors in the console count as failures.'],
+        ['Commit each verified change', 'Small commits with plain messages, pushed to GitHub, so any step can be read or undone.'],
+        ['Keep the keys', 'I deploy to Firebase Hosting myself, and secrets never pass through the assistant. Firestore stores anonymous counters only.'],
+        ['Source every claim', 'Facts, dates and quotes are listed in references.md. Anything not yet checked against the original is marked TODO on the page until it is.'],
+      ]
+        .map(([t, d]) => `<li><h3>${t}</h3><p>${d}</p></li>`)
+        .join('')}
+    </ol>
+    <p>Made with Claude Code, Vite, GSAP, Three.js and Firebase. Every claim traces to <a href="https://github.com/maximustylus/smartmotion/blob/main/references.md" target="_blank" rel="noopener">references.md</a>.</p>
   `,
   )
   chrome(root)
+  // Email: open the mail app, and copy the address as well, because on a
+  // device with no mail app set up the link alone does nothing.
+  const mail = root.querySelector('[data-mail]')
+  const status = root.querySelector('.contact__mail')
+  mail.addEventListener('click', async () => {
+    const address = mail.dataset.mail
+    let copied = false
+    try {
+      await navigator.clipboard.writeText(address)
+      copied = true
+    } catch { /* clipboard not available; the address is still shown below */ }
+    status.hidden = false
+    status.textContent = copied ? `${address} copied. Paste it into your mail app if one did not open.` : address
+  })
 }
