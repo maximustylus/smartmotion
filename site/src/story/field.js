@@ -526,49 +526,101 @@ const angleForm = (() => {
   ])
 })()
 
-// Begin with the end in mind: a brain seen from the side, frontal lobe to
-// the left, with lightning striking it from above. A brainstorm.
-const brainForm = (() => {
-  const cx = -0.05, cy = -0.1, rx = 1.08, ry = 0.66
-  // The outline: a bumpy dome on top, a flatter underside, a notch where
-  // the temporal lobe tucks under at the front.
-  const lump = (t) => 1 + 0.07 * Math.sin(8 * t + 0.6)
-  const outline = (r) => {
-    const t = r() * TAU, R = lump(t) + gauss(r) * 0.01
-    const sy = Math.sin(t)
-    return [cx + rx * R * Math.cos(t), cy + ry * R * (sy < 0 ? sy * 0.62 : sy)]
+// A smooth curve through a list of points (Catmull-Rom), sampled evenly
+// along its length. Closed curves loop; `ripple` scallops the line so an
+// outline reads as a row of folds rather than a plain edge.
+function curve(pts, { closed = false, th = 0.01, ripple = 0, waves = 0 } = {}) {
+  const n = pts.length
+  const at = (i) => (closed ? pts[((i % n) + n) % n] : pts[Math.min(n - 1, Math.max(0, i))])
+  const segs = closed ? n : n - 1
+  const point = (i, t) => {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2)
+    const t2 = t * t, t3 = t2 * t
+    return [0, 1].map((k) => 0.5 * (2 * p1[k] + (-p0[k] + p2[k]) * t + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2 + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3))
   }
-  // Folds: wavy arcs that follow the dome at two depths.
-  const fold = (f, a0, a1, ph) => (r) => {
-    const t = a0 + (a1 - a0) * r()
-    const q = f + 0.07 * Math.sin(9 * t + ph) + gauss(r) * 0.008
-    return [cx + rx * q * Math.cos(t), cy + ry * q * Math.sin(t)]
+  // Segment lengths, so points spread evenly rather than bunching.
+  const len = Array.from({ length: segs }, (_, i) => {
+    const a = point(i, 0), m = point(i, 0.5), z = point(i, 1)
+    return Math.hypot(m[0] - a[0], m[1] - a[1]) + Math.hypot(z[0] - m[0], z[1] - m[1])
+  })
+  const total = len.reduce((x, y) => x + y, 0)
+  return (r) => {
+    let d = r() * total, i = 0
+    while (d > len[i] && i < segs - 1) d -= len[i++]
+    const t = d / len[i]
+    const [x, y] = point(i, t)
+    if (!ripple) return [x + gauss(r) * th, y + gauss(r) * th]
+    // Push the point out along the curve's normal by a scalloped amount.
+    const [x2, y2] = point(i, Math.min(1, t + 0.01))
+    const nx = -(y2 - y), ny = x2 - x, nl = Math.hypot(nx, ny) || 1
+    const done = (len.slice(0, i).reduce((p, q) => p + q, 0) + d) / total
+    const off = ripple * Math.abs(Math.sin(done * Math.PI * waves)) + gauss(r) * th
+    return [x - (nx / nl) * off, y - (ny / nl) * off]
+  }
+}
+
+// Begin with the end in mind: a brain seen from the side, facing left,
+// with lightning striking it from above. A brainstorm. The outline is
+// scalloped into folds; inside run the central and lateral fissures and
+// the smaller folds of each lobe; behind and below sit the cerebellum
+// with its fine leaves and the brain stem.
+const brainForm = (() => {
+  const oy = -0.14
+  const P = (list) => list.map(([x, y]) => [x, y + oy])
+  const outline = P([
+    [-0.95, -0.25], [-1.12, -0.05], [-1.12, 0.2], [-0.95, 0.42], [-0.65, 0.56], [-0.25, 0.63], [0.2, 0.62], [0.6, 0.52],
+    [0.92, 0.33], [1.08, 0.08], [1.05, -0.18], [0.85, -0.32], [0.55, -0.3], [0.3, -0.36], [0.05, -0.5], [-0.3, -0.55],
+    [-0.6, -0.48], [-0.75, -0.34], [-0.85, -0.28],
+  ])
+  const folds = [
+    // Lateral fissure, then the central sulcus with a fold either side.
+    [9, [[-0.74, -0.22], [-0.3, -0.08], [0.1, -0.02], [0.46, 0.1]]],
+    [6, [[0.0, 0.6], [-0.06, 0.4], [0.05, 0.2], [-0.02, 0.04]]],
+    [5, [[-0.35, 0.58], [-0.4, 0.4], [-0.28, 0.24], [-0.34, 0.06]]],
+    [5, [[0.3, 0.58], [0.36, 0.42], [0.26, 0.26], [0.33, 0.12]]],
+    // Frontal lobe.
+    [4, [[-0.98, 0.26], [-0.78, 0.32], [-0.62, 0.2], [-0.48, 0.3]]],
+    [4, [[-1.02, 0.02], [-0.82, 0.08], [-0.66, -0.04], [-0.5, 0.06]]],
+    [3, [[-0.7, 0.5], [-0.62, 0.4], [-0.5, 0.46]]],
+    // Parietal and occipital lobes.
+    [4, [[0.52, 0.44], [0.66, 0.3], [0.6, 0.16], [0.8, 0.1]]],
+    [3, [[0.78, -0.06], [0.92, -0.1], [0.96, 0.06]]],
+    [3, [[0.55, -0.02], [0.68, -0.12], [0.78, -0.24]]],
+    // Temporal lobe.
+    [5, [[-0.58, -0.33], [-0.26, -0.3], [0.05, -0.24], [0.32, -0.2]]],
+    [4, [[-0.36, -0.45], [-0.06, -0.41], [0.2, -0.34]]],
+  ]
+  const leaf = (k) => (r) => {
+    // Cerebellum: nested arcs fanning from its front edge.
+    const a = Math.PI * (1.02 + 0.96 * r())
+    const q = 0.12 + k * 0.085 + gauss(r) * 0.006
+    return [0.7 + Math.cos(a) * q * 1.25, -0.4 + oy + Math.sin(a) * q]
   }
   const bolt = (x, top, hit, k) => {
-    // A zigzag from the sky down to where it meets the brain.
     const d = top - hit
     const pts = [[x + 0.12, top], [x - 0.1, top - d * 0.38], [x + 0.1, top - d * 0.5], [x - 0.06, top - d * 0.8], [x + 0.02, hit]]
-    return [5, (r) => {
-      const i = Math.floor(r() * 4), t = r()
-      return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * t + gauss(r) * 0.014, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t + gauss(r) * 0.014]
-    }, k]
+    return [
+      [5, (r) => {
+        const i = Math.floor(r() * 4), t = r()
+        return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * t + gauss(r) * 0.012, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t + gauss(r) * 0.012]
+      }, k],
+      // A spark where it lands, flashing with the bolt.
+      [1.5, (r) => { const a = r() * TAU, q = Math.abs(gauss(r)) * 0.07; return [x + 0.02 + Math.cos(a) * q, hit + Math.sin(a) * q] }, k],
+    ]
   }
   return drawing([
-    [42, outline],
-    [9, fold(0.66, 0.3, 2.85, 0)],
-    [5, fold(0.34, 0.4, 2.7, 3)],
-    // The lateral fissure, running back from the front underside.
-    [8, bezier([-0.85, -0.38], [-0.3, -0.05], [0.25, -0.3], [0.6, -0.08], 0.012)],
-    // Cerebellum at the back, with its fine leaves, and the brain stem.
-    [9, arc(0.66, -0.6, 0.28, 0, TAU, 0.016)],
-    [3, seg(0.46, -0.54, 0.86, -0.54, 0.008)],
-    [3, seg(0.44, -0.66, 0.88, -0.66, 0.008)],
-    [7, seg(0.2, -0.5, 0.32, -0.92, 0.04)],
-    bolt(-0.85, 1.14, 0.3, 0),
-    bolt(-0.42, 1.18, 0.52, 1),
-    bolt(0.0, 1.12, 0.56, 2),
-    bolt(0.45, 1.18, 0.5, 3),
-    bolt(0.85, 1.1, 0.26, 4),
+    [34, curve(outline, { closed: true, th: 0.008, ripple: 0.035, waves: 26 })],
+    ...folds.map(([w, pts]) => [w, curve(P(pts), { th: 0.008 })]),
+    [5, leaf(0)],
+    [5, leaf(1)],
+    [6, leaf(2)],
+    [3, curve(P([[0.16, -0.46], [0.2, -0.66], [0.27, -0.86]]), { th: 0.008 })],
+    [3, curve(P([[0.36, -0.5], [0.38, -0.68], [0.43, -0.86]]), { th: 0.008 })],
+    ...bolt(-0.85, 1.12, 0.3, 0),
+    ...bolt(-0.42, 1.16, 0.46, 1),
+    ...bolt(0.02, 1.1, 0.5, 2),
+    ...bolt(0.46, 1.16, 0.42, 3),
+    ...bolt(0.86, 1.08, 0.26, 4),
   ])
 })()
 
