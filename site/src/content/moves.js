@@ -42,11 +42,11 @@ export const moves = [
     name: 'Have an angle',
     angle: 'An assistant multiplies what you bring. Vague brief, confident guess.',
     principle:
-      'A draft can look finished and still have no point. Let the assistant help with the making. The angle is the half you own.',
+      'A draft can look polished and still have no point. Your angle is the point: the one thing you want people to take away. The assistant helps with the making, but the angle is the half you own.',
     framework: {
       name: 'Intent times execution',
       source: null,
-      note: 'A rule of thumb. Intent is your angle: what you want and why. Execution is how well it gets built. Multiply them: if either is near zero, so is the result. Building software by describing it, without reading the code, is vibe coding. Think of vibe as intent and coding as execution. Both count. [[TODO: owner to confirm the framework and its source]]',
+      note: 'A rule of thumb: vibe times coding. Vibe is your intent: what you want to say and why. Coding is the execution: how well it gets made. Multiply them: if either is near zero, so is the result. A clear aim, poorly made, stalls. A vague aim, well made, is still the wrong thing. [[TODO: owner to confirm the framework and its source]]',
       verify: true,
     },
     example: {
@@ -63,16 +63,16 @@ export const moves = [
     name: 'Find the hook, hold the room',
     angle: 'Open with something the room does, not something it watches.',
     principle:
-      'Attention is lent, not owed. A hook earns it at the start, and seeing everyone\'s answers add up holds it. An assistant can suggest both, but you know the room, so you choose.',
+      'Attention is lent, not owed. A hook earns it at the start, and seeing everyone’s answers add up holds it. An assistant can suggest both, but you know the room, so you choose.',
     framework: {
       name: 'Zone of Proximal Development',
       source: 'Vygotsky (1978)',
-      note: 'Vygotsky\'s zone is the gap between what a learner can do alone and what they can do with help. We borrow it for openings. Set a task everyone can start, pitched a little beyond easy, with help close by. The aim: nobody bored, nobody lost.',
+      note: 'Vygotsky’s zone is the gap between what a learner can do alone and what they can do with help. We borrow it for openings. Set a task everyone can start, pitched a little beyond easy, with help close by. The aim: nobody bored, nobody lost.',
       verify: true,
     },
     example: {
       title: 'The icebreaker quiz',
-      body: 'The talk\'s first eight minutes are a quiz on your own phone. Place yourself on four levels of AI readiness, pick the type that sounds like you, then watch the room\'s totals move. Taking part is the hook. The totals hold the room. One go per device, anonymous totals only.',
+      body: 'The talk behind this playbook opens with an eight-minute quiz on your phone. Place yourself on four levels of AI readiness, pick the type most like you, then watch the room’s totals move. Taking part is the hook. The totals hold the room. One go per device, anonymous totals only.',
     },
     promptHeading: 'Plan your opening',
     cheatsheet: 'know-the-hook',
@@ -88,12 +88,12 @@ export const moves = [
     framework: {
       name: 'Keep content, structure and behaviour apart',
       source: null,
-      note: 'Content is what a page says. Structure is how it is put together and how it looks. Behaviour is what happens when you tap or type. Give each its own place, and give every file one job. Then you know where to look, and a change to the words leaves the rest alone. [[TODO: owner to confirm the framework and its source]]',
+      note: 'Content is what a page says. Structure is how it is laid out. Behaviour is what happens when you tap or type. Give each its own place, and give every file one job. Then you know where to look, and a change to the words leaves the rest alone. [[TODO: owner to confirm the framework and its source]]',
       verify: true,
     },
     example: {
       title: 'This app, in three folders',
-      body: 'The eight moves and their order live in site/src/content. In site/src/story they become the scenes you scroll through. The app\'s quiz talks to its database through site/src/quiz. Ask to reword a move and only the content folder should change. If another folder changes too, ask why.',
+      body: 'The eight moves and their order live in site/src/content. In site/src/story they become the scenes you scroll through. The app’s quiz talks to its database through site/src/quiz. Ask to reword a move and look in the content folder first. If another folder changes too, ask why.',
     },
     promptHeading: 'Before you ask for changes',
     cheatsheet: 'know-the-architecture',
@@ -128,14 +128,14 @@ export const moves = [
     principle:
       'Safe use is a habit, not a switch: know the source, keep patient data out of the chat, and treat a striking image as a claim to check. The assistant drafts. You countersign.',
     framework: {
-      name: 'From made-up answers to "AI psychosis"',
+      name: 'From made-up answers to “AI psychosis”',
       source: 'Østergaard (2023); Mata v. Avianca (2023)',
-      note: 'In 2023 a chatbot invented six court cases and a lawyer filed them. Such answers are called hallucinations. That year a psychiatrist asked whether chatbots could feed delusions in people already prone to them. By 2025 the press called that worry "AI psychosis". It is not a diagnosis. The research is thin. Check anyway.',
+      note: 'In 2023 a chatbot invented six court cases and a lawyer filed them. Such answers are called hallucinations. That year a psychiatrist asked whether chatbots could feed delusions in people already prone to them. By 2025 the press called that worry “AI psychosis”. Not a diagnosis, and the research is thin. Check every answer anyway.',
       verify: true,
     },
     example: {
       title: 'Spaghetti, then a crocodile',
-      body: 'The same spaghetti scene, made by AI: an obvious fake in 2023, convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, Mothership reported that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. [[TODO: link to the article]] The picture that makes a room gasp is the one to check first.',
+      body: 'What was an obvious fake in 2023 is convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, Mothership reported that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. [[TODO: link to the article]] The picture that makes a room gasp is the one to check first.',
     },
     promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
@@ -147,16 +147,16 @@ export const moves = [
     name: 'Test for usefulness, not applause',
     angle: 'Score a tool on five questions, then multiply. One zero, and the rest counts for nothing.',
     principle:
-      'A tool built with an assistant can look finished before it is useful, and applause cannot tell the difference. Let the assistant sort your evidence and show the gaps. You check it and give the verdict.',
+      'A tool built with an assistant can look finished before it is useful, and applause cannot tell the difference. The assistant can sort your evidence and show the gaps, but check its work: the verdict is yours.',
     framework: {
       name: 'Utility of assessment',
       source: 'van der Vleuten (1996)',
-      note: 'Van der Vleuten described an assessment\'s usefulness as five qualities multiplied, not added. Asked of a tool: does it do what it claims? Every time? Does it help anyone learn? Will people use it? Is it affordable to own, not only to buy? Utility = Validity × Reliability × Educational Impact × Acceptability × Cost.',
+      note: 'Adapted from van der Vleuten’s utility of assessment: five qualities multiplied, not added. Asked of a tool: does it do what it claims? Every time? Does it help anyone learn? Will people use it? Is it affordable to own, not only to buy? Utility = Validity × Reliability × Educational Impact × Acceptability × Cost.',
       verify: true,
     },
     example: {
       title: 'Two ways to count cost',
-      body: 'Take one factor, cost. First per task: what an assistant can do, set against what each task costs. Then in full: what the tool costs to own. [[TODO: cost examples, owner to supply: capability versus cost per task with a retrieval date, and total cost of ownership]]',
+      body: 'Take one of the five questions, cost, and count it two ways. Per task: what each task costs, weighed against how capable the assistant is. To own: the whole cost, people’s time and checking included. [[TODO: cost examples, owner to supply: capability versus cost per task with a retrieval date, and total cost of ownership]]',
     },
     promptHeading: 'Score it before you say yes',
     cheatsheet: 'test-with-utility',
@@ -168,16 +168,16 @@ export const moves = [
     name: 'Give it a reality check',
     angle: 'An idea in five minutes. A working demo in two hours. The final 10% takes six months.',
     principle:
-      'A demo works once, for you, on a good day. A tool people rely on keeps working, for a stranger, on a bad day. The assistant makes the demo quick, and you decide how much more the idea deserves.',
+      'A demo works once, for you, on a good day. A tool people rely on keeps working, for a stranger, on a bad day. The assistant makes the demo quick. How much more the idea deserves is your call.',
     framework: {
       name: 'The march of nines',
       source: 'Karpathy on the Dwarkesh Podcast (2025)',
-      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. Andrej Karpathy’s claim: each extra nine takes as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: cite the interview itself and verify the wording]]',
+      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. Andrej Karpathy’s claim: each extra nine takes at least as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: cite the interview itself and verify the wording]]',
       verify: true,
     },
     example: {
       title: 'This app’s own timeline',
-      body: 'From new project to first working version: 1 h 29 min. Then came redesigns, a quiz, a companion robot and many refinements. So far: {{active}} of building, {{prompts}} prompts to the assistant, {{sittings}} sittings, and still not finished. The demo was the quick part. Leave time for the rest.',
+      body: 'From new project to first working version: 1 h 29 min. Then came a redesign, a quiz, a companion robot and many refinements. So far: {{active}} of building, {{prompts}} prompts to the assistant, {{sittings}} sittings, and still not finished. The demo was the quick part. Leave time for the rest.',
     },
     promptHeading: 'When a demo looks finished',
     cheatsheet: 'reality-check',

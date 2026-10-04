@@ -35,10 +35,13 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     const targets = [...beat.querySelectorAll('h1, h2, h3, p, li')].filter((t) => !t.closest('[data-no-split]'))
     beat._lines = []
     if (targets.length) {
-      SplitText.create(targets, {
+      beat._splitter = SplitText.create(targets, {
         type: 'lines',
         mask: 'lines',
         linesClass: 'ln',
+        // A TODO chip inside a paragraph is one unit; splitting into it
+        // throws the line detection off and leaves ragged breaks.
+        ignore: '.todo',
         autoSplit: true,
         onSplit(self) {
           beat._lines = self.lines
@@ -61,8 +64,21 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
       evaluate   lines rise, every number counts up
       era        the year counts across the gap, the quote settles slowly
   */
-  function showBeat(beat, animate) {
+  // A line that has wrapped inside its own mask means the column changed
+  // width after the split. Split again before the lines are shown.
+  function freshLines(beat) {
     const lines = prepare(beat)
+    const wrapped = lines.some((l) => {
+      const cs = getComputedStyle(l)
+      const one = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.3
+      return l.offsetHeight > one * 1.6
+    })
+    if (wrapped && beat._splitter) beat._splitter.split(beat._splitter.vars)
+    return beat._lines
+  }
+
+  function showBeat(beat, animate) {
+    const lines = freshLines(beat)
     gsap.killTweensOf([beat, ...lines])
     const scene = beat.closest('.scene')
     const phase = scene?.classList.contains('scene--era') ? 'era' : scene?.dataset.phase || ''

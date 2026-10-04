@@ -43,12 +43,12 @@ export const lanes = [
   {
     id: 'build',
     name: 'Build',
-    line: 'Agents: assistants that answer from your sources and line up the next step.',
+    line: 'Assistants and agents that answer from your sources and line up the next step.',
     steps: [
       { tool: 'Pair assistant', track: 'corporate', note: 'Upload documents, share with your team' },
       { tool: 'Agentsea agent', track: 'corporate', note: 'Reference files, Knowledge Spaces, SharePoint' },
       { tool: 'NotebookLM, Claude or ChatGPT projects', track: 'personal', note: 'Public material only' },
-      { tool: 'Claude Code or Codex', track: 'personal', note: 'Code that builds the tool, and this site' },
+      { tool: 'Claude Code or Codex', track: 'personal', note: 'Writes the code for tools, including this site' },
     ],
     workflow: 5,
   },
@@ -57,7 +57,7 @@ export const lanes = [
     name: 'Show',
     line: 'Infographics, posters and slides, each starting from a content plan.',
     steps: [
-      { tool: 'Canva', track: 'both', note: 'Familiar on both tracks; AI uses are metered' },
+      { tool: 'Canva', track: 'both', note: 'Familiar on both tracks; AI uses capped monthly' },
       { tool: 'Claude Design, export to PowerPoint', track: 'personal', note: 'Design first, then a PowerPoint file', verify: true },
       { tool: 'Codex or code, to Google Slides', track: 'personal', note: 'Turns an outline into slides', verify: true },
       { tool: 'Copilot in PowerPoint', track: 'corporate', note: 'Needs the paid licence' },
@@ -71,7 +71,7 @@ export const lanes = [
     steps: [
       { tool: 'Google Slides, to Google Vids', track: 'personal', note: 'Your slides become a narrated video', verify: true },
       { tool: 'Gemini with Veo, Nano Banana and Flow', track: 'personal', note: 'Clips, images and assembly; credits are daily', verify: true },
-      { tool: 'MCP to OpenRouter: Kling AI, Seedance, Veo', track: 'personal', note: 'One connector, several video models', verify: true },
+      { tool: 'MCP to OpenRouter: Kling AI, Seedance, Veo', track: 'personal', note: 'One connector, several video generators', verify: true },
       { tool: 'Clipchamp, if enabled', track: 'corporate', note: 'Assemble your own footage; no generated clips found' },
     ],
     workflow: 1,

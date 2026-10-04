@@ -11,7 +11,7 @@ export const copy = {
     framework: 'See why',
     example: 'See how',
     cheatsheet: 'Try it',
-    sheetBar: 'Prompt · paste into any assistant',
+    sheetBar: 'Prompt · paste into your assistant',
   },
   closing: {
     eyebrow: 'Before you go',
@@ -35,7 +35,7 @@ export const copy = {
     resultNote: 'The full AI Ready Quiz takes about fifteen minutes and emails you a profile. Do it in your own time.',
     roomHeading: 'The room, live',
     examplesHeading: 'Use cases',
-    examplesLead: 'Three of my tools, each scored on the same five questions.',
+    examplesLead: 'Three of my tools, scored on the utility formula’s five questions.',
   },
   takehome: {
     tracksHeading: 'Two tracks, same prompts',
@@ -46,7 +46,7 @@ export const copy = {
     mapLead: 'Three lanes, three results: an assistant that answers, a page that shows, a video that plays. Each badge names the track.',
   },
   about: {
-    aboutPara: 'Smart Motion is a digital playbook of smart moves for anyone who builds, teaches or presents with AI assistants. I built it with an AI assistant, so the site is its own worked example. The code behind it is public on GitHub.',
+    aboutPara: 'Smart Motion is a digital playbook of smart moves for anyone who builds, teaches or presents with AI assistants. I built it with an AI assistant, so the site is its own worked example. The code behind it is public on GitHub, where anyone can read it.',
     steps: [
       {
         title: 'Write the brief',
@@ -70,7 +70,7 @@ export const copy = {
       },
       {
         title: 'Check in a real browser',
-        body: 'Each change is opened in a browser, at phone size and wider, and looked at before it is saved. Errors in the browser\'s log, called the console, count as failures.',
+        body: 'Each change is opened in a browser, at phone size and wider, and looked at before it is saved. Errors in the browser’s log, called the console, count as failures.',
       },
       {
         title: 'Save each checked change',
@@ -78,7 +78,7 @@ export const copy = {
       },
       {
         title: 'Keep the keys',
-        body: 'I publish the site to Firebase Hosting myself. Passwords and access keys, called secrets, never pass through the assistant. The database, Firestore, stores anonymous counters only.',
+        body: 'I publish the site myself, using Firebase Hosting, the service that puts it online. Passwords and access keys, called secrets, never pass through the assistant. The database, Firestore, stores anonymous counters only.',
       },
       {
         title: 'Source every claim',

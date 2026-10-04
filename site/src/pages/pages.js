@@ -121,7 +121,7 @@ export function mountContact(root) {
       </div>
     </div>
     <h2>About this site</h2>
-    <p>${esc(copy.about.aboutPara)} The source is public at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
+    <p>${esc(copy.about.aboutPara)} Find it at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
 
     <h2>How it was built</h2>
     <dl class="stats">

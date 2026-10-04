@@ -1192,3 +1192,6 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   #scene-takehome .beat::before { display: none; }
   .track { max-height: 44svh; overflow-y: auto; }
 }
+
+/* The talk's last page keeps clear of the colophon on a short phone. */
+@media (max-width: 599px) { #scene-questions .beat, #scene-routes .beat { padding-bottom: 28px; } }

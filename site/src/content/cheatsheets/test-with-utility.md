@@ -1,6 +1,6 @@
 # Test for usefulness, not applause
 
-Paste this before you commit to a tool, yours or anyone else's.
+Paste this before you commit to a tool, yours or anyone else’s.
 
 ---
 
