@@ -448,6 +448,134 @@ function timeline80sForm(n, r, stage = 'truck') {
   return { positions: a, colors: col }
 }
 
+// ---------- ADDIE B-roll ----------
+// One drawing per phase, made of weighted parts and coloured with the
+// brand gradient from left to right: a magnifying glass for Analyse, a
+// pencil drawing a curve for Design, code brackets for Develop, a rocket
+// for Implement and a balance scale for Evaluate.
+const TAU = Math.PI * 2
+const seg = (x0, y0, x1, y1, th = 0.03) => (r) => {
+  const t = r()
+  return [x0 + (x1 - x0) * t + gauss(r) * th, y0 + (y1 - y0) * t + gauss(r) * th]
+}
+const arc = (cx, cy, rad, a0, a1, th = 0.02) => (r) => {
+  const a = a0 + (a1 - a0) * r(), q = rad + gauss(r) * th
+  return [cx + Math.cos(a) * q, cy + Math.sin(a) * q]
+}
+const disc = (cx, cy, rad) => (r) => {
+  const a = r() * TAU, q = Math.sqrt(r()) * rad
+  return [cx + Math.cos(a) * q, cy + Math.sin(a) * q]
+}
+const box = (cx, cy, w, h) => (r) => [cx + (r() - 0.5) * w, cy + (r() - 0.5) * h]
+const bezier = (p0, p1, p2, p3, th = 0.015) => (r) => {
+  const t = r(), u = 1 - t
+  const k = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t]
+  return [0, 1].map((j) => k[0] * p0[j] + k[1] * p1[j] + k[2] * p2[j] + k[3] * p3[j] + gauss(r) * th)
+}
+function drawing(parts, { rot = 0 } = {}) {
+  const total = parts.reduce((sum, p) => sum + p[0], 0)
+  const c = Math.cos(rot), sn = Math.sin(rot)
+  return (n, r) => {
+    const a = new Float32Array(n * 3)
+    const col = new Float32Array(n * 4)
+    for (let i = 0; i < n; i++) {
+      let k = r() * total, j = 0
+      while (k > parts[j][0] && j < parts.length - 1) k -= parts[j++][0]
+      const [x, y] = parts[j][1](r)
+      const X = x * c - y * sn, Y = x * sn + y * c
+      a[i * 3] = X
+      a[i * 3 + 1] = Y
+      a[i * 3 + 2] = gauss(r) * 0.03
+      const [cr, cg, cb] = brand(Math.min(1, Math.max(0, (X + 1.5) / 3)))
+      col.set([cr, cg, cb, 1], i * 4)
+    }
+    return { positions: a, colors: col }
+  }
+}
+
+// Analyse: a magnifying glass over a small bar chart.
+const lensForm = drawing([
+  [40, arc(-0.2, 0.2, 0.62, 0, TAU, 0.025)],
+  [5, arc(-0.2, 0.2, 0.46, 1.9, 2.9, 0.01)],
+  [30, seg(0.27, -0.27, 0.85, -0.85, 0.045)],
+  [4, box(-0.45, 0.025, 0.12, 0.25)],
+  [7, box(-0.2, 0.125, 0.12, 0.45)],
+  [10, box(0.05, 0.225, 0.12, 0.65)],
+])
+
+// Design: a pencil finishing a curve, with the pen tool's anchors and handle.
+const pencilForm = (() => {
+  const T = [-0.25, -0.45], u = [0.643, 0.766], v = [-0.766, 0.643], w = 0.13
+  const at = (t, sd) => [T[0] + u[0] * t + v[0] * sd, T[1] + u[1] * t + v[1] * sd]
+  const span = (t0, t1, half) => (r) => {
+    const t = t0 + (t1 - t0) * r()
+    return at(t, (r() - 0.5) * 2 * (typeof half === 'function' ? half(t) : half))
+  }
+  const edge = (sd) => (r) => at(0.35 + r() * 1.1, sd + gauss(r) * 0.012)
+  const cone = (t) => (w * t) / 0.35
+  return drawing([
+    [5, span(0, 0.12, cone)],
+    [7, span(0.14, 0.35, cone)],
+    [13, edge(w)],
+    [13, edge(-w)],
+    [7, edge(0)],
+    [8, span(0.35, 1.45, w)],
+    [6, span(1.47, 1.56, w)],
+    [9, span(1.6, 1.78, w)],
+    [22, bezier([-1.5, -0.2], [-1.1, 0.55], [-0.7, -1.0], T)],
+    [3, box(-1.5, -0.2, 0.1, 0.1)],
+    [4, seg(-1.5, -0.2, -1.1, 0.55, 0.006)],
+    [3, disc(-1.1, 0.55, 0.05)],
+  ])
+})()
+
+// Develop: code brackets with a slash between them.
+const codeForm = drawing([
+  [18, seg(-0.75, 0.7, -1.45, 0, 0.04)],
+  [18, seg(-1.45, 0, -0.75, -0.7, 0.04)],
+  [18, seg(0.75, 0.7, 1.45, 0, 0.04)],
+  [18, seg(1.45, 0, 0.75, -0.7, 0.04)],
+  [22, seg(-0.28, -0.85, 0.28, 0.85, 0.04)],
+])
+
+// Implement: a rocket leaving, tilted to the right, with its exhaust behind.
+const rocketForm = drawing(
+  [
+    [9, seg(-0.24, -0.35, -0.24, 0.4, 0.018)],
+    [9, seg(0.24, -0.35, 0.24, 0.4, 0.018)],
+    [8, bezier([-0.24, 0.4], [-0.24, 0.7], [-0.1, 0.9], [0, 0.98], 0.016)],
+    [8, bezier([0.24, 0.4], [0.24, 0.7], [0.1, 0.9], [0, 0.98], 0.016)],
+    [8, box(0, 0.02, 0.44, 0.74)],
+    [6, arc(0, 0.2, 0.11, 0, TAU, 0.012)],
+    [4, seg(-0.24, -0.35, 0.24, -0.35, 0.018)],
+    [5, seg(-0.24, -0.02, -0.52, -0.5, 0.018)],
+    [4, seg(-0.52, -0.5, -0.24, -0.35, 0.018)],
+    [5, seg(0.24, -0.02, 0.52, -0.5, 0.018)],
+    [4, seg(0.52, -0.5, 0.24, -0.35, 0.018)],
+    [24, (r) => { const t = r(); return [gauss(r) * 0.13 * (1 - t * 0.55), -0.4 - t * 0.85] }],
+    [6, (r) => { const t = r(); return [gauss(r) * 0.22, -1.0 - t * 0.5] }],
+  ],
+  { rot: -0.6 },
+)
+
+// Evaluate: a balance scale, not quite level. Balancing is an act.
+const scaleForm = drawing([
+  [12, seg(0, -0.75, 0, 0.72, 0.022)],
+  [8, seg(-0.45, -0.8, 0.45, -0.8, 0.028)],
+  [4, disc(0, 0.74, 0.07)],
+  [16, seg(-1.15, 0.66, 1.15, 0.8, 0.022)],
+  [4, seg(-1.15, 0.66, -1.45, -0.05, 0.008)],
+  [4, seg(-1.15, 0.66, -0.85, -0.05, 0.008)],
+  [4, seg(-1.45, -0.05, -0.85, -0.05, 0.012)],
+  [10, arc(-1.15, -0.05, 0.3, Math.PI, TAU, 0.018)],
+  [7, disc(-1.15, -0.18, 0.13)],
+  [4, seg(1.15, 0.8, 0.85, 0.09, 0.008)],
+  [4, seg(1.15, 0.8, 1.45, 0.09, 0.008)],
+  [4, seg(0.85, 0.09, 1.45, 0.09, 0.012)],
+  [10, arc(1.15, 0.09, 0.3, Math.PI, TAU, 0.018)],
+  [3, disc(1.15, 0.0, 0.08)],
+])
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
@@ -730,7 +858,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their
@@ -799,7 +927,6 @@ export function createField(host) {
   }
 
   function morphTo(name, { instant = false, anchor, enter, slot = 0 } = {}) {
-    clearChain()
     // Each nesting picks a perch and a shape from the slot, so the field
     // never returns to the same corner twice in a row.
     if (name === 'nest') {
@@ -815,6 +942,8 @@ export function createField(host) {
       place(instant)
     }
     if (name === current) return
+    // A new form cancels any entrance still playing; the same form lets it finish.
+    clearChain()
     current = name
     // Without the drive-in, the 1984 station shows the robot already standing.
     const animated = enter === 'drop' && !instant && !reduce()

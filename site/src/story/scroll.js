@@ -54,7 +54,10 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     if (!animate || reduce()) {
       gsap.set(lines, { yPercent: 0, xPercent: 0, filter: 'none' })
       gsap.set(beat, { '--draw': 1, scale: 1, y: 0 })
-      if (beat.querySelector('.phase__letter')) gsap.set(beat.querySelector('.phase__letter'), { scale: 1, opacity: 0.12 })
+      if (beat.querySelector('.addie')) {
+        gsap.set(beat.querySelector('.addie').children, { yPercent: 0, opacity: 1, rotateX: 0 })
+        gsap.set(beat.querySelector('.addie'), { '--fill': 1 })
+      }
       nums.forEach((n) => (n.textContent = n.dataset.to ?? n.textContent))
       gsap.to(beat, { autoAlpha: 1, duration: reduce() ? 0.3 : 0 })
       return
@@ -69,8 +72,13 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
         const o = { v: from }
         gsap.to(o, { v: to, duration: dur, ease: 'power3.out', snap: 'v', onUpdate: () => (n.textContent = o.v) })
       })
-    const letter = beat.querySelector('.phase__letter')
-    if (letter) gsap.fromTo(letter, { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 0.12, duration: 1.6, ease: 'power3.out' })
+    // The ADDIE strip: letters tip up one after another, then the current
+    // letter fills with colour from the baseline to the cap.
+    const strip = beat.querySelector('.addie')
+    if (strip) {
+      gsap.fromTo(strip.children, { yPercent: 70, opacity: 0, rotateX: -80 }, { yPercent: 0, opacity: 1, rotateX: 0, transformPerspective: 600, duration: 1.1, stagger: 0.08, ease: 'power4.out' })
+      gsap.fromTo(strip, { '--fill': 0 }, { '--fill': 1, duration: 1.4, delay: 0.6, ease: 'power2.inOut' })
+    }
     switch (phase) {
       case 'analyse': {
         rise()

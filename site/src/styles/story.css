@@ -535,21 +535,62 @@ html.overlay-open { overflow: hidden; }
   max-width: 420px;
 }
 
-/* Phase intro: the letter, large and faint, behind the name. */
-.phase__letter {
-  position: absolute;
-  right: 0;
-  top: -0.1em;
-  font-size: clamp(8rem, 36vmin, 22rem);
+/* Phase intro: the ADDIE strip. Five letters in a row; phases passed are
+   solid and quiet, the current one fills with the brand gradient from the
+   baseline up, the ones ahead are hairline outlines. */
+.addie {
+  --fill: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.05em;
+  margin: 0;
+  font-size: clamp(3.4rem, 15vmin, 9.5rem);
   font-weight: 700;
-  letter-spacing: -0.06em;
-  line-height: 1;
-  color: var(--accent);
-  opacity: 0.12;
-  pointer-events: none;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  perspective: 600px;
+}
+.addie__l {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--fg) 28%, transparent);
+  transform-origin: 50% 100%;
+}
+.addie__l.is-done {
+  color: color-mix(in oklab, var(--fg) 16%, transparent);
+  -webkit-text-stroke-color: transparent;
+}
+.addie__l.is-on {
+  -webkit-text-stroke-color: color-mix(in oklab, var(--fg) 55%, transparent);
+  margin-inline: 0.04em;
+}
+.addie__l.is-on::after {
+  content: attr(data-l);
+  position: absolute;
+  inset: 0;
+  -webkit-text-stroke: 0;
+  background: linear-gradient(100deg, #ff1fb3 0%, #ff6a5a 36%, #ffd23f 68%, #a6ff1f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  clip-path: inset(calc((1 - var(--fill)) * 100%) 0 0 0);
+}
+/* A soft bloom under the current letter, in the same colours. */
+.addie__l.is-on::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0.02em;
+  height: 0.07em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff1fb3, #ffd23f, #a6ff1f);
+  filter: blur(0.06em);
+  opacity: calc(var(--fill) * 0.7);
 }
 .scene--phase .beat { position: relative; }
-.scene--phase .phase__letter { transform-origin: right top; }
+.scene.scene--phase .beat h2 { font-size: var(--text-h2); letter-spacing: -0.03em; }
 
 /* Eras: a giant year, a serif title, dated facts, and the quote. */
 .era__year {

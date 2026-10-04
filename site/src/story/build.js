@@ -149,21 +149,31 @@ export function eraScene(era, prevYear) {
   }
 }
 
+// Each phase has its own particle drawing, shown beside the phase intro.
+const PHASE_FORM = { analyse: 'lens', design: 'pencil', develop: 'code', implement: 'rocket', evaluate: 'scale' }
+
 export function phaseScene(phase) {
   const list = phase.moves.map((id) => moveById[id].name)
+  const at = phases.indexOf(phase)
+  // The ADDIE strip: five letters in a row. Phases already passed are
+  // solid and quiet, the current one fills with the brand gradient, the
+  // ones ahead are outlines.
+  const strip = phases
+    .map((p, j) => `<span class="addie__l${j === at ? ' is-on' : j < at ? ' is-done' : ''}" data-l="${p.letter}">${p.letter}</span>`)
+    .join('')
   const beats = [
     {
       html: `
-        ${eyebrow('ADDIE', phase.name)}
-        <p class="phase__letter" aria-hidden="true" data-no-split>${phase.letter}</p>
+        ${eyebrow('ADDIE', `Phase ${at + 1} of ${phases.length}`)}
+        <p class="addie" aria-hidden="true" data-no-split>${strip}</p>
         <h2>${phase.name}</h2>
         <p class="lead">${phase.line}</p>
         <ul class="rows">${list.map((n) => `<li>${n}</li>`).join('')}</ul>
       `,
     },
   ]
-  if (phase.quote) beats.push({ html: `${eyebrow('ADDIE', phase.name)}${quoteBlock(phase.quote)}` })
-  return { id: `phase${phase.id}`, title: phase.name, minutes: 0, phase: phase.id, className: 'scene--phase', form: 'nest', beats }
+  if (phase.quote) beats.push({ form: 'nest', html: `${eyebrow('ADDIE', phase.name)}${quoteBlock(phase.quote)}` })
+  return { id: `phase${phase.id}`, title: phase.name, minutes: 0, phase: phase.id, className: 'scene--phase', form: PHASE_FORM[phase.id] ?? 'nest', beats }
 }
 
 // ---------- Playbook ----------
