@@ -282,7 +282,7 @@ function logoForm(n, r) {
 
 // Original pixel figures in the spirit of the robot heroes of 1963, 1979
 // and 1984. Drawn here, not copied from anywhere. Letters are palette keys.
-const PALETTE = { k: [0.07, 0.07, 0.09], w: [0.96, 0.96, 0.94], r: [0.93, 0.2, 0.2], b: [0.15, 0.45, 0.95], y: [1, 0.82, 0.25], s: [0.98, 0.8, 0.65], g: [0.55, 0.57, 0.62], c: [0.2, 0.7, 0.9] }
+const PALETTE = { k: [0.07, 0.07, 0.09], w: [0.96, 0.96, 0.94], r: [0.93, 0.2, 0.2], b: [0.15, 0.45, 0.95], y: [1, 0.82, 0.25], s: [0.98, 0.8, 0.65], g: [0.55, 0.57, 0.62], c: [0.2, 0.7, 0.9], d: [0.62, 0.1, 0.12], l: [0.8, 0.82, 0.87] }
 const SPRITES = [
   // A boy robot: black spiked hair, a red belt and red boots.
   ['......kk.k......', '.....kkkkkk.....', '....kkssssk.....', '....ksssssk.....', '....kskssks.....', '.....ssssss.....', '......ssss......', '.....ssssss.....', '....ssssssss....', '....s.ssss.s....', '......rrrr......', '......ssss......', '......ssss......', '.....rr..rr.....', '....rrr..rrr....', '....rrr..rrr....'],
@@ -293,22 +293,26 @@ const SPRITES = [
   ['......bbbb......', '.....bbbbbb.....', '..b..bbbbbb..b..', '..bb.bccccb.bb..', '..bb.bkkkkb.bb..', '...bbbbbbbbbb...', '....gggggggg....', '..ggrrrrrrrrgg..', '.gg.rrccccrr.gg.', '.gg.rrccccrr.gg.', '.gg.rrrrrrrr.gg.', '.g..rryyyyrr..g.', '.g..rrrrrrrr..g.', '....bbbbbbbb....', '....bbb..bbb....', '....bbb..bbb....', '....bbb..bbb....', '...bbbb..bbbb...', '...kkkk..kkkk...', '..kkkkk..kkkkk..'],
 ]
 // The same truck robot in vehicle mode, seen from the side and facing
-// left: just the cab, no trailer. A red cab with a light-blue windscreen
-// and side window, a blue stripe and ear-fin stacks, a yellow headlight,
-// a blue chassis and black wheels. It drives in along the timeline, then
-// transforms into the standing figure above.
+// left: a flat-nosed cab with no trailer. Amber marker lights on the roof,
+// a windscreen and a side window split by a dark pillar, a silver stripe
+// over a blue one, a chrome exhaust stack behind the cab, a yellow
+// headlight over a silver bumper, a grey fuel tank, a blue rear deck and
+// wheels with grey hubs. It drives in along the timeline, then transforms
+// into the standing figure above.
 const TRUCK = [
-  '....b....b..',
-  '....b....b..',
-  '.rrrrrrrrrr.',
-  '.rccccrrccr.',
-  '.rccccrrccr.',
-  '.rrrrrrrrrr.',
-  'yrbbbbbbbbrr',
-  'yrrrrrrrrrr.',
-  'bbbbbbbbbbbb',
-  '.kkk....kkk.',
-  '.kkk....kkk.',
+  '..y.y.y...g.....',
+  '.rrrrrrrr.g.....',
+  'rrrrrrrrrrg.....',
+  'rcccdrcccrg.....',
+  'rcccdrcccrg.....',
+  'rrrrrrrrrrg.....',
+  'rlllllllrrg.....',
+  'rbbbbbbbrrg.....',
+  'rrrrrrrrrrbbbbbb',
+  'yrrrrrrrrrbbbbbb',
+  'lll.kkkk.gg.kkkk',
+  'lll.kggk.gg.kggk',
+  '....kkkk....kkkk',
 ]
 
 // 1997: a chessboard seen from above, dark squares filled, with a few
@@ -770,7 +774,7 @@ export function createField(host) {
     const toA = geo.attributes.aTo.array
     const fromA = geo.attributes.aFrom.array
     const parked = Float32Array.from(target.positions)
-    const isTruck = (i) => target.colors[i * 4 + 3] > 0 && target.positions[i * 3] > 0.55
+    const isTruck = (i) => target.colors[i * 4 + 3] > 0 && target.positions[i * 3] > 0.58
     for (let i = 0; i < N; i++) {
       if (!isTruck(i)) continue
       parked[i * 3] += 3.8
