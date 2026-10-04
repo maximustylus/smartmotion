@@ -183,9 +183,9 @@ export function playbookScenes(route) {
           ${eyebrow('A playbook of smart moves')}
           <p class="cover__lead">Build, teach and present with AI assistants. Eight moves, each with a framework, a worked example and a cheatsheet you can paste anywhere.</p>
           <div class="chips">
-            <span class="chip">${moves.length} moves</span>
-            <span class="chip">5 eras</span>
-            <a class="chip chip--link" href="/talk">The talk</a>
+            <a class="chip" href="#${moves[0].id}">Moves</a>
+            <a class="chip" href="#wonder">Era</a>
+            <a class="chip" href="/talk">Talk</a>
           </div>
         `,
       },
