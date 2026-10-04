@@ -498,6 +498,34 @@ function drawing(parts, { rot = 0 } = {}) {
   }
 }
 
+// Have an angle: two arms meeting at a vertex, the arc that measures the
+// gap between them with a protractor's ticks, and a beam of light filling
+// the wedge. The two arms are the two factors; the angle is yours.
+const angleForm = (() => {
+  const V = [-1.3, -0.78], A = 0.66
+  const polar = (rad, a) => [V[0] + Math.cos(a) * rad, V[1] + Math.sin(a) * rad]
+  const arm = (a) => (r) => {
+    const [x, y] = polar(r() * 2.85, a)
+    return [x + gauss(r) * 0.022, y + gauss(r) * 0.022]
+  }
+  const ticks = (r) => {
+    const k = Math.floor(r() * 7)
+    return polar(0.95 + r() * (k % 3 === 0 ? 0.16 : 0.09), (A * k) / 6 + gauss(r) * 0.004)
+  }
+  // The beam thins out as it travels, like light leaving a torch.
+  const beam = (r) => polar(1.2 + Math.pow(r(), 1.6) * 1.6, 0.04 + r() * (A - 0.08))
+  return drawing([
+    [26, arm(0)],
+    [26, arm(A)],
+    [14, (r) => polar(0.95 + gauss(r) * 0.014, r() * A)],
+    [8, ticks],
+    [5, disc(V[0], V[1], 0.08)],
+    [3, disc(...polar(2.85, 0), 0.06)],
+    [3, disc(...polar(2.85, A), 0.06)],
+    [15, beam],
+  ])
+})()
+
 // Begin with the end in mind: a brain seen from the side, frontal lobe to
 // the left, with lightning striking it from above. A brainstorm.
 const brainForm = (() => {
@@ -917,7 +945,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their

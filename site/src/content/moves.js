@@ -51,7 +51,7 @@ export const moves = [
       body: `A light aside on strolling and wandering minds. ${todo('Killingsworth and Gilbert (2010): verify the finding and cite the original before publishing.')}`,
     },
     cheatsheet: 'have-an-angle',
-    form: 'pair',
+    form: 'angle',
   },
   {
     id: 'hook',

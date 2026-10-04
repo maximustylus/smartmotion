@@ -65,6 +65,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   // The fidelity arc: how the picture is rendered moves with the eras,
   // from a 1960s dot matrix to today's soft high-resolution splats.
   const FIDELITY = { '': 0, wonder: 0, logic: 0.25, assistants: 0.5, chat: 0.75, agents: 1 }
+  const CRISP = 0.6
+  let lastFid = -1
   const fills = Object.fromEntries([...root.querySelectorAll('.rail__seg')].map((el) => [el.dataset.scene, el]))
   let field = null
   let motus = null
@@ -94,7 +96,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       if (root.dataset.era !== era) {
         root.dataset.era = era
         requestAnimationFrame(() => field?.theme())
-        field?.setFidelity(FIDELITY[era] ?? 1)
         motus?.setFidelity(FIDELITY[era] ?? 1)
         // A scan passes over the picture as it changes resolution.
         if (sceneChanged && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -103,6 +104,14 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         }
         // Motus announces the era as the picture changes resolution.
         if (s.era) motus?.say(`${s.title}, ${s.beats[0]?.years ?? ''}`.replace(/, $/, ''), 3200)
+      }
+      // The era pages keep their period look, dot matrix included. Every
+      // other page past the cover is drawn crisp, so the drawings read
+      // clearly, and still softens towards splats in the later eras.
+      const fid = s.era || !era ? FIDELITY[era] ?? 1 : Math.max(CRISP, FIDELITY[era] ?? 1)
+      if (fid !== lastFid) {
+        lastFid = fid
+        field?.setFidelity(fid)
       }
       root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
@@ -152,7 +161,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       window.field = field
       const cur = scenes[scroll.state.scene]
       field.morphTo(cur.beats[scroll.state.beat]?.form ?? cur.form, { instant: true, anchor: cur.beats[scroll.state.beat]?.anchor ?? cur.anchor, slot: scroll.state.scene * 3 + scroll.state.beat })
-      field.setFidelity(FIDELITY[root.dataset.era] ?? 1, { instant: true })
+      field.setFidelity(lastFid < 0 ? (FIDELITY[root.dataset.era] ?? 1) : lastFid, { instant: true })
       onThemeChange(() => field.theme())
       root.classList.add('has-field')
     })
