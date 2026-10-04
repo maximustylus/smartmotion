@@ -1010,7 +1010,20 @@ html.overlay-open { overflow: hidden; }
 .qr-overlay__link { font-weight: 700; font-size: var(--text-h3); letter-spacing: -0.01em; }
 
 /* Micro-interactions on the small controls. */
-.chip, .btn, .tile, .option, .dots button { transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast); }
+.chip, .btn, .tile, .option, .dots button { transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast); }
+/* Link pills: no underline, a soft accent fill that follows the theme,
+   and the full accent on hover or focus. */
+a.chip:not(.chip--link) {
+  text-decoration: none;
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--fg);
+}
+a.chip:not(.chip--link):hover,
+a.chip:not(.chip--link):focus-visible {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
 a.chip:hover, button.chip:hover, .btn:hover { transform: translateY(-1px); }
 a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(0.98); }
 

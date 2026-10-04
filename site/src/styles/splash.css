@@ -25,15 +25,6 @@
 .sp__path { fill: #000; opacity: 0; }
 .sp__glow, .sp__core { opacity: 0; }
 
-.sp__word {
-  position: absolute;
-  bottom: 10vh;
-  display: grid;
-  gap: 6px;
-  justify-items: center;
-  text-align: center;
-}
-
 .sp__name {
   font-family: var(--font-sans);
   font-weight: 700;
@@ -43,11 +34,13 @@
   opacity: 0;
 }
 
+/* The tagline sits just under the name, inside the same drawing, so the
+   two stay together at every screen size. */
 .sp__tag {
   font-family: var(--font-voice);
   font-style: italic;
-  font-size: clamp(1rem, 2.6vmin, 1.4rem);
-  color: #a2a2ac;
+  font-size: 24px;
+  fill: #a2a2ac;
   opacity: 0;
 }
 

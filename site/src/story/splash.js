@@ -56,8 +56,8 @@ export function splash(root) {
       <circle class="sp__glow" cx="256" cy="276" r="120" fill="url(#sp-light)"/>
       <circle class="sp__core" cx="256" cy="276" r="4" fill="#FFFDF2"/>
       <text class="sp__name" x="256" y="474" textLength="360" lengthAdjust="spacingAndGlyphs" text-anchor="middle">SMARTMOTION</text>
+      <text class="sp__tag" x="256" y="506" text-anchor="middle">A playbook of smart moves</text>
     </svg>
-    <div class="sp__word"><span class="sp__tag">A playbook of smart moves</span></div>
   `
   root.before(el)
   const q = (s) => el.querySelectorAll(s)
@@ -82,7 +82,7 @@ export function splash(root) {
   el.addEventListener('pointerdown', finish)
 
   if (reduce()) {
-    gsap.set([q('.sp__ray'), q('.sp__horizon'), q('.sp__fill'), q('.sp__glow'), q('.sp__core'), q('.sp__word')], { opacity: 1 })
+    gsap.set([q('.sp__ray'), q('.sp__horizon'), q('.sp__fill'), q('.sp__glow'), q('.sp__core'), q('.sp__name'), q('.sp__tag')], { opacity: 1 })
     gsap.set(traces, { strokeDashoffset: 0 })
     gsap.set(q('.sp__glow'), { scale: 1, transformOrigin: '256px 276px' })
     setTimeout(finish, 1600)
