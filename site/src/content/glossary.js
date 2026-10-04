@@ -31,7 +31,7 @@ export const sitemap = [
   { path: '/', label: 'Playbook', note: 'Eight moves under ADDIE, with five eras between' },
   { path: '/talk', label: 'GAi GAi with me', note: 'The talk route, 7 October 2026' },
   { path: '/play', label: 'Play the quiz', note: 'The icebreaker, on your phone' },
-  { path: '/glossary', label: 'Glossary and site map', note: 'This page' },
+  { path: '/glossary', label: 'Glossary', note: 'This page' },
   { path: '/contact', label: 'Contact', note: 'Muhammad Alif' },
   { path: '/styleguide', label: 'Design system', note: 'Colour, type and components' },
 ]

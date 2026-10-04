@@ -214,10 +214,7 @@ export function playbookScenes(route) {
           ${eyebrow('Routes')}
           <h2>One playbook, many routes</h2>
           <p class="lead">A route strings moves into a session for one audience and one time budget.</p>
-          <ul class="rows">
-            <li><a href="/talk">${route.title}</a> <span class="rows__meta">${route.event}, ${route.when[0]}</span></li>
-          </ul>
-          <p class="chips"><a class="chip chip--link" href="/glossary">Glossary and site map</a><a class="chip" href="/contact">Contact</a></p>
+          <p class="chips"><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },
     ],

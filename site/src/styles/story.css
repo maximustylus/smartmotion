@@ -99,32 +99,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.theme-toggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: color-mix(in oklab, var(--bg) 72%, transparent);
-  backdrop-filter: blur(10px) saturate(1.3);
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  color: var(--fg);
-  transition: border-color var(--dur-fast), transform var(--dur-fast) var(--ease-out);
-}
-
-.theme-toggle:hover { border-color: var(--fg); transform: translateY(-1px); }
-.theme-toggle:active { transform: scale(0.94); }
-.theme-toggle svg { display: block; overflow: visible; }
-.theme-toggle__disc {
-  transform-origin: 12px 12px;
-  transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-.theme-toggle[data-theme='dark'] .theme-toggle__disc { transform: rotate(180deg); }
-
-@media (prefers-reduced-motion: reduce) {
-  .theme-toggle__disc { transition: none; }
-}
 
 /* ---------- Scenes ---------- */
 
@@ -1034,7 +1008,6 @@ html.overlay-open { overflow: hidden; }
     radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 7%, var(--bg)) 0%, transparent 60%),
     linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
 }
-.app--page::before { display: none; }
 
 
 /* Cover parallax: the copy lifts gently while the pixel M holds, as the page scrolls on. */
