@@ -1184,6 +1184,11 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .beat:has(.tracks) h2, .beat:has(.flows) h2 { font-size: var(--text-h3); }
   .beat:has(.tracks) .lead, .beat:has(.flows) .lead { font-size: var(--text-body); }
   .beat:has(.tracks) .note, .beat:has(.flows) .note { font-size: 0.75em; }
-  .flows a { padding-block: 8px; }
+  .flows a { padding-block: 7px; }
   .flows__need { font-size: 0.8em; }
+  /* The take-home is dense, so on a phone it gives up the guardrail frame
+     and its padding for the extra width and height. */
+  #scene-takehome .beat { padding: 0 0 14px; }
+  #scene-takehome .beat::before { display: none; }
+  .track { max-height: 44svh; overflow-y: auto; }
 }
