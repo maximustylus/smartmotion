@@ -486,12 +486,63 @@ function drawing(parts, { rot = 0 } = {}) {
       a[i * 3] = X
       a[i * 3 + 1] = Y
       a[i * 3 + 2] = gauss(r) * 0.03
-      const [cr, cg, cb] = brand(Math.min(1, Math.max(0, (X + 1.5) / 3)))
-      col.set([cr, cg, cb, 1], i * 4)
+      // A tagged part is a lightning bolt: amber, and its alpha carries the
+      // bolt's number so the shader can strike each one on its own beat.
+      if (parts[j][2] !== undefined) col.set([1, 0.78, 0.12, 2 + parts[j][2]], i * 4)
+      else {
+        const [cr, cg, cb] = brand(Math.min(1, Math.max(0, (X + 1.5) / 3)))
+        col.set([cr, cg, cb, 1], i * 4)
+      }
     }
     return { positions: a, colors: col }
   }
 }
+
+// Begin with the end in mind: a brain seen from the side, frontal lobe to
+// the left, with lightning striking it from above. A brainstorm.
+const brainForm = (() => {
+  const cx = -0.05, cy = -0.1, rx = 1.08, ry = 0.66
+  // The outline: a bumpy dome on top, a flatter underside, a notch where
+  // the temporal lobe tucks under at the front.
+  const lump = (t) => 1 + 0.07 * Math.sin(8 * t + 0.6)
+  const outline = (r) => {
+    const t = r() * TAU, R = lump(t) + gauss(r) * 0.01
+    const sy = Math.sin(t)
+    return [cx + rx * R * Math.cos(t), cy + ry * R * (sy < 0 ? sy * 0.62 : sy)]
+  }
+  // Folds: wavy arcs that follow the dome at two depths.
+  const fold = (f, a0, a1, ph) => (r) => {
+    const t = a0 + (a1 - a0) * r()
+    const q = f + 0.07 * Math.sin(9 * t + ph) + gauss(r) * 0.008
+    return [cx + rx * q * Math.cos(t), cy + ry * q * Math.sin(t)]
+  }
+  const bolt = (x, top, hit, k) => {
+    // A zigzag from the sky down to where it meets the brain.
+    const d = top - hit
+    const pts = [[x + 0.12, top], [x - 0.1, top - d * 0.38], [x + 0.1, top - d * 0.5], [x - 0.06, top - d * 0.8], [x + 0.02, hit]]
+    return [5, (r) => {
+      const i = Math.floor(r() * 4), t = r()
+      return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * t + gauss(r) * 0.014, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t + gauss(r) * 0.014]
+    }, k]
+  }
+  return drawing([
+    [42, outline],
+    [9, fold(0.66, 0.3, 2.85, 0)],
+    [5, fold(0.34, 0.4, 2.7, 3)],
+    // The lateral fissure, running back from the front underside.
+    [8, bezier([-0.85, -0.38], [-0.3, -0.05], [0.25, -0.3], [0.6, -0.08], 0.012)],
+    // Cerebellum at the back, with its fine leaves, and the brain stem.
+    [9, arc(0.66, -0.6, 0.28, 0, TAU, 0.016)],
+    [3, seg(0.46, -0.54, 0.86, -0.54, 0.008)],
+    [3, seg(0.44, -0.66, 0.88, -0.66, 0.008)],
+    [7, seg(0.2, -0.5, 0.32, -0.92, 0.04)],
+    bolt(-0.85, 1.14, 0.3, 0),
+    bolt(-0.42, 1.18, 0.52, 1),
+    bolt(0.0, 1.12, 0.56, 2),
+    bolt(0.45, 1.18, 0.5, 3),
+    bolt(0.85, 1.1, 0.26, 4),
+  ])
+})()
 
 // Analyse: a magnifying glass over a small bar chart.
 const lensForm = drawing([
@@ -606,7 +657,12 @@ const vertex = /* glsl */ `
   varying vec4 vColor;
 
   void main() {
-    vColor = aColor;
+    // Alpha above 1 marks a lightning bolt and carries its number.
+    float bolt = step(1.5, aColor.a);
+    vColor = vec4(aColor.rgb, min(aColor.a, 1.0));
+    // Each bolt strikes on its own beat: a hard flash, then an echo.
+    float ph = fract(uTime * 0.42 + (aColor.a - 2.0) * 0.37);
+    float strike = bolt * ((1.0 - smoothstep(0.03, 0.16, ph)) + 0.55 * step(0.2, ph) * (1.0 - smoothstep(0.22, 0.32, ph)));
     // Each point starts its journey a little after the last, by seed.
     float m = clamp(uMix * 1.35 - aSeed * 0.35, 0.0, 1.0);
     m = m * m * (3.0 - 2.0 * m);
@@ -668,6 +724,9 @@ const vertex = /* glsl */ `
     float splat = base * (1.0 + 1.8 * smoothstep(0.7, 1.0, uFidelity));
     gl_PointSize = mix(cellPx, splat, smoothstep(0.0, 0.5, uFidelity)) * (1.0 + vLens * 1.4);
     vFade = mix(0.09, (0.45 + 0.55 * aSeed) * depth, smoothstep(0.2, 0.7, uFidelity)) * (1.0 - hidden);
+    // Bolts are a faint trace between strikes and blaze when they hit.
+    vFade *= mix(1.0, 0.12 + strike * 6.0, bolt);
+    gl_PointSize *= 1.0 + strike * 0.5;
     vFid = uFidelity;
     vThin = aSeed;
   }
@@ -858,7 +917,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their

@@ -31,7 +31,7 @@ export const moves = [
       body: 'brief.md names the purpose, the audience, the stack, the running order, the data rules and the definition of done. The app was built in phases against it, stopping for approval after each.',
     },
     cheatsheet: 'begin-with-the-end',
-    form: 'timeline',
+    form: 'brain',
   },
   {
     id: 'angle',
