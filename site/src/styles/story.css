@@ -427,6 +427,8 @@ html.overlay-open { overflow: hidden; }
 }
 
 .sheet__status { font-size: 0.85em; color: var(--muted); }
+.sheet__hint { font-size: 0.8em; color: var(--faint); }
+.sheet__status:not(:empty) + .sheet__hint, .sheet__hint:has(+ .sheet__status:not(:empty)) { display: none; }
 
 @media (orientation: landscape) and (min-width: 900px) {
   .sheet__text { max-height: 42svh; }
@@ -563,6 +565,19 @@ html.overlay-open { overflow: hidden; }
   filter: blur(0.06em);
   opacity: calc(var(--fill) * 0.7);
 }
+/* The five words the letters stand for, so nobody has to know the acronym. */
+.addie__words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em 0.9em;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.68rem, 1.5vmin, 0.9rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.addie__words .is-on { color: var(--fg); font-weight: 600; }
 .scene--phase .beat { position: relative; }
 .scene.scene--phase .beat h2 { font-size: var(--text-h2); letter-spacing: -0.03em; }
 
@@ -1148,4 +1163,27 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .beat:has(.lanes) h2 { font-size: var(--text-h3); }
   .beat:has(.lanes) .lead { display: none; }
   .beat:has(.lanes) .note { font-size: 0.75em; }
+}
+
+/* Take-home on a phone: the two track cards sit side by side and swipe,
+   like the tool map, and the five workflows tighten, so both beats fit. */
+@media (max-width: 599px) {
+  .tracks {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-inline: calc(var(--space-5) * -1);
+    padding-inline: var(--space-5);
+    max-width: none;
+  }
+  .tracks::-webkit-scrollbar { display: none; }
+  .track { flex: 0 0 86%; scroll-snap-align: center; }
+  .beat:has(.tracks) h2, .beat:has(.flows) h2 { font-size: var(--text-h3); }
+  .beat:has(.tracks) .lead, .beat:has(.flows) .lead { font-size: var(--text-body); }
+  .beat:has(.tracks) .note, .beat:has(.flows) .note { font-size: 0.75em; }
+  .flows a { padding-block: 8px; }
+  .flows__need { font-size: 0.8em; }
 }

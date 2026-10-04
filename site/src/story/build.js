@@ -78,7 +78,8 @@ export function moveBeats(m, n, total = moves.length) {
             ${sheet.missing ? todo(`site/src/content/cheatsheets/${m.cheatsheet}.md is missing`) : `<pre class="sheet__text" tabindex="0">${esc(sheet.prompt)}</pre>`}
           </div>
           <p class="sheet__actions">
-            <button type="button" class="btn" data-copy aria-label="Copy the cheatsheet">Copy prompt</button>
+            <button type="button" class="btn" data-copy aria-label="Copy the prompt">Copy prompt</button>
+            <span class="sheet__hint">Fill in the [brackets] before you send it.</span>
             <span class="sheet__status" aria-live="polite"></span>
           </p>
         </div>
@@ -167,6 +168,7 @@ export function phaseScene(phase) {
       html: `
         ${eyebrow('ADDIE', `Phase ${at + 1} of ${phases.length}`)}
         <p class="addie" aria-hidden="true" data-no-split>${strip}</p>
+        <p class="addie__words" data-no-split>${phases.map((p, j) => `<span${j === at ? ' class="is-on"' : ''}>${p.name}</span>`).join('')}</p>
         <h2>${phase.name}</h2>
         <p class="lead">${phase.line}</p>
         <ul class="rows">${list.map((n) => `<li>${n}</li>`).join('')}</ul>

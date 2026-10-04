@@ -23,7 +23,7 @@ export function createHud(root, scenes, scroll) {
       <div class="qr-overlay__box"><div class="qr qr--big" aria-label="QR code for smartmotion.web.app/play"></div><p class="qr-overlay__link">smartmotion.web.app/play</p><p class="overlay__sub">Press <kbd>Esc</kbd> to close.</p></div>
     </div>
     <div class="blackout" aria-hidden="true"></div>
-    <p class="visually-hidden" aria-live="polite"></p>
+    <p class="visually-hidden hud__live" aria-live="polite"></p>
   `,
   )
   const hud = root.querySelector('.hud')
@@ -38,7 +38,7 @@ export function createHud(root, scenes, scroll) {
     const { PLAY_URL } = await import('../quiz/tools.js')
     qrOverlay.querySelector('.qr').innerHTML = await QRCode.toString(PLAY_URL, { type: 'svg', margin: 0, errorCorrectionLevel: 'M' })
   }
-  const live = root.querySelector('[aria-live]')
+  const live = root.querySelector(".hud__live")
 
   // ---------- Timer ----------
 
