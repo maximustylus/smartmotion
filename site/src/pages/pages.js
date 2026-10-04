@@ -3,6 +3,7 @@ import { glossary, sitemap } from '../content/glossary.js'
 import { defaultRoute } from '../content/routes.js'
 import { themeToggle } from '../lib/theme.js'
 import effort from '../content/effort.json'
+import { copy } from '../content/copy.js'
 
 /*
   Plain pages: glossary with site map, and contact. Readable top to bottom,
@@ -120,7 +121,7 @@ export function mountContact(root) {
       </div>
     </div>
     <h2>About this site</h2>
-    <p>Smart Motion is a digital playbook of smart moves for building, teaching and presenting with AI assistants. It was itself built with an AI assistant, so the site is its own worked example. The source is public at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
+    <p>${esc(copy.about.aboutPara)} The source is public at <a href="https://github.com/maximustylus/smartmotion" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>.</p>
 
     <h2>How it was built</h2>
     <dl class="stats">
@@ -131,19 +132,7 @@ export function mountContact(root) {
     </dl>
     <p class="note">Counted by the project's steward script from the assistant's session logs and the git history, last measured ${day(effort.measuredAt)}. Active time is the time the build was moving, mine and the assistant's together, with any pause longer than ${effort.idleMinutes} minutes left out as a break. It was spread over ${effort.sittings} sittings${effort.days?.length ? ` across ${effort.days.length} days` : ''}.</p>
     <ol class="flow">
-      ${[
-        ['Write the brief', 'One page before any code: purpose, audience, stack, running order, data rules, content rules and what done means. The assistant reads it first, every time.'],
-        ['Be interviewed', 'Before redesigning, the assistant asked me about layout, motion, theme and devices, showed options, and I chose. Decisions went back into the brief and a design file.'],
-        ['Build in phases', 'Design system and shell, then the quiz and live totals, then content. Each phase stops for my approval, with a list of what is built, what is verified and what is still to do.'],
-        ['Direct in plain language', 'In Claude Code, I describe what I want or what looks wrong. The assistant proposes, builds and explains what it did.'],
-        ['Keep it moving from my phone', 'The build ran in Claude Code on my Mac. When I headed out I left the session running and picked it up in the Claude app on my phone, through Dispatch: the assistant kept iterating, sent a notification at each milestone, and I replied with the next instruction from wherever I was.'],
-        ['Check in a real browser', 'Changes are opened in a browser, at phone size and wider, and looked at before they are saved. Errors in the console count as failures.'],
-        ['Commit each verified change', 'Small commits with plain messages, pushed to GitHub, so any step can be read or undone.'],
-        ['Keep the keys', 'I deploy to Firebase Hosting myself, and secrets never pass through the assistant. Firestore stores anonymous counters only.'],
-        ['Source every claim', 'Facts, dates and quotes are listed in references.md. Anything not yet checked against the original is marked TODO on the page until it is.'],
-      ]
-        .map(([t, d]) => `<li><h3>${t}</h3><p>${d}</p></li>`)
-        .join('')}
+      ${copy.about.steps.map((st) => `<li><h3>${esc(st.title)}</h3><p>${esc(st.body)}</p></li>`).join('')}
     </ol>
     <p>Made with Claude Code, Vite, GSAP, Three.js and Firebase. Every claim traces to <a href="https://github.com/maximustylus/smartmotion/blob/main/references.md" target="_blank" rel="noopener">references.md</a>.</p>
   `,

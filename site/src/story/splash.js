@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import '../styles/splash.css'
+import { copy } from '../content/copy.js'
 
 /*
   The splash. The Smart Motion mark is drawn as a one-point perspective:
@@ -56,7 +57,7 @@ export function splash(root) {
       <circle class="sp__glow" cx="256" cy="276" r="120" fill="url(#sp-light)"/>
       <circle class="sp__core" cx="256" cy="276" r="4" fill="#FFFDF2"/>
       <text class="sp__name" x="256" y="474" textLength="360" lengthAdjust="spacingAndGlyphs" text-anchor="middle">SMARTMOTION</text>
-      <text class="sp__tag" x="256" y="506" text-anchor="middle">A playbook of smart moves</text>
+      <text class="sp__tag" x="256" y="506" text-anchor="middle">${copy.tagline}</text>
     </svg>
   `
   root.before(el)

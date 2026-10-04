@@ -2,6 +2,8 @@ import { moves, moveById } from '../content/moves.js'
 import { examples } from '../content/examples.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
 import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
+import { copy } from '../content/copy.js'
+import { rich, todo } from '../content/render.js'
 
 /*
   Turns content into scenes. Two modes:
@@ -12,7 +14,6 @@ import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
   of copy; the particle field behind takes the scene's form.
 */
 
-const todo = (text) => `<span class="todo">${text}</span>`
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 
 // One short cheatsheet per move, kept beside the moves. The owner's full
@@ -33,7 +34,7 @@ const eyebrow = (a, b) => `<p class="eyebrow">${a}${b ? ` <span class="eyebrow__
 
 // Particles are B-roll: they come out for the framework diagram and nest
 // for the beats that are copy.
-export function moveBeats(m, n) {
+export function moveBeats(m, n, total = moves.length) {
   const sheet = cheatsheet(m.cheatsheet)
   const source = m.framework.source
     ? `<span class="source">${m.framework.source}${m.framework.verify ? ` ${todo('verify against the original')}` : ''}</span>`
@@ -42,38 +43,38 @@ export function moveBeats(m, n) {
     {
       form: 'nest',
       html: `
-        ${eyebrow(`Move ${n} of ${moves.length}`)}
+        ${eyebrow(`Move ${n} of ${total}`)}
         <h2>${m.name}</h2>
-        <p class="lead">${m.angle}</p>
-        <p>${m.principle}</p>
+        <p class="lead">${rich(m.angle)}</p>
+        <p>${rich(m.principle)}</p>
       `,
     },
     {
       form: m.form,
       html: `
-        ${eyebrow(m.name, 'Framework')}
-        <h3>${m.framework.name}</h3>
-        <p>${m.framework.note}</p>
+        ${eyebrow(m.name, copy.beatLabels.framework)}
+        <h3>${rich(m.framework.name)}</h3>
+        <p>${rich(m.framework.note)}</p>
         ${source}
       `,
     },
     {
       form: 'nest',
       html: `
-        ${eyebrow(m.name, 'Worked example')}
-        <h3>${m.example.title}</h3>
-        <p>${m.example.body}</p>
+        ${eyebrow(m.name, copy.beatLabels.example)}
+        <h3>${rich(m.example.title)}</h3>
+        <p>${rich(m.example.body)}</p>
       `,
     },
     {
       form: 'nest',
       html: `
-        ${eyebrow(m.name, 'Cheatsheet')}
-        <h3>${sheet.title}</h3>
+        ${eyebrow(m.name, copy.beatLabels.cheatsheet)}
+        <h3>${m.promptHeading ?? sheet.title}</h3>
         ${sheet.intro ? `<p class="note">${sheet.intro}</p>` : ''}
         <div class="sheet" data-no-split>
           <div class="sheet__card">
-            <div class="sheet__bar"><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__label">Prompt · paste into any assistant</span></div>
+            <div class="sheet__bar"><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__label">${copy.beatLabels.sheetBar}</span></div>
             ${sheet.missing ? todo(`site/src/content/cheatsheets/${m.cheatsheet}.md is missing`) : `<pre class="sheet__text" tabindex="0">${esc(sheet.prompt)}</pre>`}
           </div>
           <p class="sheet__actions">
@@ -86,7 +87,7 @@ export function moveBeats(m, n) {
   ]
 }
 
-export function moveScene(m, n, { minutes = 0 } = {}) {
+export function moveScene(m, n, { minutes = 0, total = moves.length } = {}) {
   return {
     id: m.id,
     title: m.name,
@@ -94,7 +95,7 @@ export function moveScene(m, n, { minutes = 0 } = {}) {
     phase: m.phase,
     form: m.form,
     mount: (el, ctx) => import('./sheet.js').then((x) => x.mountSheet(el, ctx)),
-    beats: moveBeats(m, n),
+    beats: moveBeats(m, n, total),
   }
 }
 
@@ -190,8 +191,8 @@ export function playbookScenes(route) {
       {
         html: `
           <h1 class="visually-hidden">Smart Motion</h1>
-          ${eyebrow('A playbook of smart moves')}
-          <p class="cover__lead">Build, teach and present with AI assistants. Eight moves, each with a framework, a worked example and a cheatsheet you can paste anywhere.</p>
+          ${eyebrow(copy.tagline)}
+          <p class="cover__lead">${copy.coverLead}</p>
           <div class="chips">
             <a class="chip" href="#${moves[0].id}">Moves</a>
             <a class="chip" href="#wonder">Era</a>
@@ -211,9 +212,9 @@ export function playbookScenes(route) {
     beats: [
       {
         html: `
-          ${eyebrow('Routes')}
-          <h2>One playbook, many routes</h2>
-          <p class="lead">A route strings moves into a session for one audience and one time budget.</p>
+          ${eyebrow(copy.closing.eyebrow)}
+          <h2>${copy.closing.heading}</h2>
+          <p class="lead">${copy.closing.lead}</p>
           <p class="chips"><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },
@@ -284,11 +285,11 @@ function quizScene(step) {
         form: 'grid',
         html: `
           ${eyebrow('The hook', `${step.minutes} min`)}
-          <h2>Scan and play</h2>
+          <h2>${copy.quiz.scanHeading}</h2>
           <div class="scan" data-no-split>
             <div class="qr" aria-label="QR code for smartmotion.web.app/play"></div>
             <div>
-              <p class="lead">Open this on your phone.</p>
+              <p class="lead">${copy.quiz.scanLead}</p>
               <p class="scan__link">smartmotion.web.app/play</p>
             </div>
           </div>
@@ -298,14 +299,14 @@ function quizScene(step) {
         form: 'nest',
         html: `
           ${eyebrow('Part 1', 'Readiness')}
-          <h3>Where would you place yourself today?</h3>
+          <h3>${copy.quiz.part1Heading}</h3>
           <div data-no-split>
             <div class="played" hidden>
-              <p>You have already played on this device.</p>
+              <p>${copy.quiz.playedLine}</p>
               <p><button type="button" class="btn btn--ghost" data-go>See your result</button></p>
             </div>
             <div class="options" role="group" aria-label="AI readiness levels"></div>
-            <p class="note">The four levels of the AI Ready Quiz by SkillsFuture Singapore and the Singapore Institute of Technology.</p>
+            <p class="note">${copy.quiz.part1Note}</p>
           </div>
         `,
       },
@@ -313,14 +314,14 @@ function quizScene(step) {
         form: 'nest',
         html: `
           ${eyebrow('Part 2', 'You')}
-          <h3>Which of these sounds most like you?</h3>
+          <h3>${copy.quiz.part2Heading}</h3>
           <div data-no-split>
             <div class="played" hidden>
-              <p>You have already played on this device.</p>
+              <p>${copy.quiz.playedLine}</p>
               <p><button type="button" class="btn btn--ghost" data-go>See your result</button></p>
             </div>
             <div class="options" role="group" aria-label="Four types"></div>
-            <p class="note">A fun sorter, not a validated instrument.</p>
+            <p class="note">${copy.quiz.part2Note}</p>
           </div>
         `,
       },
@@ -332,7 +333,7 @@ function quizScene(step) {
             <div class="result"></div>
             <p class="status"></p>
             <p class="chips"><button type="button" class="btn" data-next>See the room</button><a class="chip" href="#" data-airq target="_blank" rel="noopener">Take the full AI Ready Quiz <span aria-hidden="true">&nearr;</span></a></p>
-            <p class="note">The full quiz takes about fifteen minutes and emails you a profile. Do it in your own time.</p>
+            <p class="note">${copy.quiz.resultNote}</p>
           </div>
         `,
       },
@@ -340,7 +341,7 @@ function quizScene(step) {
         form: 'nest',
         html: `
           ${eyebrow('The room', '<span data-submissions>0</span> played')}
-          <h3>Live totals</h3>
+          <h3>${copy.quiz.roomHeading}</h3>
           <div class="totals" data-no-split>
             <div class="totals__group">
               <h4>By readiness</h4>
@@ -369,15 +370,15 @@ function examplesScene(step) {
       {
         html: `
           ${eyebrow('Worked examples', `${step.minutes} min`)}
-          <h2>${step.title}</h2>
-          <p class="lead">Three tools, each scored against the utility formula.</p>
+          <h2>${copy.quiz.examplesHeading}</h2>
+          <p class="lead">${copy.quiz.examplesLead}</p>
           <ul class="rows">${examples.map((e) => `<li>${e.name}</li>`).join('')}</ul>
         `,
       },
       ...examples.map((e) => ({
         form: 'nest',
         html: `
-          ${eyebrow(step.title)}
+          ${eyebrow(copy.quiz.examplesHeading)}
           <h3>${e.name}</h3>
           <p>${e.body}</p>
         `,
@@ -398,8 +399,8 @@ function takeHomeScene(step) {
       {
         html: `
           ${eyebrow('Take-home', 'Which track are you on?')}
-          <h2>Two tracks, same prompts</h2>
-          <p class="lead">Every workflow runs on both. The track decides which tool you paste into, what it costs you and where it stops.</p>
+          <h2>${copy.takehome.tracksHeading}</h2>
+          <p class="lead">${copy.takehome.tracksLead}</p>
           <div class="tracks" data-no-split>
             ${tracks
               .map(
@@ -418,8 +419,8 @@ function takeHomeScene(step) {
       {
         html: `
           ${eyebrow('Take-home', 'Five workflows')}
-          <h2>Copy, paste, check</h2>
-          <p class="lead">Define done first, supply the source, plan before producing, produce, then check. Five recipes that follow the pattern.</p>
+          <h2>${copy.takehome.workflowsHeading}</h2>
+          <p class="lead">${copy.takehome.workflowsLead}</p>
           <ol class="flows" data-no-split>
             ${workflows
               .map(
@@ -433,8 +434,8 @@ function takeHomeScene(step) {
       {
         html: `
           ${eyebrow('Take-home', 'The tool map')}
-          <h2>Build. Show. Move.</h2>
-          <p class="lead">Three lanes, from an agent that curates to a video that plays. Badges say which track.</p>
+          <h2>${copy.takehome.mapHeading}</h2>
+          <p class="lead">${copy.takehome.mapLead}</p>
           <div class="lanes" data-no-split>
             ${lanes
               .map(
@@ -471,11 +472,11 @@ function questionsScene() {
     beats: [
       {
         html: `
-          ${eyebrow('Thank you')}
-          <h2>Questions</h2>
-          <p class="lead">Ask the room, or ask Motus. The moves, the frameworks and the cheatsheets stay at <a href="/">smartmotion.web.app</a>.</p>
+          ${eyebrow(copy.questions.eyebrow)}
+          <h2>${copy.questions.heading.replace('Ai MAi?', '<span class="voice">Ai MAi?</span>')}</h2>
+          <p class="lead">${copy.questions.lead.replace('smartmotion.web.app', '<a href="/">smartmotion.web.app</a>')}</p>
           <p class="chips" data-no-split><button type="button" class="chip chip--link" data-ask>Ask Motus</button><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
-          <p class="note">Install it from your browser menu to keep the playbook on your home screen.</p>
+          <p class="note">${copy.questions.note}</p>
         `,
       },
     ],
@@ -484,6 +485,9 @@ function questionsScene() {
 
 export function routeScenes(route) {
   let prevYear = 1950
+  // On a route the moves are numbered by the route itself, so the room
+  // sees 1 to 5 of 5 rather than the playbook's numbers out of order.
+  const routeMoves = route.steps.filter((st) => st.move).map((st) => st.move)
   return route.steps.map((step) => {
     if (step.scene === 'cover') return routeCover(route)
     if (step.scene === 'quiz') return { ...quizScene(step), phase: 'design' }
@@ -504,6 +508,6 @@ export function routeScenes(route) {
     }
     const m = moveById[step.move]
     if (!m) throw new Error(`Unknown move in route: ${step.move}`)
-    return moveScene(m, moves.indexOf(m) + 1, { minutes: step.minutes })
+    return moveScene(m, routeMoves.indexOf(step.move) + 1, { minutes: step.minutes, total: routeMoves.length })
   })
 }
