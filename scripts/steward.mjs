@@ -14,9 +14,11 @@
   break. Nothing else is read from the logs: no message text is stored,
   only counts and durations.
 
-  If the logs are not on this machine (a fresh clone, a build server), the
-  figures that came from them are kept as last measured, and only the git
-  figures are refreshed. Run it by hand with `node scripts/steward.mjs`;
+  If the logs are not on this machine (a fresh clone, a build server), or
+  they are only part of the record (a cloud session holds its own logs,
+  which start long after the last measured first event), the figures that
+  came from them are kept as last measured, and only the git figures are
+  refreshed. Run it by hand with `node scripts/steward.mjs`;
   it also runs before every site build.
 */
 import { execSync } from 'node:child_process'
@@ -47,7 +49,7 @@ try {
 const logDir = join(homedir(), '.claude/projects', root.replace(/[^a-zA-Z0-9]/g, '-'))
 let active = prev.activeMinutes ?? null, prompts = prev.prompts ?? null, sittings = prev.sittings ?? null
 let firstEvent = prev.firstEvent ?? null, lastEvent = prev.lastEvent ?? null, days = prev.days ?? []
-let measured = false
+let measured = false, partial = false
 if (existsSync(logDir)) {
   const stamps = []
   let asked = 0
@@ -64,8 +66,12 @@ if (existsSync(logDir)) {
       if (o.type === 'user' && !o.isSidechain && !o.isMeta && typeof c === 'string' && !c.trimStart().startsWith('<')) asked++
     }
   }
-  if (stamps.length > 1) {
-    stamps.sort((a, b) => a - b)
+  stamps.sort((a, b) => a - b)
+  // Logs that begin more than a day after the last measured first event
+  // are a partial record, not the whole build.
+  partial = prev.firstEvent && stamps.length && stamps[0] > Date.parse(prev.firstEvent) + 24 * 3600000
+  if (partial) console.warn('[steward] session logs here begin ' + new Date(stamps[0]).toISOString() + ', after the last measured first event; they are a partial record')
+  if (stamps.length > 1 && !partial) {
     let ms = 0, sits = 1
     const perDay = new Map()
     for (let i = 1; i < stamps.length; i++) {
@@ -86,7 +92,7 @@ if (existsSync(logDir)) {
     measured = true
   }
 }
-if (!measured) console.warn('[steward] session logs not found on this machine; keeping the last measured active time')
+if (!measured) console.warn(`[steward] ${partial ? 'session logs here are partial' : 'session logs not found on this machine'}; keeping the last measured active time`)
 
 const start = firstEvent && firstCommit ? new Date(Math.min(Date.parse(firstEvent), Date.parse(firstCommit))).toISOString() : firstEvent ?? firstCommit
 const end = lastEvent && lastCommit ? new Date(Math.max(Date.parse(lastEvent), Date.parse(lastCommit))).toISOString() : lastEvent ?? lastCommit

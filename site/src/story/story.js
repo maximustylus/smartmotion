@@ -252,7 +252,9 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   import('../motus/motus.js').then((m) => {
     motus = m.createMotus(root)
     onThemeChange(() => motus.theme())
-    motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
+    // Before the first beat lands the scene is -1; the scene change then
+    // sends Motus on its first hop instead.
+    if (scroll.state.scene >= 0) motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
     motus.setFidelity(FIDELITY[root.dataset.era] ?? 1)
     window.motus = motus
   })
