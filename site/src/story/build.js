@@ -3,6 +3,7 @@ import { examples } from '../content/examples.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
 import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
 import { copy } from '../content/copy.js'
+import { types } from '../quiz/tools.js'
 import { rich, todo } from '../content/render.js'
 
 /*
@@ -351,10 +352,9 @@ function quizScene(step) {
             </div>
             <div class="totals__group">
               <h4>By type</h4>
-              ${bar('type_1', 'Type 1')}${bar('type_2', 'Type 2')}${bar('type_3', 'Type 3')}${bar('type_4', 'Type 4')}
+              ${types.map((t) => bar(`type_${t.id}`, t.label)).join('')}
             </div>
             <p class="totals__note"></p>
-            <p class="note">${todo('Type names, owner to confirm.')}</p>
           </div>
         `,
       },

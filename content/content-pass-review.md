@@ -76,4 +76,4 @@ the letters; a hint beside Copy prompt says to fill in the brackets.
   source.
 - Have an angle: verify Killingsworth and Gilbert (2010).
 - Use it safely: the Will Smith clip links and dates; the Mothership link.
-- The three use cases in content/use-cases.md, and the four type names.
+- The three use cases in content/use-cases.md. (The four type names were confirmed on 5 October: Analyst, Designer, Organiser, Storyteller.)

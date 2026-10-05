@@ -122,6 +122,12 @@ export async function mountQuiz(sceneEl, { go }) {
     renderResult()
     go(3)
     status.textContent = 'Sending to the room…'
+    // Firestore does not fail when the phone is offline: it queues the write
+    // and waits. So after a few seconds the screen says so, rather than
+    // showing "Sending" for ever, and updates if the write lands later.
+    const slow = setTimeout(() => {
+      status.textContent = 'Still trying to reach the room. Your result is saved on this phone, and it will be counted if the connection comes back while this page is open.'
+    }, 8000)
     try {
       room ??= await import('./room.js')
       await room.submit(state.result.level, state.result.type)
@@ -131,6 +137,8 @@ export async function mountQuiz(sceneEl, { go }) {
     } catch (err) {
       console.warn('[smartmotion] submission failed', err)
       status.innerHTML = 'Your result is on this device, but it could not reach the room. The totals will not include you.'
+    } finally {
+      clearTimeout(slow)
     }
   }
 
@@ -165,7 +173,7 @@ export async function mountQuiz(sceneEl, { go }) {
   function render(t) {
     latest = t
     const shown = Object.fromEntries(Object.entries(t).map(([k, v]) => [k, Math.max(0, v - (baseline[k] ?? 0))]))
-    const maxL = Math.max(1, shown.level_1, shown.level_2, shown.level_3)
+    const maxL = Math.max(1, shown.level_1, shown.level_2, shown.level_3, shown.level_4)
     const maxT = Math.max(1, shown.type_1, shown.type_2, shown.type_3, shown.type_4)
     for (const [k, row] of Object.entries(bars)) {
       const v = shown[k]

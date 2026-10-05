@@ -8,7 +8,7 @@
   be rehearsed. Nothing here guesses the list.
 
   Part 2: one question that sorts people into four types. A fun sorter, not
-  a validated instrument. Type names are the owner's to confirm.
+  a validated instrument. Type names confirmed by the owner on 5 October 2026.
 */
 
 // TODO owner: supply the tool list.
@@ -32,14 +32,14 @@ export const levels = [
   { id: 4, label: 'AI Fluent', hint: 'I can apply AI to solve complex problems in my organisation, redesign and optimise existing workflows, and manage risk responsibly.' },
 ]
 
-// Part 2. Descriptions are from the brief; names are TODO.
+// Part 2. Descriptions are from the brief; names confirmed by the owner, 5 October 2026.
 export const question = 'Which of these sounds most like you?'
 
 export const types = [
-  { id: 1, label: null, hint: 'R, Python, Stata, SPSS. You ask for the sample size first.' },
-  { id: 2, label: null, hint: 'Canva, CMYK, RGB, aspect ratios. You notice the font before you read the words.' },
-  { id: 3, label: null, hint: 'Protocols, workflows, checklists. You sleep better once the steps are written down.' },
-  { id: 4, label: null, hint: 'Stories, cases, a good analogy. You remember the case, not the numbers.' },
+  { id: 1, label: 'Analyst', hint: 'R, Python, Stata, SPSS. You ask for the sample size first.' },
+  { id: 2, label: 'Designer', hint: 'Canva, CMYK, RGB, aspect ratios. You notice the font before you read the words.' },
+  { id: 3, label: 'Organiser', hint: 'Protocols, workflows, checklists. You sleep better once the steps are written down.' },
+  { id: 4, label: 'Storyteller', hint: 'Stories, cases, a good analogy. You remember the case, not the numbers.' },
 ]
 
 // The logo grid is no longer part of the icebreaker. The list stays here in
