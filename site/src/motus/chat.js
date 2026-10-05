@@ -132,7 +132,7 @@ export function openChat(host, { onTalking, onOpen }) {
     el.append(line)
   }
   for (const m of history) stamp(add(m.role, m.content), m.provenance)
-  if (!history.length) add('assistant', 'Hello. I am Motus. I travel with you through Smart Motion. Ask me where things are, what a move means, or which workflow fits your track.')
+  if (!history.length) add('assistant', 'Hello. I am Motus, and I travel with you through Smart Motion. What are you hoping to make, teach or present with AI?')
 
   starters.innerHTML = STARTERS.map((s) => `<button type="button" class="chip">${s}</button>`).join('')
   starters.addEventListener('click', (e) => {

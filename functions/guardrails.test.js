@@ -116,3 +116,12 @@ test('the knowledge base leaves out the unverified cost evidence', () => {
   assert.ok(!kb.some((d) => d.path === 'content/cost-evidence.md'))
   assert.ok(kb.some((d) => d.path === 'MOTUS-INFO-CARD.md'), 'the info card is in the knowledge base')
 })
+
+test('the persona carries the four OARS techniques, as style, not therapy', () => {
+  const src = readFileSync(join(root, 'functions/motus.js'), 'utf8')
+  const persona = src.slice(src.indexOf('const persona'), src.indexOf('const system'))
+  for (const t of ['Open questions', 'Affirmations', 'Reflective listening', 'Summaries']) assert.match(persona, new RegExp(t), t)
+  assert.match(persona, /never as counselling or therapy/)
+  assert.match(persona, /never replaces the answer/)
+  assert.doesNotMatch(persona, /[\u2014\u2013]/)
+})

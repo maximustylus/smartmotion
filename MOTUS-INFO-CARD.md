@@ -7,7 +7,7 @@ data is handled, and how to raise a concern.**
 |---|---|
 | **Card status** | ⚠️ **Draft, not yet in effect.** Awaiting sign-off by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
 | **Motus status** | ⚠️ **Not live.** The chat window appears on the site, but its server needs the Firebase Blaze plan and an Anthropic API key that only the owner sets. Until then Motus replies that it is offline, except for the two fixed safety replies in §3, which work without a key. |
-| **Card version** | 0.1 (draft) |
+| **Card version** | 0.2 (draft) |
 | **Last updated** | 2026-10-05 |
 | **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
@@ -27,6 +27,16 @@ Motus is the small robot at the bottom right of Smart Motion. Tap it and a chat 
 - **Answer from the playbook only.** Motus's knowledge is a fixed set of documents built from this
   site's own repository (the moves, the eras, the workflows, the brief and this card). It is told
   to name the document it relies on and to say so when the answer is not there.
+
+### How Motus talks
+
+Motus is told to converse using the four techniques of **motivational interviewing**, known as
+OARS: **open questions** when your goal is unclear, brief and specific **affirmations**,
+**reflective listening** (saying back what it heard so you can correct it) and **summaries**
+before suggesting a next step. It is told to draw out your own reasons and choices rather than
+tell you what to do. This is a conversational style. **It is not counselling or therapy**, and a
+clear factual question still gets the answer first. Whether Motus follows this on every turn is
+**not yet verified** (§6).
 
 Motus **cannot act**. It has no tools, no database and no way to send, save or book anything. It
 can only reply and point.
@@ -213,6 +223,7 @@ the named source on the date shown, not permanently true.*
 | Claim (§) | Source | Status |
 |---|---|---|
 | Motus cannot act: no tools, no database, no sending (§1, §2) | `functions/motus.js`: one streaming call with no `tools` | Confirmed 2026-10-05 |
+| Motus is told to use the OARS techniques of motivational interviewing, as style, not therapy (§1) | `functions/motus.js` persona; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
 | Knowledge base built from the repository; cost evidence excluded (§1, §3) | `scripts/build-kb.mjs`; `functions/guardrails.test.js` asserts the exclusion | Confirmed 2026-10-05 |
 | Model requested, effort, server-side fallback (§1) | `functions/motus.js` (`model`, `output_config`, `fallbacks`) | Confirmed 2026-10-05 |
 | Region `asia-southeast1` (§1, §4) | `functions/index.js`; `firebase.json` rewrite | Confirmed 2026-10-05 |
@@ -239,4 +250,5 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| 0.2 (draft) | 2026-10-05 | §1: Motus converses with the OARS techniques of motivational interviewing, as AURA's wellbeing coach does; stated as a style, not therapy. |
 | 0.1 (draft) | 2026-10-05 | First draft, after the owner's AURA card and the IMDA Annex B format. Not signed, not in effect. |
