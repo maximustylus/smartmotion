@@ -51,7 +51,15 @@ width; the glowing segment is where you are.
 
 ## Still TODO in visible content
 
-Press `O` for the live count. As of 5 October 2026, eight markers remain:
+**The talk is shown clean.** On /talk the TODO chips and verify badges are
+hidden from the shared screen, and any line left empty goes with them. They
+are still in the page: `O` counts them, the playbook at / shows them all, and
+/talk?todo shows them on the talk. Four beats are a heading only until their
+content arrives, so present them from your own notes: the three use cases
+(NEXUS and AURA, C.A.R.E., ImmersiFit) and the frameworks worked example.
+
+As of 5 October 2026 the talk holds 21 markers: 9 verify badges and the
+content gaps below.
 
 - Build on solid frameworks: the worked example, from the three use cases.
 - Use it safely: the Will Smith clip links and dates, and the Mothership

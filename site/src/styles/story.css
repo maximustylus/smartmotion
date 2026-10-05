@@ -1195,3 +1195,7 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 
 /* The talk's last page keeps clear of the colophon on a short phone. */
 @media (max-width: 599px) { #scene-questions .beat, #scene-routes .beat { padding-bottom: 28px; } }
+
+/* Clean talk view: markers hidden on the shared screen (story.js). */
+.app--clean .story .todo,
+.app--clean .story .is-empty { display: none; }

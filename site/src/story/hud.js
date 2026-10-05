@@ -85,7 +85,7 @@ export function createHud(root, scenes, scroll) {
     overview.innerHTML = `
       <h2>Overview</h2>
       <p class="overlay__sub">${scenes.length} scenes. ${
-        todoCount ? `<span class="todo">${todoCount} markers in visible content.</span>` : 'No TODO markers left.'
+        todoCount ? `<span class="todo">${todoCount} markers${root.classList.contains('app--clean') ? ', hidden on the shared screen (add ?todo to show)' : ' in visible content'}.</span>` : 'No TODO markers left.'
       } Press <kbd>Esc</kbd> to close.</p>
       <div class="overview__grid">
         ${scenes
