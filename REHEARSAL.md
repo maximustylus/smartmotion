@@ -51,6 +51,17 @@ width; the glowing segment is where you are.
 
 ## Still TODO in visible content
 
-Press `O` for the live count. As of this file: the four type names,
-the three use cases, the cost evidence verification, the Will Smith clip
-sources, and the references marked verify.
+Press `O` for the live count. As of 5 October 2026, eight markers remain:
+
+- Build on solid frameworks: the worked example, from the three use cases.
+- Use it safely: the Will Smith clip links and dates, and the Mothership
+  link.
+- Test for usefulness: the cost examples, with a retrieval date.
+- Give it a reality check: the Karpathy interview cited and the wording
+  verified.
+- Have an angle, and Know your way around the files: the framework and its
+  source.
+- Have an angle: Killingsworth and Gilbert (2010) verified.
+
+The four type names are confirmed (Analyst, Designer, Organiser,
+Storyteller) and no longer a TODO.

@@ -17,7 +17,7 @@ export default defineConfig({
       manifest: {
         name: 'Smart Motion',
         short_name: 'Smart Motion',
-        description: 'A digital interactive playbook of smart moves for building, teaching and presenting with AI assistants.',
+        description: 'Smart moves, with you in charge. A digital, interactive playbook for building, teaching and presenting with AI assistants.',
         lang: 'en-GB',
         start_url: '/',
         scope: '/',

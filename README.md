@@ -1,5 +1,7 @@
 # Smart Motion
 
+Smart moves, with you in charge.
+
 A digital interactive playbook of smart moves for building, teaching and
 presenting with AI assistants. Eight moves, each with a framework, a worked
 example and a cheatsheet you can paste into any assistant. Routes string
