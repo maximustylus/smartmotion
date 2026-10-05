@@ -1,9 +1,16 @@
 /* The icebreaker quiz, section 1 of the story. */
 
+/* A QR code is always black on white, in either theme: phone cameras read
+   dark modules on a light ground, and many cannot read the reverse. The
+   white margin around it is the quiet zone scanners need. */
 .qr {
   width: min(44vmin, 260px);
   aspect-ratio: 1;
-  color: var(--fg);
+  color: #000;
+  background: #fff;
+  padding: 6%;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .qr svg {
