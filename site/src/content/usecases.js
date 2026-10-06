@@ -5,8 +5,8 @@
   on 6 October 2026.
 
   Smart Queue Live replaced C.A.R.E. on 6 October 2026 at the owner's
-  request; its line is condensed from his own description that day.
-  The one-line descriptions of NEXUS and ImmersiFit, and every
+  request; its line, and NEXUS's (7 October), are condensed from his own
+  descriptions. ImmersiFit's line, and every
   utility score, are the owner's to write (content/use-cases.md). The
   SingHealth Office of Digital Empowerment posters the owner shared are not
   for circulation and are not used anywhere in this site.
@@ -19,8 +19,8 @@ export const usecases = {
       { name: 'Smart Motion', icon: '/usecases/smart-motion.png', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
       // icon: the app's own icon, supplied by the owner on 6 October 2026.
       // video: the owner's own YouTube Short, opened in the lightbox.
-      { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', line: '[[TODO: one line on NEXUS and AURA, from the owner]]', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
-      { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', line: 'A web app to queue for Apple Vision Pro digital health apps: a headset guide, app posters, feedback and photos. The team side calls, re-queues and moderates.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
+      { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', line: 'A dashboard web app. Individuals: community screening and resources. Professionals: rostering, social battery and a dashboard. Demo mode to try.', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
+      { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', line: 'Queue to try Apple Vision Pro health apps, with a headset guide, posters, feedback and photos. The team side runs the queue.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
       { name: 'ImmersiFit', icon: '/usecases/immersifit.png', line: '[[TODO: one line on ImmersiFit, from the owner]]' },
     ],
   },

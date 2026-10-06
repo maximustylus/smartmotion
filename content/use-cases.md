@@ -9,7 +9,7 @@ point of the formula.
 
 ## NEXUS and AURA
 
-- One-line description:
+- One-line description (owner, 7 October 2026): NEXUS is a PWA, interactive smart dashboard for individuals and professionals. Community screening and pointing to community resources, and for the professionals, rostering, social battery, dashboard. Demo mode to try.
 - The problem it addresses:
 - Who uses it:
 - How it was built (tools):
