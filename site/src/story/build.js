@@ -290,10 +290,10 @@ function quizScene(step) {
           ${eyebrow('The hook', `${step.minutes} min`)}
           <h2>${copy.quiz.scanHeading}</h2>
           <div class="scan" data-no-split>
-            <div class="qr" aria-label="QR code for smartmotion.web.app/play"></div>
+            <a class="qr-link" href="/play" target="_blank" rel="noopener" aria-label="Open the quiz at smartmotion.web.app/play"><div class="qr" role="img" aria-label="QR code for smartmotion.web.app/play"></div></a>
             <div>
               <p class="lead">${copy.quiz.scanLead}</p>
-              <p class="scan__link">smartmotion.web.app/play</p>
+              <p class="scan__link"><a href="/play" target="_blank" rel="noopener">smartmotion.web.app/play</a></p>
             </div>
           </div>
         `,

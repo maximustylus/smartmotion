@@ -20,7 +20,7 @@ export function createHud(root, scenes, scroll) {
     <div class="overlay overview" role="dialog" aria-label="Overview" hidden></div>
     <div class="overlay help" role="dialog" aria-label="Keyboard shortcuts" hidden></div>
     <div class="overlay qr-overlay" role="dialog" aria-label="Scan to play" hidden>
-      <div class="qr-overlay__box"><div class="qr qr--big" aria-label="QR code for smartmotion.web.app/play"></div><p class="qr-overlay__link">smartmotion.web.app/play</p><p class="overlay__sub">Press <kbd>Esc</kbd> to close.</p></div>
+      <div class="qr-overlay__box"><a class="qr-link" href="/play" target="_blank" rel="noopener" aria-label="Open the quiz at smartmotion.web.app/play"><div class="qr qr--big" role="img" aria-label="QR code for smartmotion.web.app/play"></div></a><p class="qr-overlay__link"><a href="/play" target="_blank" rel="noopener">smartmotion.web.app/play</a></p><p class="overlay__sub">Press <kbd>Esc</kbd> to close.</p></div>
     </div>
     <div class="blackout" aria-hidden="true"></div>
     <p class="visually-hidden hud__live" aria-live="polite"></p>
@@ -85,7 +85,7 @@ export function createHud(root, scenes, scroll) {
     overview.innerHTML = `
       <h2>Overview</h2>
       <p class="overlay__sub">${scenes.length} scenes. ${
-        todoCount ? `<span class="todo">${todoCount} markers in visible content.</span>` : 'No TODO markers left.'
+        todoCount ? `<span class="todo">${todoCount} markers${root.classList.contains('app--clean') ? ', hidden on the shared screen (add ?todo to show)' : ' in visible content'}.</span>` : 'No TODO markers left.'
       } Press <kbd>Esc</kbd> to close.</p>
       <div class="overview__grid">
         ${scenes

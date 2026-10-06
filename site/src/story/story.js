@@ -54,6 +54,27 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     <div class="cue" aria-hidden="true"><span></span></div>
   `
   root.querySelector('.topbar').append(themeToggle())
+
+  /*
+    The clean talk view. On a route (the talk, shared on Zoom) the TODO chips
+    and verify badges are hidden, and any line left with nothing to say goes
+    with them, so the room never sees a placeholder. Nothing is removed: the
+    markers stay in the page, the presenter's overview (O) still counts them,
+    the playbook shows them all, and adding ?todo to the address shows them
+    on the talk too.
+  */
+  if (mode === 'route' && !new URLSearchParams(location.search).has('todo')) {
+    root.classList.add('app--clean')
+    for (const el of root.querySelectorAll('.story .beat p, .story .beat li, .story .beat .source')) {
+      if (!el.querySelector('.todo')) continue
+      const probe = el.cloneNode(true)
+      probe.querySelectorAll('.todo').forEach((t) => t.remove())
+      if (!probe.textContent.trim()) {
+        el.classList.add('is-empty')
+        el.setAttribute('data-no-split', '')
+      }
+    }
+  }
   root.addEventListener('click', (e) => e.target.closest('[data-ask]') && motus?.openChat())
   createProfile(root.querySelector('.topbar'), root)
   const dots = root.querySelector('.dots')

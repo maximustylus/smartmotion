@@ -1,9 +1,16 @@
 /* The icebreaker quiz, section 1 of the story. */
 
+/* A QR code is always black on white, in either theme: phone cameras read
+   dark modules on a light ground, and many cannot read the reverse. The
+   white margin around it is the quiet zone scanners need. */
 .qr {
   width: min(44vmin, 260px);
   aspect-ratio: 1;
-  color: var(--fg);
+  color: #000;
+  background: #fff;
+  padding: 6%;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .qr svg {
@@ -28,6 +35,19 @@
   letter-spacing: -0.01em;
   word-break: break-all;
 }
+.scan__link a, .qr-overlay__link a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+.scan__link a:hover, .qr-overlay__link a:hover { color: var(--accent); }
+
+/* The QR code is a link too: tapping it on a phone opens the quiz. */
+.qr-link { display: block; color: inherit; border-radius: 8px; transition: transform var(--dur-fast) var(--ease-out); }
+.qr-link:hover { transform: scale(1.02); }
+.qr-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
 
 /* Part 1: logo tiles */
 .tiles {
