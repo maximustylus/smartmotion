@@ -1223,3 +1223,9 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .steps li { padding: 6px 0; }
   .steps .flows__need { font-size: 0.8em; }
 }
+
+/* Nothing in the story may widen the page. One over-wide element makes a
+   phone's page wider than its screen, and every fixed layer (the top bar,
+   the particle field, the splash) then stretches and slides off-centre.
+   clip, not hidden, so the pinned scenes still stick. */
+.story { overflow-x: clip; }

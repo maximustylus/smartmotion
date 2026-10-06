@@ -148,6 +148,8 @@ kbd {
   never has to cut it in two; cut links throw its line breaks off.
 */
 .beat p a[target='_blank'] { white-space: nowrap; }
+/* Long addresses must still wrap, or they widen the page on a phone. */
+.beat p.scan__link a, .qr-overlay__link a { white-space: normal; overflow-wrap: anywhere; }
 
 /*
   Placeholder marker for anything the owner still has to supply or verify.

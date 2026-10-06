@@ -22,6 +22,7 @@
 .qr svg path:first-child { fill: none; }
 .qr svg path { fill: currentColor; }
 
+.scan > * { min-width: 0; }
 .scan {
   display: grid;
   gap: var(--space-4);
