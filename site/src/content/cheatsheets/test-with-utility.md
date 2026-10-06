@@ -1,4 +1,4 @@
-# Test for usefulness, not applause
+# Test it with the utility formula
 
 Paste this before you commit to a tool, yours or anyone else’s.
 

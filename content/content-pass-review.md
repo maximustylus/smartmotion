@@ -12,7 +12,7 @@ still waits for you. The voice rules are in content/voice.md.
    It was "A playbook of smart moves", which the README and app manifest
    still use. Keep the new one, or say and it reverts. (Kept by the owner on 5 October; the README, app manifest and page
    description now carry it too.)
-2. Four move names are plainer. Ids, links and file names are unchanged.
+2. (Decided 6 October: the owner kept the original names.) Four move names were made plainer. Ids, links and file names are unchanged.
    - Find the hook, hold the room (was: Know the hook, keep the engagement)
    - Know your way around the files (was: Understand the file system and
      architecture; alternate in your own words: Know where things live)

@@ -1,4 +1,4 @@
-# Find the hook, hold the room
+# Know the hook, keep the engagement
 
 Paste this when you sit down to prepare a session.
 

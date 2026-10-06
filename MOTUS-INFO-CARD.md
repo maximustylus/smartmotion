@@ -7,7 +7,7 @@ data is handled, and how to raise a concern.**
 |---|---|
 | **Card status** | ⚠️ **Draft, not yet in effect.** Awaiting sign-off by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
 | **Motus status** | ⚠️ **Not live.** The chat window appears on the site, but its server needs the Firebase Blaze plan and an Anthropic API key that only the owner sets. Until then Motus replies that it is offline, except for the two fixed safety replies in §3, which work without a key. |
-| **Card version** | 0.2 (draft) |
+| **Card version** | 0.3 (draft) |
 | **Last updated** | 2026-10-05 |
 | **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
@@ -112,7 +112,7 @@ measured**; the guidelines permit qualitative statements.*
 
 - **Effectiveness, honestly:** this is a phrase match, **not** crisis detection. Anything worded
   differently reaches the model, which is told it is not a crisis service. The two phone numbers
-  are to be checked by the owner before Motus goes live (§6).
+  were checked against the services' own websites on 6 October 2026.
 - **What you can do:** for real distress, contact a person or a professional service directly.
 
 ### Personal data
@@ -198,8 +198,9 @@ card will not invent a service level it cannot keep.
 3. **Prompt-carried safeguards are unverified.** The tests show the rules reach the model, never
    that it follows them. A read of real turns is the gate before compliance is claimed, and it
    cannot run until Motus is live.
-4. **The crisis reply's phone numbers (995, and 1767 for Samaritans of Singapore) are
-   model-recalled** and must be checked against the services' own pages before Motus goes live.
+4. ~~**The crisis reply's phone numbers are model-recalled**~~ **Checked 6 October 2026** against
+   the services' own websites: 995 is SCDF's emergency ambulance line (scdf.gov.sg) and 1767 is the
+   Samaritans of Singapore 24-hour hotline (sos.org.sg). Struck through, not deleted.
 5. **The identifier check covers NRIC and FIN shapes only.** Not PDPA compliance.
 6. **No age assurance** exists; the site is open to anyone with the link.
 7. **Anthropic's data handling is taken from its terms, not verified independently.**
@@ -231,7 +232,7 @@ the named source on the date shown, not permanently true.*
 | Preamble leads every request (§3) | `functions/motus.js` `system`; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
 | NRIC/FIN shape refused, browser and server (§2, §3) | `functions/guardrails.js` `NRIC_SHAPE`; `site/src/motus/chat.js` | Confirmed 2026-10-05; tested |
 | Crisis phrases answered with a fixed reply, never sent to the model, with or without a key (§3) | `functions/guardrails.js` `screenInput`; `functions/motus.js` | Confirmed 2026-10-05; tested |
-| Phone numbers in the crisis reply (§3) | None in the repository | **Model-recalled, unverified** (gap 4) |
+| Phone numbers in the crisis reply (§3) | scdf.gov.sg (995); sos.org.sg (1767) | Confirmed 2026-10-06 |
 | Output capped at 1,200 tokens; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-05 |
 | Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-05 |
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
@@ -250,5 +251,6 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| 0.3 (draft) | 2026-10-06 | Crisis phone numbers checked against SCDF and Samaritans of Singapore; gap 4 closed. |
 | 0.2 (draft) | 2026-10-05 | §1: Motus converses with the OARS techniques of motivational interviewing, as AURA's wellbeing coach does; stated as a style, not therapy. |
 | 0.1 (draft) | 2026-10-05 | First draft, after the owner's AURA card and the IMDA Annex B format. Not signed, not in effect. |

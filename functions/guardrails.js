@@ -127,11 +127,10 @@ const CRISIS = [
 export const readsAsCrisis = (text) => typeof text === 'string' && CRISIS.some((r) => r.test(text))
 
 /*
-  The fixed reply. The two numbers are Singapore's emergency ambulance line and
-  the Samaritans of Singapore 24-hour line. They are listed in
-  MOTUS-INFO-CARD.md's source table as model-recalled until the owner checks
-  them against the services' own pages, and must be checked before Motus goes
-  live (gap 4 in the card).
+  The fixed reply. 995 is the Singapore Civil Defence Force's emergency
+  ambulance number and 1767 the Samaritans of Singapore 24-hour hotline,
+  both checked against the services' own websites on 6 October 2026
+  (scdf.gov.sg, sos.org.sg; references.md).
 */
 export const CRISIS_REPLY =
   'I am a guide to this playbook, not a crisis service, and I cannot help with this safely. ' +

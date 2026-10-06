@@ -1,4 +1,4 @@
-# Give it a reality check
+# Reality check
 
 Paste this before you promise the demo to anyone.
 

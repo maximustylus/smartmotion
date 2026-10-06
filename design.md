@@ -22,17 +22,15 @@ prompt that pastes into an assistant).
 
 1. Begin with the end in mind
 2. Have an angle
-3. Find the hook, hold the room
-4. Know your way around the files
+3. Know the hook, keep the engagement
+4. Understand the file system and architecture
 5. Build on solid frameworks
 6. Use it safely
-7. Test for usefulness, not applause
-8. Give it a reality check
+7. Test it with the utility formula
+8. Reality check
 
-Names 3, 4, 7 and 8 were made plainer in the content pass of 5 October
-2026 (previously: Know the hook, keep the engagement; Understand the file
-system and architecture; Test it with the utility formula; Reality check).
-Scene ids, links and file names did not change. The voice rules agreed in
+The content pass of 5 October 2026 tried plainer names for moves 3, 4, 7
+and 8; the owner kept these originals on 6 October. Scene ids, links and file names did not change. The voice rules agreed in
 that pass are in content/voice.md.
 
 ### Routes

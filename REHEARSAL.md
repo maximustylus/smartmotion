@@ -63,7 +63,7 @@ badges and the content gaps below.
 
 - Build on solid frameworks: the worked example, from the three use cases.
 - Test for usefulness: the cost examples, with a retrieval date.
-- Have an angle, and Know your way around the files: the framework and its
+- Have an angle, and Understand the file system and architecture: the framework and its
   source.
 
 The four type names are confirmed (Analyst, Designer, Organiser,

@@ -338,7 +338,7 @@ handed to an agent without its criteria, controlling documents and data class at
 
 | Control | How it is carried | Status |
 |---|---|---|
-| Crisis wording | **CODE**. A narrow phrase list (for example *kill myself*, *suicidal*, *want to die*, *self-harm*) is answered with a fixed reply pointing to emergency help, and the message never reaches the model. It works even when Motus has no API key. ⚠️ It is a phrase match, **not** crisis detection; anything worded differently goes to the model, whose preamble says Motus is not a crisis service. The two phone numbers in the reply are to be checked by the owner before go-live. | ⚠️ partial |
+| Crisis wording | **CODE**. A narrow phrase list (for example *kill myself*, *suicidal*, *want to die*, *self-harm*) is answered with a fixed reply pointing to emergency help, and the message never reaches the model. It works even when Motus has no API key. ⚠️ It is a phrase match, **not** crisis detection; anything worded differently goes to the model, whose preamble says Motus is not a crisis service. The two phone numbers were checked against SCDF and Samaritans of Singapore on 6 October 2026. | ⚠️ partial |
 | Rate ceilings | **CODE**. Per instance: 20 messages a minute from one address and 300 an hour in all; at most five instances. Addresses are held in memory for a minute and never written down. The Anthropic console spend limit is the real ceiling. | ✅ enforced |
 | Origin | **CODE**. The function answers only the site's own origins and local development. | ✅ enforced |
 
@@ -355,8 +355,8 @@ handed to an agent without its criteria, controlling documents and data class at
    not been run because **Motus is not live**: the Cloud Function needs the Blaze plan and an
    Anthropic key that only the owner sets.
 3. **P6 is one identifier class.** Not PDPA compliance, and not described as such anywhere.
-4. **The crisis reply's phone numbers are model-recalled** and must be checked against the services'
-   own pages before Motus goes live.
+4. ~~**The crisis reply's phone numbers are model-recalled**~~ Checked 6 October 2026 against
+   scdf.gov.sg and sos.org.sg.
 5. **The rules were written for AURA**, a drafting assistant inside a hospital team tool. Several
    (P6's cluster policy, Rule 8, Rule 10) fit Motus loosely or not at all, and §B says so rather
    than claiming a fit.

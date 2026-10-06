@@ -60,7 +60,7 @@ export const moves = [
   {
     id: 'hook',
     phase: 'design',
-    name: 'Find the hook, hold the room',
+    name: 'Know the hook, keep the engagement',
     angle: 'Open with something the room does, not something it watches.',
     principle:
       'Attention is lent, not owed. A hook earns it at the start, and seeing everyone’s answers add up holds it. An assistant can suggest both, but you know the room, so you choose.',
@@ -81,7 +81,7 @@ export const moves = [
   {
     id: 'architecture',
     phase: 'design',
-    name: 'Know your way around the files',
+    name: 'Understand the file system and architecture',
     angle: 'Think of a resuscitation trolley: you did not build it, but you know which drawer holds what.',
     principle:
       'Building an app by describing it, without reading the code, is called vibe coding. The assistant does the filing. You still need to learn where things live, so you can ask for a change and check it was made.',
@@ -144,7 +144,7 @@ export const moves = [
   {
     id: 'test',
     phase: 'evaluate',
-    name: 'Test for usefulness, not applause',
+    name: 'Test it with the utility formula',
     angle: 'Score a tool on five questions, then multiply. One zero, and the rest counts for nothing.',
     principle:
       'A tool built with an assistant can look finished before it is useful, and applause cannot tell the difference. The assistant can sort your evidence and show the gaps, but check its work: the verdict is yours.',
@@ -165,7 +165,7 @@ export const moves = [
   {
     id: 'reality',
     phase: 'evaluate',
-    name: 'Give it a reality check',
+    name: 'Reality check',
     angle: 'An idea in five minutes. A working demo in two hours. The final 10% takes six months.',
     principle:
       'A demo works once, for you, on a good day. A tool people rely on keeps working, for a stranger, on a bad day. The assistant makes the demo quick. How much more the idea deserves is your call.',

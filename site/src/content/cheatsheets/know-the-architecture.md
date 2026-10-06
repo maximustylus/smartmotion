@@ -1,4 +1,4 @@
-# Know your way around the files
+# Understand the file system and architecture
 
 Paste this when your assistant is building an app and can see its files.
 

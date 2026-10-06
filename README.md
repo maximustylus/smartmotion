@@ -67,7 +67,7 @@ asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
 Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). Both
 are drafts until the owner signs them. Tests: `cd functions && npm test`.
 
-Before Motus goes live: verify the two phone numbers in the crisis reply
+Before Motus goes live: the two crisis phone numbers were checked on 6 October
 (`functions/guardrails.js`), sign both documents, and read a set of real
 turns as NEXUS did.
 - REHEARSAL.md: the checklist for the shared screen.
