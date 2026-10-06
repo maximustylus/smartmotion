@@ -6,8 +6,9 @@
 
   Smart Queue Live replaced C.A.R.E. on 6 October 2026 at the owner's
   request; its line, and NEXUS's (7 October), are condensed from his own
-  descriptions. ImmersiFit's line (7 October) is condensed from its own
-  README at the owner's request, leaving out the study protocol. Every
+  descriptions. ImmersiFit's line (7 October) joins the owner's own words
+  (a feasibility study for adolescents exercising immersively in a headset)
+  with its README; the study protocol stays out. Every
   utility score, are the owner's to write (content/use-cases.md). The
   SingHealth Office of Digital Empowerment posters the owner shared are not
   for circulation and are not used anywhere in this site.
@@ -22,7 +23,7 @@ export const usecases = {
       // video: the owner's own YouTube Short, opened in the lightbox.
       { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', line: 'A dashboard web app. Individuals: community screening and resources. Professionals: rostering, social battery and a dashboard. [Demo mode](https://smartdashboard.web.app) to try.', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
       { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', line: 'Queue to try Apple Vision Pro health apps, with a headset guide, posters, feedback and photos. The team side runs the queue.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
-      { name: 'ImmersiFit', icon: '/usecases/immersifit.png', line: 'Exercise in Apple Vision Pro with an AI coach and sports drills. An iPad companion lets the exercise physiologist watch heart rate live.', video: '/usecases/immersifit-kkh.mp4', videoTitle: 'ImmersiFit at KKH', landscape: true },
+      { name: 'ImmersiFit', icon: '/usecases/immersifit.png', line: 'A feasibility study: adolescents exercise immersively in Apple Vision Pro with an AI coach. An iPad companion lets the exercise physiologist watch heart rate live.', video: '/usecases/immersifit-kkh.mp4', videoTitle: 'ImmersiFit at KKH', landscape: true },
     ],
   },
   corporate: {

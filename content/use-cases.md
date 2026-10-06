@@ -39,7 +39,8 @@ point of the formula.
 
 ## ImmersiFit
 
-- One-line description (condensed from the ImmersiFit README, 7 October 2026, at the owner's request; study protocol left out): exercise in Apple Vision Pro with an AI coach and sports drills; an iPad companion lets the exercise physiologist watch heart rate live.
+- Owner, 7 October 2026: "immersifit is for a feasibility study for adolescent to exercise in a headset immersively".
+- One-line description (the owner's words above joined with the ImmersiFit README; study protocol left out): exercise in Apple Vision Pro with an AI coach and sports drills; an iPad companion lets the exercise physiologist watch heart rate live.
 - Video: ImmersiFit at KKH (owner's own, hosted at /usecases/immersifit-kkh.mp4; the owner chose to host it on 7 October 2026).
 - The problem it addresses:
 - Who uses it:
