@@ -75,6 +75,6 @@ the letters; a hint beside Copy prompt says to fill in the brackets.
 - Test for usefulness: the cost examples, with a retrieval date.
 - Have an angle, and Know your way around the files: the framework and its
   source.
-- Have an angle: verify Killingsworth and Gilbert (2010).
-- Use it safely: the Will Smith clip links and dates; the Mothership link.
+- Have an angle: Killingsworth and Gilbert (2010) checked against the PDF you supplied on 6 October and now cited; confirm the line.
+- Use it safely: the Will Smith clip links and dates. The Mothership link is in (6 October).
 - The three use cases in content/use-cases.md. (The four type names were confirmed on 5 October: Analyst, Designer, Organiser, Storyteller.)

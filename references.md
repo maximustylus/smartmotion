@@ -30,7 +30,7 @@ source that is not listed here.
 | TODO | Sargeant, J., et al. (2015). Facilitated reflective performance feedback: Developing an evidence- and theory-based model that builds relationship, explores reactions and content, and coaches for performance change (R2C2). *Academic Medicine, 90*(12), 1698–1706. Owner to verify. |
 | TODO | Vygotsky, L. S. (1978). *Mind in society*. Harvard University Press. Owner to verify. |
 | TODO | Bound, H., & Chia, A. Six principles of learning design. Owner to supply the full reference. |
-| TODO | Karpathy, A. (2025). Interview on the Dwarkesh Podcast. The march of nines. Owner to supply the episode, date and timestamp. Cite the interview, not summaries. |
-| TODO | Killingsworth, M. A., & Gilbert, D. T. (2010). A wandering mind is an unhappy mind. *Science, 330*(6006), 932. Owner to verify. |
-| TODO | Mothership. (2026, September 29). Pandan Reservoir crocodile image case. Owner to supply the URL. |
+| TODO | Karpathy, A. (2025). Interview with D. Patel on the Dwarkesh Podcast [Audio podcast episode]. https://www.dwarkesh.com/p/andrej-karpathy (link supplied by the owner on 6 October 2026; the page could not be opened from the build, so the title, date, timestamp and the wording of the march of nines are still to verify). Cite the interview, not summaries. |
+| proposed | Killingsworth, M. A., & Gilbert, D. T. (2010). A wandering mind is an unhappy mind. *Science, 330*(6006), 932. https://doi.org/10.1126/science.1192439 (checked by the build on 6 October 2026 against the original PDF the owner supplied: minds wandered in 46.9% of samples, and people were less happy when their minds were wandering than when they were not. Owner to confirm.) |
+| proposed | Mothership. (2026, September 29). [Article on the Pandan Reservoir crocodile image case]. https://mothership.sg/2026/09/fake-crocodile-photo/ (URL supplied by the owner on 6 October 2026; the page could not be opened from the build, so the headline, date, "charged" and "allegedly" are still to check against the article.) |
 | TODO | Will Smith eating spaghetti, 2023 and 2025 clips. Owner to supply sources and dates. Links only. |

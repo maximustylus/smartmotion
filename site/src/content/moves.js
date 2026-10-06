@@ -51,7 +51,7 @@ export const moves = [
     },
     example: {
       title: 'The stroll',
-      body: 'The talk behind this playbook has a topic: generative AI for educators. Its angle is in the title: a casual stroll, or GAi GAi in Singlish. A stroll does not try to see everything. A topic tells you what to cover. An angle tells you what to leave out. [[TODO: Killingsworth and Gilbert (2010): verify the finding and cite the original before publishing]]',
+      body: 'The talk behind this playbook has a topic: generative AI for educators. Its angle is in the title: a casual stroll, or GAi GAi in Singlish. Minds wander on a stroll, and a wandering mind is less happy (Killingsworth & Gilbert, 2010). An angle tells you what to leave out.',
     },
     promptHeading: 'When the draft feels generic',
     cheatsheet: 'have-an-angle',
@@ -135,7 +135,7 @@ export const moves = [
     },
     example: {
       title: 'Spaghetti, then a crocodile',
-      body: 'What was an obvious fake in 2023 is convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, Mothership reported that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. [[TODO: link to the article]] The picture that makes a room gasp is the one to check first.',
+      body: 'What was an obvious fake in 2023 is convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, [Mothership reported](https://mothership.sg/2026/09/fake-crocodile-photo/) that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. The picture that makes a room gasp is the one to check first.',
     },
     promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
@@ -172,7 +172,7 @@ export const moves = [
     framework: {
       name: 'The march of nines',
       source: 'Karpathy on the Dwarkesh Podcast (2025)',
-      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. Andrej Karpathy’s claim: each extra nine takes at least as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: cite the interview itself and verify the wording]]',
+      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. [Andrej Karpathy’s claim](https://www.dwarkesh.com/p/andrej-karpathy): each extra nine takes at least as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: verify the wording against the interview]]',
       verify: true,
     },
     example: {

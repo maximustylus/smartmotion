@@ -51,17 +51,15 @@ width; the glowing segment is where you are.
 
 ## Still TODO in visible content
 
-Press `O` for the live count. As of 5 October 2026, eight markers remain:
+Press `O` for the live count. As of 6 October 2026, six markers remain in the moves:
 
 - Build on solid frameworks: the worked example, from the three use cases.
-- Use it safely: the Will Smith clip links and dates, and the Mothership
-  link.
+- Use it safely: the Will Smith clip links and dates.
 - Test for usefulness: the cost examples, with a retrieval date.
-- Give it a reality check: the Karpathy interview cited and the wording
-  verified.
+- Give it a reality check: the wording verified against the Karpathy
+  interview (now linked).
 - Have an angle, and Know your way around the files: the framework and its
   source.
-- Have an angle: Killingsworth and Gilbert (2010) verified.
 
 The four type names are confirmed (Analyst, Designer, Organiser,
 Storyteller) and no longer a TODO.
