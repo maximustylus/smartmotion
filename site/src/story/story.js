@@ -114,8 +114,10 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     const frame = el.closest(".scene__pin")?.clientHeight || window.innerHeight
     const room = Math.min(frame, window.innerHeight) - 68 - 36
     if (beatHeight(el) <= room) return
-    // Find the largest size that fits, between 72% and full size.
-    let lo = 0.72, hi = 1
+    // Find the largest size that fits, between the floor and full size.
+    // A wide screen (a shared laptop window) can go smaller than a phone.
+    const floor = window.innerWidth >= 900 ? 0.6 : 0.72
+    let lo = floor, hi = 1
     for (let i = 0; i < 5; i++) {
       const mid = (lo + hi) / 2
       el.style.zoom = mid
