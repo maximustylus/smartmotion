@@ -1208,7 +1208,7 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 .app--clean .story .is-empty { display: none; }
 
 /* Use cases: name, then one line, per row. */
-.uses li { display: grid; gap: 2px; }
+.uses li { display: grid; gap: 2px; align-content: start; }
 .uses li strong { font-weight: 700; }
 .uses li span { color: var(--muted); font-size: 0.92em; }
 .steps li { display: grid; grid-template-columns: 3ch 1fr; gap: 2px var(--space-3); padding: 8px 0; border-top: 1px solid var(--line); }
@@ -1291,7 +1291,9 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 .lightbox__title { margin-left: 6px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lightbox__frame { aspect-ratio: 16 / 9; background: #000; }
 .lightbox.is-portrait .lightbox__frame { aspect-ratio: 9 / 16; }
-.lightbox__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.lightbox__frame iframe, .lightbox__frame video { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+/* A landscape video: as wide as fits, but never taller than the screen. */
+.lightbox:not(.is-portrait) .lightbox__win { width: min(960px, 100%, calc((100svh - 32px - 40px) * 16 / 9)); }
 
 /* ---------- Use case icons: the app's own icon beside its name ---------- */
 .uses li .uses__name { display: inline-flex; align-items: center; gap: 10px; color: inherit; font-size: inherit; }
@@ -1322,3 +1324,14 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 /* The line is set at 0.92em, so the icon's 2.2em is 2.2 / 0.92 of its own em. */
 .uses li.has-logo > span:last-child { padding-left: calc(2.2em / 0.92 + 10px); }
 .uses__play:hover .uses__logo img, .uses__play:focus-visible .uses__logo img { box-shadow: 0 0 0 2px var(--accent); }
+
+/* On a wide screen the four apps sit two by two across the full column,
+   so the shared screen keeps them large. */
+@media (min-width: 900px) {
+  .rows.uses:has(> li.has-logo) {
+    max-width: none;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-6, 32px);
+  }
+  .rows.uses:has(> li.has-logo) li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+}

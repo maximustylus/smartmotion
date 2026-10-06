@@ -2,8 +2,10 @@ import { genieIn, genieOut } from './genie.js'
 
 /*
   The lightbox: a video in a window over the story, opened with the genie
-  like every other window. Any element with data-video="<YouTube id>" opens
-  it; data-title names the window. YouTube's privacy-enhanced player
+  like every other window. Any element with data-video opens it: a YouTube
+  id, or a path to a video hosted with the site (/usecases/....mp4).
+  data-title names the window; data-landscape gives it a 16:9 frame.
+  YouTube's privacy-enhanced player
   (youtube-nocookie.com) is used, and the player is removed on close so
   nothing keeps playing or loading behind the story.
 
@@ -41,12 +43,15 @@ function build() {
 }
 
 export function openVideo(id, title = 'Video', { portrait = true } = {}) {
-  if (!/^[\w-]{6,20}$/.test(id)) return
+  const hosted = /^\/[\w/.-]+\.mp4$/.test(id)
+  if (!hosted && !/^[\w-]{6,20}$/.test(id)) return
   if (!box) build()
   lastFocus = document.activeElement
   box.querySelector('.lightbox__title').textContent = title
   box.classList.toggle('is-portrait', portrait)
-  box.querySelector('.lightbox__frame').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${title.replace(/"/g, '&quot;')}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
+  box.querySelector('.lightbox__frame').innerHTML = hosted
+    ? `<video src="${id}" poster="${id.replace(/\.mp4$/, '-poster.jpg')}" controls autoplay playsinline preload="metadata"></video>`
+    : `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${title.replace(/"/g, '&quot;')}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
   document.documentElement.classList.add('overlay-open')
   genieIn(box.querySelector('.lightbox__win'), '50% 100%', () => box.querySelector('.lightbox__light').focus({ preventScroll: true }))
   box.hidden = false
@@ -67,5 +72,5 @@ document.addEventListener('click', (e) => {
   const t = e.target.closest?.('[data-video]')
   if (!t) return
   e.preventDefault()
-  openVideo(t.dataset.video, t.dataset.title || t.textContent.trim())
+  openVideo(t.dataset.video, t.dataset.title || t.textContent.trim(), { portrait: !('landscape' in t.dataset) })
 })

@@ -374,7 +374,7 @@ function examplesScene(step) {
       // The app's icon, if there is one; a play badge on it when it has a video.
       const icon = u.icon ? `<span class="uses__logo" aria-hidden="true"><img src="${u.icon}" alt="" width="40" height="40" decoding="async">${u.video ? '<span class="uses__icon"></span>' : ''}</span>` : u.video ? '<span class="uses__icon" aria-hidden="true"></span>' : ''
       const head = u.video
-        ? `<button type="button" class="uses__play" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}" aria-label="Watch: ${u.name}">${icon}<strong>${u.name}</strong></button>`
+        ? `<button type="button" class="uses__play" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}"${u.landscape ? ' data-landscape' : ''} aria-label="Watch: ${u.name}">${icon}<strong>${u.name}</strong></button>`
         : `<span class="uses__name">${icon}<strong>${u.name}</strong></span>`
       // A row with an icon is not split into masked lines: the icon would
       // ride inside the first line's mask and the text could not indent.
