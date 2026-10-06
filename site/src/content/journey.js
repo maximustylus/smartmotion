@@ -111,9 +111,9 @@ export const eras = [
     line: 'Now it acts for us. The more it does, the more our judgement matters.',
     facts: [
       { year: 2025, text: 'Karpathy names vibe coding, 2 February' },
-      { year: 2026, text: 'Meta Muse, a personal agent, 8 September' },
-      { year: 2026, text: 'OpenAI Dots, always-on agents, 29 September' },
-      { year: 2026, text: 'Claude Code mods, 2 October' },
+      { year: 2026, text: 'Meta’s Muse, a personal agent, 8 September' },
+      { year: 2026, text: 'OpenAI’s dots, always-on agents, 29 September' },
+      { year: 2026, text: 'Claude Code mods, 1 October' },
     ],
     quote: {
       text: '…fully give in to the vibes, embrace exponentials, and forget that the code even exists.',

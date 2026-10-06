@@ -19,8 +19,8 @@ export const tools = []
 export const PLACEHOLDER_COUNT = 12
 
 // Part 1: self-placement on the four AI readiness levels of the AI Ready
-// Quiz (AIRQ) by SkillsFuture Singapore, Workforce Development Agency and
-// the Singapore Institute of Technology. Wording as shown on the quiz's
+// Quiz (AIRQ) by the Singapore Institute of Technology, with the Skills and
+// Workforce Development Agency (checked 6 October 2026). Wording as shown on the quiz's
 // opening page, read on 3 October 2026. Attendees take the full quiz in
 // their own time at AIRQ_URL.
 export const AIRQ_URL = 'https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM'
