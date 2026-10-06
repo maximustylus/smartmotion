@@ -139,7 +139,7 @@ export const moves = [
     },
     promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
-    form: 'rings',
+    form: 'check',
   },
   {
     id: 'test',
@@ -181,7 +181,7 @@ export const moves = [
     },
     promptHeading: 'When a demo looks finished',
     cheatsheet: 'reality-check',
-    form: 'bar',
+    form: 'text:90%\n99%\n99.9%',
   },
 ]
 

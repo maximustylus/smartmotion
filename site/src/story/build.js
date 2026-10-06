@@ -136,7 +136,7 @@ export function eraScene(era, prevYear) {
     logic: { form: 'chess', anchor: 'centre', cls: 'scene--centre' },
     assistants: { form: 'phone', anchor: 'stage', cls: 'scene--right' },
     chat: { form: 'bubbles', anchor: 'centre', cls: 'scene--centre' },
-    agents: { form: 'clusters', anchor: 'stage', cls: 'scene--wide' },
+    agents: { form: 'agents', anchor: 'stage', cls: 'scene--wide' },
   }
   const look = LOOK[era.id] ?? { form: era.form }
   return {

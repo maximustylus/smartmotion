@@ -26,6 +26,7 @@
 }
 
 .app.has-field .field { opacity: 1; }
+.app.has-field.field-dim .field { opacity: 0.28; }
 
 .field canvas {
   display: block;
@@ -128,6 +129,10 @@
   display: grid;
   align-content: end;
   min-width: 0;
+  /* Beats share one cell. Cap it at the room the fit guard allows, so a
+     tall hidden beat cannot stretch the cell and push the shown one off
+     the top. */
+  max-height: calc(100svh - 104px);
 }
 
 .beat {
@@ -942,6 +947,8 @@ html.overlay-open { overflow: hidden; }
 .scene--era.scene--centre .era__year { font-size: clamp(2rem, 8vmin, 4.2rem); }
 .scene--era.scene--centre .era__title { font-size: clamp(1.2rem, 4.2vmin, 2.4rem); }
 .scene--era.scene--centre .lead { font-size: clamp(1rem, 2.4vmin, 1.4rem); }
+.scene--era.scene--centre .quote { max-width: 40ch; }
+.scene--era.scene--centre .quote__text { font-size: clamp(1.6rem, 5.6vmin, 3rem); }
 .scene--era.scene--centre .facts { gap: 2px; font-size: 0.9em; }
 .scene--era.scene--centre .facts li { padding: 0.25em 0; }
 .scene--era.scene--centre .beat { gap: var(--space-2); }

@@ -123,6 +123,16 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   }
   window.addEventListener('resize', () => fitBeat(current))
 
+  // On a portrait screen the drawing sits in the top half. When a beat's
+  // copy reaches up into it, the field fades back so the words stay clear.
+  const dimUnderCopy = () => {
+    const portrait = innerHeight > innerWidth || innerWidth < 900
+    const kids = current ? [...current.children] : []
+    const top = kids.length ? Math.min(...kids.map((k) => k.getBoundingClientRect().top)) : innerHeight
+    root.classList.toggle('field-dim', portrait && top < innerHeight * 0.5)
+  }
+  addEventListener('resize', () => dimUnderCopy())
+
   const scroll = createScroll(root, scenes, {
     onScene(si, bi, sceneChanged) {
       const s = scenes[si]
@@ -164,13 +174,13 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         lastFid = fid
         field?.setFidelity(fid)
       }
-      root.classList.toggle('field-dim', false)
       mounted.get(si)?.onBeat?.(bi)
       current = root.querySelector(`#scene-${s.id} .beat[data-beat="${bi}"]`)
       fitBeat(current)
+      dimUnderCopy()
       // Once more after the lines have re-split at the new size.
       clearTimeout(fitTimer)
-      fitTimer = setTimeout(() => fitBeat(current), 450)
+      fitTimer = setTimeout(() => (fitBeat(current), dimUnderCopy()), 450)
       field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined, slot: si * 3 + bi })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
       if (sceneChanged && s.id === 'questions') setTimeout(() => motus?.say('Questions? Ask me, or ask the room.', 4000), 1200)

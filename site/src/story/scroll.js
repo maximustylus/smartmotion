@@ -45,7 +45,9 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
         autoSplit: true,
         onSplit(self) {
           beat._lines = self.lines
-          const shown = gsap.getProperty(beat, 'visibility') === 'visible'
+          // A shown beat's visibility is 'inherit' (set by autoAlpha), so
+          // read what the browser computed, not the inline value.
+          const shown = getComputedStyle(beat).visibility === 'visible'
           gsap.set(self.lines, { yPercent: shown ? 0 : 110, xPercent: 0, autoAlpha: 1 })
         },
       })

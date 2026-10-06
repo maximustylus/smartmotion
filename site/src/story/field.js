@@ -661,6 +661,55 @@ const lensForm = drawing([
   [10, box(0.05, 0.225, 0.12, 0.65)],
 ])
 
+// Use it safely: a magnifying glass over a speech bubble. The bubble's
+// last line breaks into dashes, a made-up answer, and the lens holds an
+// amber question mark: check before it goes out.
+const checkForm = (() => {
+  const L = -1.35, R = 0.75, T = 0.85, B = -0.35, k = 0.18
+  const dash = (x) => seg(x, -0.08, x + 0.16, -0.08, 0.012)
+  return drawing([
+    [10, seg(L + k, T, R - k, T, 0.016)],
+    [10, seg(L + k, B, R - k, B, 0.016)],
+    [5, seg(L, B + k, L, T - k, 0.016)],
+    [5, seg(R, B + k, R, T - k, 0.016)],
+    [2, arc(L + k, T - k, k, Math.PI / 2, Math.PI, 0.012)],
+    [2, arc(R - k, T - k, k, 0, Math.PI / 2, 0.012)],
+    [2, arc(L + k, B + k, k, Math.PI, 1.5 * Math.PI, 0.012)],
+    [2, arc(R - k, B + k, k, 1.5 * Math.PI, TAU, 0.012)],
+    [3, seg(L + 0.35, B, L + 0.1, B - 0.38, 0.014)],
+    [3, seg(L + 0.1, B - 0.38, L + 0.7, B, 0.014)],
+    [7, seg(-1.1, 0.55, 0.45, 0.55, 0.012)],
+    [6, seg(-1.1, 0.24, 0.2, 0.24, 0.012)],
+    [1.5, dash(-1.1)], [1.5, dash(-0.82)], [1.5, dash(-0.54)], [1.5, dash(-0.26)],
+    [26, arc(0.75, -0.3, 0.5, 0, TAU, 0.025)],
+    [16, seg(1.1, -0.66, 1.55, -1.1, 0.045)],
+    [4, arc(0.75, -0.14, 0.16, -0.5, Math.PI, 0.014), 0],
+    [2, seg(0.75, -0.3, 0.75, -0.42, 0.014), 0],
+    [1.5, disc(0.75, -0.6, 0.04), 0],
+  ])
+})()
+
+// Agents: a hub that sends work out along six spokes to six tasks, inside
+// a dashed ring for the person who oversees them. Thick strokes, so the
+// drawing survives the soft splats of the latest era.
+const agentsForm = (() => {
+  const parts = [[10, disc(0, 0, 0.2)]]
+  for (let i = 0; i < 6; i++) {
+    const a = Math.PI / 6 + (i * TAU) / 6
+    const x = Math.cos(a) * 1.05, y = Math.sin(a) * 0.82
+    parts.push([5, seg(Math.cos(a) * 0.26, Math.sin(a) * 0.22, x * 0.78, y * 0.78, 0.03)])
+    parts.push([7, arc(x, y, 0.16, 0, TAU, 0.03)])
+  }
+  for (let i = 0; i < 18; i++) {
+    const a0 = (i * TAU) / 18
+    parts.push([1.2, (r) => {
+      const a = a0 + r() * (TAU / 36), q = 1.42 + gauss(r) * 0.025
+      return [Math.cos(a) * q, Math.sin(a) * q * 0.72]
+    }])
+  }
+  return drawing(parts)
+})()
+
 // Design: a pencil finishing a curve, with the pen tool's anchors and handle.
 const pencilForm = (() => {
   const T = [-0.25, -0.45], u = [0.643, 0.766], v = [-0.766, 0.643], w = 0.13
@@ -1024,7 +1073,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their
