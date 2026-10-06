@@ -87,7 +87,7 @@
 .mchat {
   order: -1;
   width: min(400px, calc(100vw - 32px));
-  max-height: min(72svh, 600px);
+  max-height: min(72svh, 600px, calc(100svh - 130px));
   display: grid;
   grid-template-rows: auto 1fr auto auto auto;
   border-radius: 12px;
@@ -159,7 +159,8 @@
   display: grid;
   gap: var(--space-3);
   align-content: start;
-  min-height: 160px;
+  /* The log gives way first, so the input never drops out of the window. */
+  min-height: min(160px, 14svh);
   overscroll-behavior: contain;
 }
 
@@ -199,6 +200,8 @@
   background: var(--bg);
   color: var(--fg);
   font: inherit;
+  /* 16px or more, or iOS Safari zooms the page when the field is focused. */
+  font-size: max(16px, 1rem);
 }
 
 .mchat__form .btn { min-height: 40px; padding: 0.4em 1em; }
@@ -257,7 +260,7 @@
   .motus { right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
   .motus__btn, .motus__btn canvas { width: 88px; height: 88px; }
   .motus__bubble { right: 80px; bottom: 56px; }
-  .mchat { max-height: min(78svh, 560px); }
+  .mchat { max-height: min(78svh, 560px, calc(100svh - 120px)); }
   .mchat.is-max { max-height: calc(100svh - 110px); }
 }
 
@@ -265,4 +268,9 @@
 @media (max-width: 899px) {
   .scene__copy { padding-right: 84px; }
   .scene--quiz .scene__copy { padding-right: 0; }
+}
+
+/* A short screen (a phone on its side): the starters go, the input stays. */
+@media (max-height: 500px) {
+  .mchat__starters { display: none; }
 }

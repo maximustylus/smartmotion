@@ -23,16 +23,19 @@ const NOTICE_KEY = 'smartmotion.motus.notice.v1'
 const INFO = '/motus-info'
 
 const KEY = 'smartmotion.motus'
-const STARTERS = ['What is Smart Motion?', 'Which workflow should I start with?', 'Personal or corporate track?', 'Take me to the cheatsheets', 'What is ADDIE?']
+const STARTERS = ['What is Smart Motion?', 'Which workflow should I start with?', 'Personal or corporate track?', 'Take me to the prompts', 'What is ADDIE?']
 
-const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 
 // Markdown, the small subset Motus uses: paragraphs, bullet lists, bold, links.
 function render(md) {
   const inline = (s) =>
     esc(s)
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\[([^\]]+)\]\((#[a-z0-9-]+|\/[a-z/#-]*|https?:\/\/[^\s)]+|[A-Za-z0-9_./-]+\.md)\)/g, (_, text, href) => {
+      .replace(/\[([^\]]+)\]\((#[a-z0-9-]+|\/[a-z/#-]*|https?:\/\/[^\s)<>]+|[A-Za-z0-9_./-]+\.md)\)/g, (_, text, href) => {
+        // app/*.md are pages of Motus's own notes, built from the site's
+        // content; they are not files anyone can open, so name them plainly.
+        if (/^app\//.test(href)) return text
         // A repository file (workflows/02-infographic-poster.md) opens on GitHub.
         if (/\.md$/.test(href) && !/^(https?:|\/|#)/.test(href)) href = `https://github.com/maximustylus/smartmotion/blob/main/${href.replace(/^\.\//, '')}`
         const ext = href.startsWith('http')
@@ -153,7 +156,11 @@ export function openChat(host, { onTalking, onOpen }) {
       const i = scenes.findIndex((s) => s.id === id)
       if (i >= 0) window.story.goTo(i, 0)
       else if (document.querySelector(`#scene-${id}`)) location.hash = href
-      else location.href = `/talk${href}`
+      // Not on this page: the talk-only scenes live on /talk, the rest in the
+      // playbook. From the talk, the playbook opens in a new tab.
+      else if (['quiz', 'examples', 'questions'].includes(id.split('-')[0])) location.href = `/talk${href}`
+      else if (location.pathname === '/') location.hash = href
+      else window.open(`/${href}`, '_blank', 'noopener')
     }
   })
 
@@ -255,7 +262,8 @@ export function openChat(host, { onTalking, onOpen }) {
     if (open) {
       onOpen?.()
       genieIn(panel, '86% 100%')
-      input.focus({ preventScroll: true })
+      // Only with a mouse: on a phone the keyboard would cover the notice.
+      if (matchMedia('(pointer: fine)').matches) input.focus({ preventScroll: true })
       log.scrollTop = log.scrollHeight
     } else genieOut(panel, '86% 100%')
   }
