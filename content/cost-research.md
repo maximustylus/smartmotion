@@ -119,6 +119,33 @@ Pro Preview 2 / 12 up to 200k tokens; Claude Opus 5.5 4 / 20; Sonnet 5.5
 2 / 10; Haiku 4.5 1 / 5; OpenAI gpt-6.1-sol 2 / 10, gpt-5.4-mini 0.75 / 4.50.
 Batch processing halves these at all three.
 
+## 4b. The organisation's view: does AI cost more than people?
+
+From the owner's own check, "AI Costs More Than People: Key Findings"
+(Muhammad Alif Bin Abu Bakar, 7 October 2026), of an opinion piece by a
+Forbes contributor (Green, 2026) who also chairs a blockchain energy firm.
+Only the checked claims may be used:
+
+| Claim in Forbes | What the source shows | Safe wording |
+|---|---|---|
+| MIT: AI is worth using instead of people in only 23% of roles | Overstated. Computer vision tasks only: "only 23% of worker wages being paid for vision tasks would be attractive to automate" at 2024 costs (Svanberg et al., 2024; author order and date confirmed on MIT FutureTech's page, 7 October 2026) | "For image-analysis tasks, only about 23% of wages were worth automating" |
+| Uber used up its 2026 AI coding budget in four months | Confirmed by the owner: Uber's Chief Technology Officer said AI coding use exceeded expectations, April 2026 (Benzinga) | "Uber reportedly used up its 2026 AI coding budget by April" |
+| Uber's Chief Operating Officer: heavy AI use did not clearly mean more useful features | Confirmed by the owner: Rapid Response podcast, May 2026 (MLQ.ai) | Use as stated |
+| 84% of Uber engineers used AI agents; 70% of code came from AI | Not confirmed by Uber; secondary sites only | Avoid, or label "reported" |
+
+Not checked, quote only as "reported by Forbes (Green, 2026)": Big Tech
+capital spending, layoffs, model waste, Amazon's leaderboard, the 30% to 50%
+price rise, and Sequoia's 2024 revenue gap.
+
+The owner's takeaways for educators: judge AI by what it improves for
+learners, not how much it gets used; match the tool to the task, as the
+biggest model is rarely needed; today's low prices are subsidised, so plan
+for costs to rise.
+
+The Benzinga and MLQ.ai items rest on the owner's check; their addresses
+are [[TODO: Benzinga and MLQ.ai URLs, from the owner]] before they appear
+in the app.
+
 ## 5. In five lines
 
 1. With a clear brief, AI cuts drafting time a lot: lesson resources by 31%,
@@ -128,7 +155,8 @@ Batch processing halves these at all three.
 3. Checking is the hidden cost, and it is often not in the figure.
 4. People feel faster than they are; timed results beat self-reports.
 5. AI alone is fast and cheap per draft, and confidently wrong some of the
-   time. Per task it costs cents; to own, it costs your checking.
+   time. Per task it costs cents; to own, it costs your checking, and for an
+   organisation the bill can outrun the savings (section 4b).
 
 ## Sources
 
@@ -145,15 +173,18 @@ into references.md before any of these appear in the app.
 - Department for Business and Trade. (2025). Microsoft 365 Copilot pilot: DBT evaluation report. https://assets.publishing.service.gov.uk/media/68adbe409e1cebdd2c96a19d/dbt-microsoft-365-copilot-evaluation.pdf
 - Gallup & Walton Family Foundation. (2025). Teaching for tomorrow: Unlocking six weeks a year with AI.
 - Goh, E., et al. (2024). Large language model influence on diagnostic reasoning. JAMA Network Open, 7(10), e2440969. https://doi.org/10.1001/jamanetworkopen.2024.40969
+- Green, J. (2026, July 2). AI costs more than the people it replaced. Forbes. https://www.forbes.com/sites/jemmagreen/2026/07/02/ai-costs-more-than-the-people-it-replaced/ (opinion; used only through the owner's check)
 - Google. (2026, October 6). Gemini Developer API pricing. https://ai.google.dev/gemini-api/docs/pricing
 - Humlum, A., & Vestergaard, E. (2025). Large language models, small labor market effects (BFI Working Paper 2025-56). University of Chicago.
 - Kwa, T., et al. (2025). Measuring AI ability to complete long software tasks. arXiv:2503.14499; METR. (2026). Task-completion time horizons of frontier AI models. https://metr.org/time-horizons/
 - Lukac, P. J., et al. (2025). Ambient AI scribes in clinical practice: A randomized trial. NEJM AI. https://doi.org/10.1056/AIoa2501000
+- Muhammad Alif Bin Abu Bakar. (2026, October 7). AI costs more than people: Key findings [Unpublished summary]. The owner's own check of Green (2026).
 - Ministry of Manpower. (2026, June 30). Occupational Wages 2025, Table 1. https://stats.mom.gov.sg/Pages/Occupational-Wages-Tables2025.aspx
 - Noy, S., & Zhang, W. (2023). Experimental evidence on the productivity effects of generative artificial intelligence. Science, 381(6654), 187-192. https://doi.org/10.1126/science.adh2586
 - OpenAI. (2026). Pricing. https://developers.openai.com/api/docs/pricing
 - Peng, S., Kalliamvakou, E., Cihon, P., & Demirer, M. (2023). The impact of AI on developer productivity: Evidence from GitHub Copilot. arXiv:2302.06590. https://arxiv.org/abs/2302.06590
 - Roy, P., Poet, H., Staunton, R., Aston, K., & Thomas, D. (2024, December 12). ChatGPT in lesson preparation: A Teacher Choices trial. Education Endowment Foundation and NFER. https://www.nfer.ac.uk/publications/chatgpt-in-lesson-preparation-a-teacher-choices-trial/
+- Svanberg, M. S., Li, W., Fleming, M., Goehring, B. C., & Thompson, N. C. (2024, February 8). Beyond AI exposure: Which tasks are cost-effective to automate with computer vision? [Working paper]. MIT FutureTech. https://futuretech.mit.edu/publication/beyond-ai-exposure-which-tasks-are-cost-effective-to-automate-with-computer-vision
 - SWE-bench. (2026). Leaderboards. https://www.swebench.com
 - UK Government Digital Service. (2025). Microsoft 365 Copilot experiment: Cross-government findings report. https://www.gov.uk/government/publications/microsoft-365-copilot-experiment-cross-government-findings-report
 - Vectara. (2026, September 22). Hallucination leaderboard. https://github.com/vectara/hallucination-leaderboard
