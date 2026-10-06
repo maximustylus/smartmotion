@@ -66,7 +66,9 @@ a motion graphic, not a slide deck.
 
 ## How to work here
 
-- Branch phase-1 holds all the work. main is only the first commit.
+- Work happens on phase-1, and main is kept level with it (fast-forwarded on
+  6 October), because the site's take-home links point at main on GitHub.
+  After pushing phase-1, push main too: git push origin phase-1:main
 - Commit each verified change with a plain message. Deploy only when asked.
 - Check every change in a browser at phone size (375 by 812 and 390 by
   664) and wider. A console error counts as a failure. Each beat must fit
