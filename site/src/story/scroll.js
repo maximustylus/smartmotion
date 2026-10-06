@@ -22,6 +22,10 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
   const beatEls = els.map((el) => [...el.querySelectorAll('.beat')])
   const state = { scene: -1, beat: -1 }
   let started = false
+  // The frame height the scroll positions were laid out for. While a resize
+  // (rotation, full screen) is under way it differs from vh(), and scroll
+  // positions mean nothing until the triggers are refreshed.
+  let knownH = 0
   let vh = () => els[0].querySelector('.scene__pin').offsetHeight || window.innerHeight
 
   // ---------- Beat copy: masked line reveals ----------
@@ -185,12 +189,12 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
         const top = el.offsetTop
         const p = gsap.utils.clamp(0, 1, (window.scrollY - top) / (beats * vh()))
         const k = Math.min(beats - 1, Math.floor(p * beats))
-        if (!started) return
+        if (!started || vh() !== knownH) return
         if (self.isActive) setCurrent(i, k)
         onProgress?.(i, p, (p * beats) % 1)
       },
       onToggle: (self) => {
-        if (!started || !self.isActive) return
+        if (!started || !self.isActive || vh() !== knownH) return
         const top = el.offsetTop
         const p = gsap.utils.clamp(0, 1, (window.scrollY - top) / (beats * vh()))
         setCurrent(i, Math.min(beats - 1, Math.floor(p * beats)))
@@ -237,10 +241,19 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     // Prepare every beat hidden, then land and reveal the first one.
     beatEls.flat().forEach(prepare)
     started = true
+    knownH = vh()
     goTo(si, bi, { instant: true })
     ScrollTrigger.refresh()
     setCurrent(si, bi, true)
   }
+
+  // After a resize, land back on the beat that was showing, not on whatever
+  // the old scroll position now points at.
+  ScrollTrigger.addEventListener('refresh', () => {
+    if (!started || vh() === knownH) return
+    knownH = vh()
+    goTo(state.scene, state.beat, { instant: true })
+  })
 
   window.addEventListener('hashchange', () => {
     const [si, bi] = fromHash()
