@@ -112,7 +112,9 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     // The height the beat really has: its pinned frame, not the window,
     // which some browsers report differently while zoomed or emulated.
     const frame = el.closest(".scene__pin")?.clientHeight || window.innerHeight
-    const room = Math.min(frame, window.innerHeight) - 68 - 36
+    let room = Math.min(frame, window.innerHeight) - 68 - 36
+    // A centred scene gives its copy only the lower part of the frame.
+    if (el.closest('.scene--centre')) room = Math.min(room, (el.closest('.scene__copy')?.clientHeight ?? room) - 24)
     if (beatHeight(el) <= room) return
     // Find the largest size that fits, between the floor and full size.
     // A wide screen (a shared laptop window) can go smaller than a phone.
