@@ -20,7 +20,6 @@ export const phases = [
       text: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.',
       who: 'Alan Turing',
       source: 'Computing Machinery and Intelligence, Mind, 1950',
-      verify: true,
     },
   },
   {
@@ -63,14 +62,13 @@ export const eras = [
     line: 'Robots were friends, helpers and heroes. All we had to do was watch.',
     facts: [
       { year: 1963, text: 'Astro Boy first airs, 1 January' },
-      { year: 1979, text: 'Doraemon first airs, 2 April' },
+      { year: 1979, text: 'Doraemon’s long-running TV Asahi series begins, 2 April' },
       { year: 1984, text: 'The Transformers first airs, 17 September' },
     ],
     quote: {
       text: 'Any sufficiently advanced technology is indistinguishable from magic.',
       who: 'Arthur C. Clarke',
       source: 'Profiles of the Future, revised edition, 1973',
-      verify: true,
     },
     form: 'cloud',
   },
@@ -89,7 +87,7 @@ export const eras = [
     years: [2011, 2011],
     title: 'Assistants',
     line: 'It answered, if we asked the right way. We learnt to choose our words.',
-    facts: [{ year: 2011, text: 'Siri introduced with the iPhone 4S, 4 October' }],
+    facts: [{ year: 2011, text: 'Apple introduces Siri with the iPhone 4S, 4 October' }],
     form: 'pair',
   },
   {
@@ -100,7 +98,7 @@ export const eras = [
     line: 'It wrote fluently. Sometimes it made things up, just as fluently. So we check.',
     facts: [
       { year: 2022, text: 'ChatGPT released, 30 November' },
-      { year: 2023, text: 'Mata v. Avianca: six invented cases cited in a New York court, sanctions on 22 June' },
+      { year: 2023, text: 'Mata v. Avianca: six invented cases cited in a New York federal court, sanctions on 22 June' },
       { year: 2023, text: 'Østergaard asks whether chatbots could trigger delusions in people prone to psychosis' },
     ],
     form: 'timeline',
@@ -118,10 +116,9 @@ export const eras = [
       { year: 2026, text: 'Claude Code mods, 2 October' },
     ],
     quote: {
-      text: 'Fully give in to the vibes, embrace exponentials, and forget that the code even exists.',
+      text: '…fully give in to the vibes, embrace exponentials, and forget that the code even exists.',
       who: 'Andrej Karpathy',
       source: 'X, 2 February 2025',
-      verify: true,
     },
     form: 'clusters',
   },

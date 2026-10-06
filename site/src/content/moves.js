@@ -24,9 +24,9 @@ export const moves = [
       'There is always one more thing to add. Unless you write down what done means, the work drifts. A few yes-or-no checks will do: the assistant works towards them, and you decide when they are met.',
     framework: {
       name: 'Covey’s second habit',
-      source: 'Stephen R. Covey, The 7 Habits of Highly Effective People (1989), Habit 2; Bound and Chia, Six Principles of Learning Design',
+      source: 'Stephen R. Covey, The 7 Habits of Highly Effective People (1989), Habit 2; Bound and Chia, The Six Principles of Learning Design (2020)',
       note: 'The habit: start with a clear picture of your destination. Learning design does the same, working back from the outcome to the activity. If you write learning outcomes before you plan a session, you already do this. With an assistant, that picture is a one-page brief.',
-      verify: true,
+      verify: false,
     },
     example: {
       title: 'The brief behind this app',
@@ -68,7 +68,7 @@ export const moves = [
       name: 'Zone of Proximal Development',
       source: 'Vygotsky (1978)',
       note: 'Vygotsky’s zone is the gap between what a learner can do alone and what they can do with help. We borrow it for openings. Set a task everyone can start, pitched a little beyond easy, with help close by. The aim: nobody bored, nobody lost.',
-      verify: true,
+      verify: false,
     },
     example: {
       title: 'The icebreaker quiz',
@@ -108,9 +108,9 @@ export const moves = [
       'A solid framework is someone’s careful thinking, in words your colleagues already know. Set the teaching tool you build beside one: see what it covers and what it misses. The assistant suggests the fit. You decide whether it holds.',
     framework: {
       name: 'Four frameworks, one job each',
-      source: 'Miller (1990); Sargeant et al. (2015); Bound and Chia; Vygotsky (1978)',
-      note: 'For competence, Miller’s pyramid: knows, knows how, shows how, does. For feedback, R2C2: relationship, reaction, content, coaching. For design, the Six Principles of Learning Design (6PoLD). For support, the Zone of Proximal Development: what a learner can do with help, but not yet alone. Each gives you a question to ask.',
-      verify: true,
+      source: 'Miller (1990); Sargeant et al. (2015); Bound and Chia (2020); Vygotsky (1978)',
+      note: 'For competence, Miller’s pyramid: knows, knows how, shows how, does. For feedback, R2C2: relationship, reactions, content, coaching. For design, the Six Principles of Learning Design (6PoLD). For support, the Zone of Proximal Development: what a learner can do with help, but not yet alone. Each gives you a question to ask.',
+      verify: false,
     },
     example: {
       title: 'One tool on Miller’s pyramid',
@@ -131,7 +131,7 @@ export const moves = [
       name: 'From made-up answers to “AI psychosis”',
       source: 'Østergaard (2023); Mata v. Avianca (2023)',
       note: 'In 2023 a chatbot invented six court cases and a lawyer filed them. Such answers are called hallucinations. That year a psychiatrist asked whether chatbots could feed delusions in people already prone to them. By 2025 the press called that worry “AI psychosis”. Not a diagnosis, and the research is thin. Check every answer anyway.',
-      verify: true,
+      verify: false,
     },
     example: {
       title: 'Spaghetti, then a crocodile',
@@ -152,7 +152,7 @@ export const moves = [
       name: 'Utility of assessment',
       source: 'van der Vleuten (1996)',
       note: 'Adapted from van der Vleuten’s utility of assessment: five qualities multiplied, not added. Asked of a tool: does it do what it claims? Every time? Does it help anyone learn? Will people use it? Is it affordable to own, not only to buy? Utility = Validity × Reliability × Educational Impact × Acceptability × Cost.',
-      verify: true,
+      verify: false,
     },
     example: {
       title: 'Two ways to count cost',
