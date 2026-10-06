@@ -47,7 +47,13 @@ const typeLabel = (id) => types[id - 1].label ?? todo(`Type ${id} name`)
 
 export async function mountQuiz(sceneEl, { go }) {
   const beats = [...sceneEl.querySelectorAll('.beat')]
-  const state = { level: null, type: null, result: store.get() }
+  // The shared screen: a wide screen with a mouse, not opened from /play.
+  // It shows the options for the room to read and never votes, so the
+  // presenter's own device state never hides them.
+  let attendee = false
+  try { attendee = sessionStorage.getItem('smartmotion.attendee') === '1' } catch {}
+  const presenter = !attendee && matchMedia('(min-width: 900px) and (pointer: fine)').matches
+  const state = { level: null, type: null, result: presenter ? null : store.get() }
   let room = null
 
   // ---------- Beat 0: QR ----------
@@ -93,6 +99,7 @@ export async function mountQuiz(sceneEl, { go }) {
     const b = e.target.closest('.option')
     if (!b) return
     state.type = +b.dataset.type
+    if (presenter) return go(3)
     finish()
   })
 
@@ -153,6 +160,7 @@ export async function mountQuiz(sceneEl, { go }) {
       for (const el of b.querySelectorAll('.options')) el.hidden = true
     }
   }
+  if (presenter) resultEl.innerHTML = '<p class="result__line">Your result appears on your phone.</p>'
   beats[3].querySelector('[data-next]').addEventListener('click', () => go(4))
 
   // ---------- Beat 4: live totals ----------

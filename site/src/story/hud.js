@@ -154,14 +154,15 @@ export function createHud(root, scenes, scroll) {
 
   const NEXT = new Set(['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'])
   const PREV = new Set(['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'])
-  const ownsKeys = (t) => t.closest?.('input, textarea, select, button, [contenteditable], [data-own-keys]')
+  const ownsKeys = (t) => t.closest?.('input, textarea, select, button, a[href], summary, [role=button], [contenteditable], [data-own-keys]')
 
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return
     if (e.target.closest?.('input, textarea, select, [contenteditable]')) return
-    // A focused button keeps Enter and Space for itself.
+    // A focused button or link keeps Enter and Space for itself. The
+    // presenter's letter keys still work after a click has left focus there.
     if (ownsKeys(e.target) && (e.key === 'Enter' || e.key === ' ')) return
-    if (ownsKeys(e.target) && !NEXT.has(e.key) && !PREV.has(e.key) && e.key !== 'Escape') return
+    if (e.target.closest?.('[data-own-keys]') && !NEXT.has(e.key) && !PREV.has(e.key) && e.key !== 'Escape') return
     const overlayOpen = !overview.hidden || !help.hidden || !qrOverlay.hidden
 
     if (e.key === 'Escape') return [overview, help, qrOverlay].forEach((o) => !o.hidden && toggleOverlay(o, false))

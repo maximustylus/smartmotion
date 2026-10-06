@@ -23,7 +23,12 @@ if (path === '/styleguide') {
   // on its quiz. /talk/<id> picks another route when there are more.
   const id = path.split('/')[2]
   const route = routes[id] ?? defaultRoute
-  if (path === '/play') history.replaceState(null, '', '/talk#quiz')
+  // /play opens on Part 1 (the scan beat is for the shared screen) and marks
+  // this tab as an attendee's, so the quiz never treats it as the presenter's.
+  if (path === '/play') {
+    try { sessionStorage.setItem('smartmotion.attendee', '1') } catch {}
+    history.replaceState(null, '', '/talk#quiz-2')
+  }
   import('./story/story.js').then((m) => m.mount(app, { mode: 'route', route }))
 } else {
   if (shouldSplash()) splash(app)
