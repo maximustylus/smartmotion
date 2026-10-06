@@ -135,7 +135,7 @@ export const moves = [
     },
     example: {
       title: 'Spaghetti, then a crocodile',
-      body: '[The Will Smith spaghetti test](https://www.youtube.com/watch?v=xdZt4V50cic) shows it: an obvious fake in 2023, convincing in 2025. On 29 September 2026, [Mothership reported](https://mothership.sg/2026/09/fake-crocodile-photo/) that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. The picture that makes a room gasp is the one to check first.',
+      body: '[The Will Smith spaghetti test](https://www.youtube.com/watch?v=xdZt4V50cic) shows it: an obvious fake in 2023, convincing in 2025. In September 2026, [Mothership reported](https://mothership.sg/2026/09/fake-crocodile-photo/) a person would be charged over an image of a crocodile at Pandan Reservoir, allegedly made with AI. Check first the picture that makes a room gasp.',
     },
     promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
@@ -171,9 +171,9 @@ export const moves = [
       'A demo works once, for you, on a good day. A tool people rely on keeps working, for a stranger, on a bad day. The assistant makes the demo quick. How much more the idea deserves is your call.',
     framework: {
       name: 'The march of nines',
-      source: 'Karpathy on the Dwarkesh Podcast (2025)',
-      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. [Andrej Karpathy’s claim](https://www.dwarkesh.com/p/andrej-karpathy): each extra nine takes at least as much work as the one before. So treat a working demo as the first nine at best. Plan for the nines you still need. [[TODO: verify the wording against the interview]]',
-      verify: true,
+      source: 'Karpathy on the Dwarkesh Podcast, 17 October 2025',
+      note: 'How often something works is its reliability, counted in nines: 90% is one nine, 99% is two, 99.9% is three. [Andrej Karpathy’s claim](https://www.dwarkesh.com/p/andrej-karpathy): every nine is the same amount of work. A demo that works 90% of the time is “just the first nine”. Plan for the nines you still need.',
+      verify: false,
     },
     example: {
       title: 'This app’s own timeline',

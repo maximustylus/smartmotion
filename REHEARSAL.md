@@ -63,8 +63,6 @@ badges and the content gaps below.
 
 - Build on solid frameworks: the worked example, from the three use cases.
 - Test for usefulness: the cost examples, with a retrieval date.
-- Give it a reality check: the wording verified against the Karpathy
-  interview (now linked).
 - Have an angle, and Know your way around the files: the framework and its
   source.
 

@@ -34,7 +34,7 @@ still waits for you. The voice rules are in content/voice.md.
    drafts. You countersign." Confirm it suits a clinical audience.
 8. The era lines speak as "we" ("We learnt to choose our words"). Confirm
    you want to stand inside that "we" with the room.
-9. March of nines. The copy now says each extra nine "takes at least as
+9. March of nines (resolved 6 October: the interview says every nine is the same amount of work, and the copy now quotes it). The copy now says each extra nine "takes at least as
    much work as the one before". The earlier wording was "costs as much as
    everything before it". Neither is verified. Please check the interview:
    the claim as usually quoted is that every nine is the same amount of
@@ -76,5 +76,5 @@ the letters; a hint beside Copy prompt says to fill in the brackets.
 - Have an angle, and Know your way around the files: the framework and its
   source.
 - Have an angle: Killingsworth and Gilbert (2010) checked against the PDF you supplied on 6 October and now cited; confirm the line.
-- Use it safely: the Will Smith and Mothership links are in (6 October); confirm the video shows both 2023 and 2025.
+- Use it safely: links checked on 6 October. The Mothership article is dated 28 September and says the man would be charged on 29 September, so the copy now says that; the video's title lists 2023, 2025 and 2026.
 - The three use cases in content/use-cases.md. (The four type names were confirmed on 5 October: Analyst, Designer, Organiser, Storyteller.)
