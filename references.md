@@ -16,6 +16,7 @@ source that is not listed here.
 | proposed | Microsoft Power Platform. (2025, April 28). *Introducing Model Context Protocol (MCP) in Copilot Studio* [Blog post]. https://devblogs.microsoft.com/powerplatform/microsoft-copilot-studio-mcp/ (data loss prevention point taken from a search summary; to read in full) |
 | verified | Singapore Civil Defence Force. (n.d.). *Emergency medical services*. https://www.scdf.gov.sg/home/about-scdf/emergency-medical-services (995 for emergency ambulance; read 6 October 2026) |
 | verified | Samaritans of Singapore. (n.d.). *Our services*. https://www.sos.org.sg/our-services/ (24-hour hotline 1767; read 6 October 2026) |
+| verified | Google. (2026, April 28). *Gemini API additional terms of service*. https://ai.google.dev/gemini-api/terms (read 6 October 2026: paid versus unpaid data use; 18 and over) |
 | proposed | Covey, S. R. (1989). *The 7 habits of highly effective people*. Free Press. Habit 2: Begin with the end in mind. |
 | owner | Muhammad Alif Bin Abu Bakar. (2026). Lines in his own voice in Smart Motion, including "Balancing is an act". |
 | proposed | SkillsFuture Singapore, Workforce Development Agency, & Singapore Institute of Technology. (2026). *AI Ready Quiz* [Online assessment]. https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM (opening page read 3 October 2026) |

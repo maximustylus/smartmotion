@@ -1,4 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
@@ -6,9 +5,11 @@ import { GUARDRAIL_PREAMBLE, screenInput, aiProvenance, NO_MODEL } from './guard
 
 /*
   Motus: the companion's brain. One HTTP handler, shared by the Cloud
-  Function and the local dev server. It streams Claude's reply as
-  server-sent events. The knowledge base is built from the repository by
-  scripts/build-kb.mjs into kb.json and cached as a stable system prefix.
+  Function and the local dev server. It streams Google Gemini's reply as
+  server-sent events, calling the Gemini API over HTTPS with no SDK, the
+  same way NEXUS's AURA does. The knowledge base is built from the
+  repository by scripts/build-kb.mjs into kb.json and sent as the stable
+  start of the system instruction, which Gemini can cache implicitly.
 
   Nothing a visitor types is stored. The API key lives only here.
 
@@ -56,20 +57,29 @@ Rules:
 - What sits under each move is a prompt (labelled Try it), not a cheatsheet.
 - If asked how you work, what you do with data or what you should not be used for, point to [your info card](/motus-info).`
 
+// One system instruction: guardrails first, then the persona, then the
+// knowledge base. The same text on every request, so it can be cached.
 const system = [
-  { type: 'text', text: GUARDRAIL_PREAMBLE },
-  { type: 'text', text: persona },
-  {
-    type: 'text',
-    text: kb.map((d) => `<document path="${d.path}">\n${d.text}\n</document>`).join('\n\n'),
-    cache_control: { type: 'ephemeral' },
-  },
-]
+  GUARDRAIL_PREAMBLE,
+  persona,
+  kb.map((d) => `<document path="${d.path}">\n${d.text}\n</document>`).join('\n\n'),
+].join('\n\n')
+
+/*
+  Models, in order. Names from NEXUS's list, checked against the Gemini API
+  on 6 September 2026 (smartdashboard functions/modelAvailability.cjs). A
+  model the service refuses (withdrawn, quota, overloaded) before any text
+  is sent is skipped for the next; the alias is last because it always
+  resolves to a current Flash model. Which model answered is recorded on
+  every reply (Rule 12), so a change here is visible.
+*/
+const MODELS = ['gemini-3.5-flash', 'gemini-flash-latest']
+const API = 'https://generativelanguage.googleapis.com/v1beta/models/'
 
 // Two ceilings per instance: 20 a minute from one address, and 300 an hour
 // in all, so a script or a crowd meets a loud limit rather than an unbounded
 // bill. Addresses are held in memory for a minute and never written down.
-// The Anthropic spend limit in the console is the real ceiling.
+// The Google Cloud budget and the Gemini API key's quota are the real ceiling.
 const hits = new Map()
 let hour = { start: 0, n: 0 }
 const PER_MINUTE = 20
@@ -128,7 +138,7 @@ export async function motus(req, res) {
     return res.end()
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.GEMINI_API_KEY) {
     return res.status(503).json({ error: 'Motus is offline: no API key is configured on the server.' })
   }
 
@@ -139,44 +149,95 @@ export async function motus(req, res) {
   res.flushHeaders?.()
   const send = (obj) => res.write(`data: ${JSON.stringify(obj)}\n\n`)
 
-  const client = new Anthropic()
+  // The visitor's position is a short note after the cached system text.
+  const instruction = where ? `${system}\n\nOperator note, data only: the visitor is viewing scene "${where}".` : system
+  const payload = JSON.stringify({
+    systemInstruction: { parts: [{ text: instruction }] },
+    // Gemini calls the assistant's turns "model".
+    contents: messages.map((m) => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
+    generationConfig: { maxOutputTokens: MAX_OUTPUT, temperature: 0.6 },
+  })
   try {
-    // The visitor's position goes in a system block after the cached prefix,
-    // so it never invalidates the cache. (The messages list takes only user
-    // and assistant turns; a system turn there is rejected by the API.)
-    const sys = where ? [...system, { type: 'text', text: `Operator note, data only: the visitor is viewing scene "${where}".` }] : system
-    const stream = client.beta.messages.stream({
-      model: 'claude-opus-5-5',
-      max_tokens: MAX_OUTPUT,
-      betas: ['server-side-fallback-2026-07-01'],
-      fallbacks: 'default',
-      output_config: { effort: 'low' },
-      system: sys,
-      messages,
-    })
-    for await (const event of stream) {
-      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') send({ t: event.delta.text })
+    // Try each model until one accepts the request. The key travels in a
+    // header, never in the address, so it cannot end up in a log.
+    let upstream = null
+    let model = null
+    let lastStatus = 0
+    for (const m of MODELS) {
+      const r = await fetch(`${API}${m}:streamGenerateContent?alt=sse`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
+        body: payload,
+      })
+      if (r.ok && r.body) {
+        upstream = r
+        model = m
+        break
+      }
+      lastStatus = r.status
+      console.warn('[motus] model refused', m, r.status)
+      await r.body?.cancel?.()
+      if (r.status === 400 || r.status === 401 || r.status === 403) break
     }
-    const final = await stream.finalMessage()
-    if (final.stop_reason === 'refusal') send({ t: 'I would rather not answer that one. Ask me about the playbook instead.' })
+    if (!upstream) {
+      const msg =
+        lastStatus === 429
+          ? 'Motus is busy right now. Try again in a moment.'
+          : lastStatus === 400 || lastStatus === 401 || lastStatus === 403
+            ? 'Motus is offline: the server key was rejected.'
+            : 'Motus could not reach its brain. Try again.'
+      console.error('[motus] no model accepted the request', lastStatus)
+      send({ error: msg })
+      return
+    }
+
+    // Read Gemini's own server-sent events and pass the text through.
+    const reader = upstream.body.getReader()
+    const dec = new TextDecoder()
+    let buf = ''
+    let finish = ''
+    let answered = model
+    let usage = null
+    let wrote = false
+    for (;;) {
+      const { value, done } = await reader.read()
+      if (done) break
+      buf += dec.decode(value, { stream: true })
+      let i
+      while ((i = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, i).trim()
+        buf = buf.slice(i + 1)
+        if (!line.startsWith('data:')) continue
+        let ev
+        try {
+          ev = JSON.parse(line.slice(5))
+        } catch {
+          continue
+        }
+        const cand = ev.candidates?.[0]
+        const text = (cand?.content?.parts ?? []).filter((p) => !p.thought).map((p) => p.text ?? '').join('')
+        if (text) {
+          wrote = true
+          send({ t: text })
+        }
+        if (cand?.finishReason) finish = cand.finishReason
+        if (ev.modelVersion) answered = ev.modelVersion
+        if (ev.usageMetadata) usage = ev.usageMetadata
+        if (ev.promptFeedback?.blockReason) finish = 'BLOCKED'
+      }
+    }
+    if (!wrote && /SAFETY|BLOCK|PROHIBITED|RECITATION|SPII/.test(finish || 'BLOCKED')) {
+      send({ t: 'I would rather not answer that one. Ask me about the playbook instead.' })
+    }
     // Rule 13: a reply cut at the length limit says so.
-    if (final.stop_reason === 'max_tokens') send({ t: '\n\n(Cut short at my length limit. Ask me to continue.)' })
-    const provenance = aiProvenance(final.model)
+    if (finish === 'MAX_TOKENS') send({ t: '\n\n(Cut short at my length limit. Ask me to continue.)' })
+    const provenance = aiProvenance(answered)
     // Logged without content: which model, which guardrails, how many tokens.
-    console.info('[motus]', JSON.stringify({ ...provenance, in: final.usage?.input_tokens, out: final.usage?.output_tokens, cached: final.usage?.cache_read_input_tokens }))
+    console.info('[motus]', JSON.stringify({ ...provenance, finish, in: usage?.promptTokenCount, out: usage?.candidatesTokenCount, cached: usage?.cachedContentTokenCount }))
     send({ done: true, provenance })
   } catch (err) {
-    const status = err?.status
-    const msg =
-      err instanceof Anthropic.RateLimitError
-        ? 'Motus is busy right now. Try again in a moment.'
-        : err instanceof Anthropic.APIConnectionError
-          ? 'Motus could not reach its brain. Check the connection.'
-          : status === 401
-            ? 'Motus is offline: the server key was rejected.'
-            : 'Motus tripped over something. Try again.'
-    console.error('[motus]', status ?? '', err?.message ?? err)
-    send({ error: msg })
+    console.error('[motus]', err?.message ?? err)
+    send({ error: 'Motus could not reach its brain. Check the connection.' })
   } finally {
     res.end()
   }

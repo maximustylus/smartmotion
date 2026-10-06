@@ -27,8 +27,9 @@ a motion graphic, not a slide deck.
 - site/src/quiz/: the icebreaker and Firestore counters. site/src/motus/:
   the companion and chat. site/src/pages/: glossary and contact pages.
 - workflows/ is the owner's (version 0.2). Never edit it.
-- functions/: Motus's Cloud Function. Not deployed; it needs the Blaze plan
-  and an Anthropic key that only the owner sets. Never handle the key.
+- functions/: Motus's Cloud Function, on Google Gemini (the owner's choice,
+  6 October 2026, matching NEXUS's AURA). Not deployed; it needs a Gemini API
+  key from a billed project, which only the owner sets. Never handle the key.
   functions/guardrails.js carries the owner's sixteen rules (from NEXUS's
   AURA), the NRIC/FIN and crisis screens and the provenance stamp; run
   `cd functions && npm test` after touching it.

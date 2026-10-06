@@ -28,18 +28,20 @@ timer, `B` blackout, `F` full screen, `D` theme, `Z` reset room totals,
 
 Motus is the pixel robot at the bottom right. It travels with the story,
 snoozes when left alone, and opens a chat that answers from this repository
-through the Claude API. The browser never holds the key: requests go to
+through Google's Gemini API, as AURA in NEXUS does. The browser never holds the key: requests go to
 `/api/motus`, a Cloud Function in `functions/`.
 
 To switch it on:
 
 1. Put the project on the Blaze plan in the Firebase console (Cloud Functions
-   need it). The spend ceiling that matters is the usage limit in the
-   Anthropic console; set one before the talk.
-2. Store the key as a secret, once:
+   need it). Done on 6 October 2026, with a budget alert.
+2. Create a Gemini API key in a Google Cloud project that has billing on
+   (the smartmotus project qualifies). Google's terms let it use unpaid-tier
+   conversations to improve its products; paid-tier ones it does not. Then
+   store the key as a secret, once:
 
 ```bash
-firebase functions:secrets:set ANTHROPIC_API_KEY --project smartmotus
+firebase functions:secrets:set GEMINI_API_KEY --project smartmotus
 ```
 
 3. Rebuild the knowledge base whenever content changes, then deploy:
@@ -52,7 +54,7 @@ For local work, run the brain beside the dev server with the key in your
 shell; the site proxies `/api` to it:
 
 ```bash
-cd functions && ANTHROPIC_API_KEY=... node local.mjs
+cd functions && GEMINI_API_KEY=... node local.mjs
 ```
 
 Motus answers only from `functions/kb.json`, which is built from README,

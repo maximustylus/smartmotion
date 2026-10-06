@@ -332,14 +332,14 @@ handed to an agent without its criteria, controlling documents and data class at
 | **13** Scope and length | **CODE + PROMPT**. Output is capped in code (1,200 tokens); input is capped at 2,000 characters a message and the last 12 turns. A cut reply says so (P1). | ✅ partial |
 | **14** Terminology and register | **PROMPT**. One term per concept, abbreviations spelt out, pitched to a non-technical clinical educator. | ⚠️ instructed |
 | **15** Bound the agent | **CODE + PROMPT**. Motus cannot act, so nothing irreversible can happen. The persona and rules live in the system prompt; the visitor's scene id passes only if it is id-shaped and is labelled *data only*; the messages list carries only user and assistant turns. The knowledge base and pasted text are named as data in the preamble, which is a request to the model. | ⚠️ partial |
-| **16** Match model to task | **PARTIAL**. One model for every call (`claude-opus-5-5`, effort low) with the platform's server-side fallback. The model that answered is recorded (Rule 12), which is this rule's fallback requirement. | ⚠️ gap |
+| **16** Match model to task | **PARTIAL**. One model family for every call: `gemini-3.5-flash`, falling back to the `gemini-flash-latest` alias when Google refuses the first. The model that answered is recorded (Rule 12), which is this rule's fallback requirement. | ⚠️ gap |
 
 ### Safety controls beyond the sixteen rules
 
 | Control | How it is carried | Status |
 |---|---|---|
 | Crisis wording | **CODE**. A narrow phrase list (for example *kill myself*, *suicidal*, *want to die*, *self-harm*) is answered with a fixed reply pointing to emergency help, and the message never reaches the model. It works even when Motus has no API key. ⚠️ It is a phrase match, **not** crisis detection; anything worded differently goes to the model, whose preamble says Motus is not a crisis service. The two phone numbers were checked against SCDF and Samaritans of Singapore on 6 October 2026. | ⚠️ partial |
-| Rate ceilings | **CODE**. Per instance: 20 messages a minute from one address and 300 an hour in all; at most five instances. Addresses are held in memory for a minute and never written down. The Anthropic console spend limit is the real ceiling. | ✅ enforced |
+| Rate ceilings | **CODE**. Per instance: 20 messages a minute from one address and 300 an hour in all; at most five instances. Addresses are held in memory for a minute and never written down. The Google Cloud budget and the key's quota are the real ceiling. | ✅ enforced |
 | Origin | **CODE**. The function answers only the site's own origins and local development. | ✅ enforced |
 
 ## Assumptions, gaps and unverified items
@@ -353,7 +353,7 @@ handed to an agent without its criteria, controlling documents and data class at
    on every run; there is no reason to assume Motus is different. A read of real Motus turns, as
    NEXUS ran (`AURA-VERIFICATION-TURNS.md`), is the gate before compliance is claimed, and it has
    not been run because **Motus is not live**: the Cloud Function needs the Blaze plan and an
-   Anthropic key that only the owner sets.
+   Gemini API key that only the owner sets.
 3. **P6 is one identifier class.** Not PDPA compliance, and not described as such anywhere.
 4. ~~**The crisis reply's phone numbers are model-recalled**~~ Checked 6 October 2026 against
    scdf.gov.sg and sos.org.sg.

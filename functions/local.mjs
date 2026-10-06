@@ -1,4 +1,4 @@
-// Local dev server for Motus: node local.mjs, with ANTHROPIC_API_KEY in the
+// Local dev server for Motus: node local.mjs, with GEMINI_API_KEY in the
 // environment. The site's dev server proxies /api/motus here.
 import { createServer } from 'node:http'
 import { motus } from './motus.js'

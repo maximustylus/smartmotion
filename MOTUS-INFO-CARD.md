@@ -6,8 +6,8 @@ data is handled, and how to raise a concern.**
 | | |
 |---|---|
 | **Card status** | ⚠️ **Draft, not yet in effect.** Awaiting sign-off by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
-| **Motus status** | ⚠️ **Not live.** The chat window appears on the site, but its server needs the Firebase Blaze plan and an Anthropic API key that only the owner sets. Until then Motus replies that it is offline, except for the two fixed safety replies in §3, which work without a key. |
-| **Card version** | 0.3 (draft) |
+| **Motus status** | ⚠️ **Not live.** The chat window appears on the site, but its server needs a Gemini API key that only the owner sets (the Firebase Blaze plan is in place). Until then Motus replies that it is offline, except for the two fixed safety replies in §3, which work without a key. |
+| **Card version** | 0.4 (draft) |
 | **Last updated** | 2026-10-05 |
 | **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
@@ -43,12 +43,12 @@ can only reply and point.
 
 ### About the AI model
 
-Motus runs on **Anthropic's Claude**, reached over the Claude API from a Firebase Cloud Function in
-the `asia-southeast1` (Singapore) region. The function asks for `claude-opus-5-5` at low effort and
-allows the platform's server-side fallback, so a different Claude model may answer when the first
-is unavailable. **Which model answered is recorded on every reply** and shown beneath it, with the
-guardrail version and the time. The model is Anthropic's; what is Smart Motion's own is the
-prompting, the knowledge base and the checks around them.
+Motus runs on **Google's Gemini**, reached over the Gemini API from a Firebase Cloud Function in
+the `asia-southeast1` (Singapore) region, the same model family as AURA in the owner's NEXUS. The
+function asks for `gemini-3.5-flash` and, if Google refuses that model, falls back to the
+`gemini-flash-latest` alias, so the model can change without notice. **Which model answered is
+recorded on every reply** and shown beneath it, with the guardrail version and the time. The model is
+Google's; what is Smart Motion's own is the prompting, the knowledge base and the checks around them.
 
 ### Accuracy and limitations
 
@@ -129,8 +129,8 @@ measured**; the guidelines permit qualitative statements.*
   note about which scene you are on and anything you paste are named as data, not instructions.
   The scene note passes only if it is shaped like a scene id. The server answers only this site.
   Rate ceilings per instance: 20 messages a minute from one address and 300 an hour in all, with at
-  most five instances, so a script meets a limit rather than an unbounded bill. Claude's own safety
-  behaviour applies to every reply.
+  most five instances, so a script meets a limit rather than an unbounded bill. Gemini's own safety
+  filters apply to every reply, and a reply they block gets a fixed line instead.
 - **Effectiveness, honestly:** no red-team exercise has been run against Motus.
 - **What you can do:** report anything harmful or wrong (§5).
 
@@ -144,7 +144,7 @@ measured**; the guidelines permit qualitative statements.*
   and is cleared when you close the tab. Smart Motion has no database of conversations.
 - **What you type is sent** with each question, together with the earlier turns kept in the tab
   and the id of the scene you are on, to Smart Motion's Cloud Function in Singapore, which forwards
-  it to Anthropic's Claude API to write the reply. A message refused by the checks in §3 is not
+  it to Google's Gemini API to write the reply. A message refused by the checks in §3 is not
   forwarded.
 - **The server writes no conversation down.** It logs, without any of your words: which model
   answered, the guardrail version, the time and the number of tokens used, and the status of any
@@ -153,14 +153,17 @@ measured**; the guidelines permit qualitative statements.*
 
 ### Who has access
 
-- Message content is processed by **Anthropic** (the Claude API) as the model provider, and the
+- Message content is processed by **Google** (the Gemini API) as the model provider, and the
   site runs on **Google Firebase**. No other third party receives chat content. Nothing is sold.
 
 ### Whether data is used for model training
 
-Smart Motion trains no models and fine-tunes nothing. Handling by Anthropic's Claude API, including
-any use for model improvement, is governed by **Anthropic's commercial terms**. Smart Motion has
-**not independently verified** Anthropic's internal handling and does not claim to have.
+Smart Motion trains no models and fine-tunes nothing. Google's Gemini API terms (updated 28 April
+2026) treat the two tiers differently. On **paid** use, Google does not use prompts or responses to
+improve its products; it logs them for a limited period only to detect misuse. On **unpaid** use,
+Google may use them to improve its products and human reviewers may read them. **Motus must run on a
+key from a billed (paid) Google Cloud project**; the owner sets the key. Smart Motion has **not
+independently verified** Google's handling and does not claim to have.
 
 ### Your controls
 
@@ -193,7 +196,7 @@ card will not invent a service level it cannot keep.
 *Required by guardrail P1; in the body of the card, not a footnote.*
 
 1. **This card is a draft with no named sign-off.** It is not in effect until the owner approves it.
-2. **Motus is not live.** The Cloud Function needs the Blaze plan and an Anthropic API key, which
+2. **Motus is not live.** The Cloud Function needs a Gemini API key from a billed project, which
    only the owner sets. Every statement about replies describes the code, not observed behaviour.
 3. **Prompt-carried safeguards are unverified.** The tests show the rules reach the model, never
    that it follows them. A read of real turns is the gate before compliance is claimed, and it
@@ -203,7 +206,11 @@ card will not invent a service level it cannot keep.
    Samaritans of Singapore 24-hour hotline (sos.org.sg). Struck through, not deleted.
 5. **The identifier check covers NRIC and FIN shapes only.** Not PDPA compliance.
 6. **No age assurance** exists; the site is open to anyone with the link.
-7. **Anthropic's data handling is taken from its terms, not verified independently.**
+7. **Google's data handling is taken from its terms, not verified independently.** It depends on
+   the key being on the paid tier (§4); an unpaid key would allow Google to use conversations to
+   improve its products.
+12. **Google's terms require the API not to power a service directed at, or likely to be used by,
+   people under 18.** Smart Motion is made for adult educators and has no age check (gap 6).
 8. **The IMDA guidelines were not re-read for this card.** Its structure and framing follow the
    owner's signed AURA card (NEXUS, v1.3), which is structured after the guidelines' Annex B. A
    check against the guidelines themselves is due before sign-off.
@@ -226,7 +233,7 @@ the named source on the date shown, not permanently true.*
 | Motus cannot act: no tools, no database, no sending (§1, §2) | `functions/motus.js`: one streaming call with no `tools` | Confirmed 2026-10-05 |
 | Motus is told to use the OARS techniques of motivational interviewing, as style, not therapy (§1) | `functions/motus.js` persona; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
 | Knowledge base built from the repository; cost evidence excluded (§1, §3) | `scripts/build-kb.mjs`; `functions/guardrails.test.js` asserts the exclusion | Confirmed 2026-10-05 |
-| Model requested, effort, server-side fallback (§1) | `functions/motus.js` (`model`, `output_config`, `fallbacks`) | Confirmed 2026-10-05 |
+
 | Region `asia-southeast1` (§1, §4) | `functions/index.js`; `firebase.json` rewrite | Confirmed 2026-10-05 |
 | Provenance on every reply: model that answered, guardrail version, time (§1) | `functions/guardrails.js` `aiProvenance`; `functions/motus.js`; `site/src/motus/chat.js` | Confirmed 2026-10-05; tested |
 | Preamble leads every request (§3) | `functions/motus.js` `system`; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
@@ -238,7 +245,8 @@ the named source on the date shown, not permanently true.*
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
 | Server logs carry no conversation text (§4) | `functions/motus.js` `console.info` and `console.error` calls | Confirmed 2026-10-05 |
 | Motus is not live (header, gap 2) | Firebase deploy of 2026-10-05 reported no endpoint for `motus` | Confirmed 2026-10-05 |
-| Anthropic's data handling (§4) | Anthropic's commercial terms | **Not independently verified** (gap 7) |
+| Google's data handling, paid versus unpaid tiers (§4) | Gemini API Additional Terms of Service, updated 2026-04-28 | Terms read 2026-10-06; Google's practice **not independently verified** (gap 7) |
+| Model requested and fallback (§1) | `functions/motus.js` `MODELS`; names from NEXUS `modelAvailability.cjs` (checked 2026-09-06) | Confirmed in code 2026-10-06; tested with simulated responses, **not yet against the live API** |
 | Model follows its prompt-carried rules (§3) | None yet | **Unverifiable until Motus is live** (gap 3) |
 
 ---
@@ -251,6 +259,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| 0.4 (draft) | 2026-10-06 | Model provider changed from Anthropic's Claude to Google's Gemini at the owner's request: §1, §4 and gaps 2, 7 and 12 rewritten for Google's terms. |
 | 0.3 (draft) | 2026-10-06 | Crisis phone numbers checked against SCDF and Samaritans of Singapore; gap 4 closed. |
 | 0.2 (draft) | 2026-10-05 | §1: Motus converses with the OARS techniques of motivational interviewing, as AURA's wellbeing coach does; stated as a style, not therapy. |
 | 0.1 (draft) | 2026-10-05 | First draft, after the owner's AURA card and the IMDA Annex B format. Not signed, not in effect. |

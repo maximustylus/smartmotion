@@ -48,11 +48,16 @@ test('the preamble reaches the model ahead of the persona and the knowledge base
   const sys = src.slice(src.indexOf('const system = ['))
   assert.ok(sys.indexOf('GUARDRAIL_PREAMBLE') < sys.indexOf('persona'))
   assert.ok(sys.indexOf('persona') < sys.indexOf('kb.map'))
+  assert.match(src, /systemInstruction: \{ parts: \[\{ text: instruction \}\] \}/)
 })
 
-test('the messages sent to the model never include a system turn', () => {
+test('the messages sent to the model are user and model turns only, and the key never goes in the address', () => {
   const src = readFileSync(join(root, 'functions/motus.js'), 'utf8')
   assert.doesNotMatch(src, /role:\s*'system'/)
+  assert.match(src, /role: m\.role === 'assistant' \? 'model' : 'user'/)
+  assert.match(src, /'x-goog-api-key': process\.env\.GEMINI_API_KEY/)
+  assert.doesNotMatch(src, /[?&]key=/)
+  assert.doesNotMatch(src, /anthropic/i)
 })
 
 test('NRIC and FIN shapes are caught, lookalikes inside longer tokens are not', () => {
@@ -81,15 +86,15 @@ test('the fixed replies obey house format', () => {
 })
 
 test('provenance records the model that answered, or says it was not recorded', () => {
-  const p = aiProvenance('claude-opus-5-5', Date.UTC(2026, 9, 5, 4))
-  assert.deepEqual(p, { tool: 'Smart Motion Motus', model: 'claude-opus-5-5', guardrails: GUARDRAIL_VERSION, generatedAt: '2026-10-05T04:00:00.000Z' })
+  const p = aiProvenance('gemini-3.5-flash', Date.UTC(2026, 9, 5, 4))
+  assert.deepEqual(p, { tool: 'Smart Motion Motus', model: 'gemini-3.5-flash', guardrails: GUARDRAIL_VERSION, generatedAt: '2026-10-05T04:00:00.000Z' })
   assert.equal(aiProvenance('').model, MODEL_UNRECORDED)
   assert.equal(aiProvenance(null).model, MODEL_UNRECORDED)
 })
 
 test('the handler answers a screened message without a key and without the model', async () => {
-  const saved = process.env.ANTHROPIC_API_KEY
-  delete process.env.ANTHROPIC_API_KEY
+  const saved = process.env.GEMINI_API_KEY
+  delete process.env.GEMINI_API_KEY
   const { motus } = await import('./motus.js')
   const out = []
   const res = {
@@ -102,7 +107,7 @@ test('the handler answers a screened message without a key and without the model
     end() { this.ended = true },
   }
   await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'test' }, body: { messages: [{ role: 'user', content: 'my FIN is G1234567X' }] } }, res)
-  if (saved !== undefined) process.env.ANTHROPIC_API_KEY = saved
+  if (saved !== undefined) process.env.GEMINI_API_KEY = saved
   assert.equal(res.statusCode, 200)
   const events = out.filter((x) => typeof x === 'string').map((x) => JSON.parse(x.replace(/^data: /, '')))
   assert.equal(events[0].t, NRIC_REFUSAL)
@@ -124,4 +129,78 @@ test('the persona carries the four OARS techniques, as style, not therapy', () =
   assert.match(persona, /never as counselling or therapy/)
   assert.match(persona, /never replaces the answer/)
   assert.doesNotMatch(persona, /[\u2014\u2013]/)
+})
+
+// ---------- Gemini streaming, with the network replaced ----------
+
+function fakeRes() {
+  const out = []
+  return {
+    out,
+    headers: {},
+    statusCode: 200,
+    setHeader(k, v) { this.headers[k] = v },
+    flushHeaders() {},
+    status(c) { this.statusCode = c; return this },
+    json(o) { out.push(o); return this },
+    write(s) { out.push(s) },
+    end() { this.ended = true },
+    events() { return out.filter((x) => typeof x === 'string').map((x) => JSON.parse(x.replace(/^data: /, ''))) },
+  }
+}
+const sse = (...events) => new Response(events.map((e) => `data: ${JSON.stringify(e)}\r\n\r\n`).join(''), { status: 200 })
+async function ask(fetchImpl, text = 'What is ADDIE?') {
+  const savedFetch = globalThis.fetch
+  const savedKey = process.env.GEMINI_API_KEY
+  const calls = []
+  globalThis.fetch = async (url, init) => { calls.push({ url: String(url), init }); return fetchImpl(calls.length) }
+  process.env.GEMINI_API_KEY = 'test-key'
+  const { motus } = await import('./motus.js')
+  const res = fakeRes()
+  await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'gem-' + Math.random() }, body: { messages: [{ role: 'user', content: text }], scene: 'hook' } }, res)
+  globalThis.fetch = savedFetch
+  if (savedKey === undefined) delete process.env.GEMINI_API_KEY
+  else process.env.GEMINI_API_KEY = savedKey
+  return { res, calls }
+}
+
+test('Gemini text streams through, and the model that answered is recorded', async () => {
+  const { res, calls } = await ask(() => sse(
+    { candidates: [{ content: { role: 'model', parts: [{ text: 'ADDIE is ' }] } }], modelVersion: 'gemini-3.5-flash-001' },
+    { candidates: [{ content: { role: 'model', parts: [{ text: 'five phases.' }] }, finishReason: 'STOP' }], usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 4 } },
+  ))
+  const ev = res.events()
+  assert.equal(ev.filter((e) => e.t).map((e) => e.t).join(''), 'ADDIE is five phases.')
+  assert.equal(ev.at(-1).done, true)
+  assert.equal(ev.at(-1).provenance.model, 'gemini-3.5-flash-001')
+  assert.match(calls[0].url, /gemini-3\.5-flash:streamGenerateContent\?alt=sse$/)
+  assert.equal(calls[0].init.headers['x-goog-api-key'], 'test-key')
+  const sent = JSON.parse(calls[0].init.body)
+  assert.match(sent.systemInstruction.parts[0].text, /^GOVERNING RULES/)
+  assert.match(sent.systemInstruction.parts[0].text, /viewing scene "hook"/)
+  assert.deepEqual(sent.contents, [{ role: 'user', parts: [{ text: 'What is ADDIE?' }] }])
+})
+
+test('a refused model falls back to the alias; thought parts are never shown', async () => {
+  const { res, calls } = await ask((n) => (n === 1 ? new Response('gone', { status: 404 }) : sse(
+    { candidates: [{ content: { parts: [{ text: 'thinking...', thought: true }, { text: 'Hello.' }] }, finishReason: 'STOP' }] },
+  )))
+  assert.equal(calls.length, 2)
+  assert.match(calls[1].url, /gemini-flash-latest/)
+  const ev = res.events()
+  assert.equal(ev.filter((e) => e.t).map((e) => e.t).join(''), 'Hello.')
+  assert.equal(ev.at(-1).provenance.model, 'gemini-flash-latest')
+})
+
+test('a rejected key stops at once with a plain message', async () => {
+  const { res, calls } = await ask(() => new Response('bad key', { status: 403 }))
+  assert.equal(calls.length, 1)
+  assert.equal(res.events().at(-1).error, 'Motus is offline: the server key was rejected.')
+})
+
+test('a reply cut at the length limit says so, and a blocked one gets a fixed line', async () => {
+  const cut = await ask(() => sse({ candidates: [{ content: { parts: [{ text: 'Long answer' }] }, finishReason: 'MAX_TOKENS' }] }))
+  assert.match(cut.res.events().filter((e) => e.t).map((e) => e.t).join(''), /Cut short at my length limit/)
+  const blocked = await ask(() => sse({ promptFeedback: { blockReason: 'SAFETY' } }))
+  assert.match(blocked.res.events().filter((e) => e.t).map((e) => e.t).join(''), /rather not answer/)
 })
