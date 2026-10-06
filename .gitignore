@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 
 # macOS
 .DS_Store
+
+# Owner's internal material (colleague posters, corporate Copilot chats). Never committed.
+private/
