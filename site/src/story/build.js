@@ -1,5 +1,5 @@
 import { moves, moveById } from '../content/moves.js'
-import { examples } from '../content/examples.js'
+import { usecases, firstAgent } from '../content/usecases.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
 import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
 import { copy } from '../content/copy.js'
@@ -362,7 +362,15 @@ function quizScene(step) {
   }
 }
 
+// Use cases, by track: what one maker built on the personal track, and
+// what staff already have on the corporate track.
 function examplesScene(step) {
+  const track = (t) => `
+    ${eyebrow(copy.quiz.examplesHeading, t.title.split(':')[0])}
+    <h3>${t.title.split(': ')[1].replace(/^./, (c) => c.toUpperCase())}</h3>
+    <p class="lead">${t.lead}</p>
+    <ul class="rows uses">${t.items.map((u) => `<li><strong>${u.name}</strong><span>${rich(u.line)}</span></li>`).join('')}</ul>
+  `
   return {
     id: 'examples',
     title: step.title,
@@ -371,28 +379,54 @@ function examplesScene(step) {
     beats: [
       {
         html: `
-          ${eyebrow('Worked examples', `${step.minutes} min`)}
+          ${eyebrow('Use cases', `${step.minutes} min`)}
           <h2>${copy.quiz.examplesHeading}</h2>
           <p class="lead">${copy.quiz.examplesLead}</p>
-          <ul class="rows">${examples.map((e) => `<li>${e.name}</li>`).join('')}</ul>
+          <ul class="rows"><li>${usecases.personal.title}</li><li>${usecases.corporate.title}</li></ul>
         `,
       },
-      ...examples.map((e) => ({
-        form: 'nest',
-        html: `
-          ${eyebrow(copy.quiz.examplesHeading)}
-          <h3>${e.name}</h3>
-          <p>${e.body}</p>
-        `,
-      })),
+      { form: 'nest', html: track(usecases.personal) },
+      { form: 'nest', html: track(usecases.corporate) },
     ],
   }
 }
 
 // The take-home: which track are you on, then the five workflows.
 function takeHomeScene(step) {
+  const agentBeats = [
+    {
+      html: `
+        ${eyebrow('Take-home', 'Corporate track')}
+        <h2>${firstAgent.heading}</h2>
+        <p class="lead">${firstAgent.lead}</p>
+        <ol class="flows steps" data-no-split>
+          ${firstAgent.steps.map((st, i) => `<li><span class="flows__n">0${i + 1}</span><span class="flows__name">${st.title}</span><span class="flows__need">${st.body}</span></li>`).join('')}
+        </ol>
+        <p class="note">${firstAgent.note}</p>
+      `,
+    },
+    {
+      html: `
+        ${eyebrow('Take-home', copy.beatLabels.cheatsheet)}
+        <h3>Describe your agent</h3>
+        <p class="note">${firstAgent.promptIntro}</p>
+        <div class="sheet" data-no-split>
+          <div class="sheet__card">
+            <div class="sheet__bar"><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__dot"></span><span class="sheet__label">Prompt · paste into New agent</span></div>
+            <pre class="sheet__text" tabindex="0">${esc(firstAgent.prompt)}</pre>
+          </div>
+          <p class="sheet__actions">
+            <button type="button" class="btn" data-copy aria-label="Copy the prompt">Copy prompt</button>
+            <span class="sheet__hint">Fill in the [brackets] before you send it.</span>
+            <span class="sheet__status" aria-live="polite"></span>
+          </p>
+        </div>
+      `,
+    },
+  ]
   return {
     id: 'takehome',
+    mount: (el, ctx) => import('./sheet.js').then((x) => x.mountSheet(el, ctx)),
     title: step.title ?? 'Take-home',
     minutes: step.minutes ?? 0,
     phase: 'implement',
@@ -459,6 +493,7 @@ function takeHomeScene(step) {
           <p class="note">Tools and routes as used on 3 October 2026. Limits and prices change; check <a href="${link(compare.file)}" target="_blank" rel="noopener">COMPARE.md</a> before you rely on one.</p>
         `,
       },
+      ...agentBeats,
     ],
   }
 }

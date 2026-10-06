@@ -109,7 +109,10 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   function fitBeat(el) {
     if (!el) return
     el.style.zoom = ''
-    const room = window.innerHeight - 68 - 36
+    // The height the beat really has: its pinned frame, not the window,
+    // which some browsers report differently while zoomed or emulated.
+    const frame = el.closest(".scene__pin")?.clientHeight || window.innerHeight
+    const room = Math.min(frame, window.innerHeight) - 68 - 36
     if (beatHeight(el) <= room) return
     // Find the largest size that fits, between 72% and full size.
     let lo = 0.72, hi = 1

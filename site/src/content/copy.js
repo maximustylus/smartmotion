@@ -35,7 +35,7 @@ export const copy = {
     resultNote: 'The full AI Ready Quiz takes about fifteen minutes and emails you a profile. Do it in your own time.',
     roomHeading: 'The room, live',
     examplesHeading: 'Use cases',
-    examplesLead: 'Three of my tools, scored on the utility formula’s five questions.',
+    examplesLead: 'What one maker built at home, and what work already offers.',
   },
   takehome: {
     tracksHeading: 'Two tracks, same prompts',

@@ -8,6 +8,12 @@ source that is not listed here.
 | Status | Reference |
 | --- | --- |
 | proposed | Infocomm Media Development Authority. (2026, July 20). *Transparency guidelines for generative AI chatbots*. Annex B sample format followed by MOTUS-INFO-CARD.md. Citation taken from the owner's AURA info card in NEXUS; not re-read for Smart Motion. Owner to verify. |
+| verified | Microsoft. (2026, September 30). *Agent Builder overview*. Microsoft Learn. https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder (read 6 October 2026) |
+| verified | Microsoft. (2026, September 30). *Build agents in Agent Builder*. Microsoft Learn. https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-build-agents (read 6 October 2026) |
+| verified | Microsoft. (2026, September 30). *Add knowledge sources to an agent in Agent Builder*. Microsoft Learn. https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-add-knowledge (read 6 October 2026) |
+| verified | Microsoft. (2026, September 30). *Set up your development environment: agent capabilities and licensing models*. Microsoft Learn. https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/prerequisites (read 6 October 2026) |
+| verified | Microsoft. (2026, August 26). *Extend your agent with Model Context Protocol*. Microsoft Learn. https://learn.microsoft.com/en-us/microsoft-copilot-studio/agent-extend-action-mcp (read 6 October 2026) |
+| proposed | Microsoft Power Platform. (2025, April 28). *Introducing Model Context Protocol (MCP) in Copilot Studio* [Blog post]. https://devblogs.microsoft.com/powerplatform/microsoft-copilot-studio-mcp/ (data loss prevention point taken from a search summary; to read in full) |
 | proposed | Covey, S. R. (1989). *The 7 habits of highly effective people*. Free Press. Habit 2: Begin with the end in mind. |
 | owner | Muhammad Alif Bin Abu Bakar. (2026). Lines in his own voice in Smart Motion, including "Balancing is an act". |
 | proposed | SkillsFuture Singapore, Workforce Development Agency, & Singapore Institute of Technology. (2026). *AI Ready Quiz* [Online assessment]. https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM (opening page read 3 October 2026) |
