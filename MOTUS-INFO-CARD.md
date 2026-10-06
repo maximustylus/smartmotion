@@ -5,9 +5,9 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ⚠️ **Draft, not yet in effect.** Awaiting sign-off by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
+| **Card status** | ✅ **In effect.** Signed off on 6 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 0.5 (draft) |
+| **Card version** | 1.0 |
 | **Last updated** | 2026-10-05 |
 | **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
@@ -195,7 +195,8 @@ card will not invent a service level it cannot keep.
 
 *Required by guardrail P1; in the body of the card, not a footnote.*
 
-1. **This card is a draft with no named sign-off.** It is not in effect until the owner approves it.
+1. ~~**This card is a draft with no named sign-off.**~~ **Signed off 6 October 2026** by Muhammad
+   Alif (owner); in effect. Struck through, not deleted.
 2. ~~**Motus is not live.**~~ **Live from 6 October 2026.** Struck through, not deleted. The owner set
    the Gemini API key, in the billed smartmotus project, himself.
 3. **Prompt-carried safeguards are only spot-checked.** Six live turns on 6 October 2026 followed
@@ -259,6 +260,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| **1.0** | 2026-10-06 | **Signed off by the owner (Muhammad Alif) and in effect.** No content change from 0.5. |
 | 0.5 (draft) | 2026-10-06 | Motus deployed and live; the first live checks recorded in the header and gap 3. Still awaiting the owner's sign-off. |
 | 0.4 (draft) | 2026-10-06 | Model provider changed from Anthropic's Claude to Google's Gemini at the owner's request: §1, §4 and gaps 2, 7 and 12 rewritten for Google's terms. |
 | 0.3 (draft) | 2026-10-06 | Crisis phone numbers checked against SCDF and Samaritans of Singapore; gap 4 closed. |

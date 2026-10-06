@@ -1,7 +1,7 @@
 # Motus guardrails
 
-**Controlled document** · **Version 1.0 (draft)** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
-· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, not yet signed** · **Review: on any change to Motus's prompt**
+**Controlled document** · **Version 1.0** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
+· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, signed off 6 October 2026; in effect** · **Review: on any change to Motus's prompt**
 
 Motus, the companion in Smart Motion, follows the same sixteen rules the owner issued for AURA in
 NEXUS on 2026-08-24. §A reproduces them **verbatim** from `AURA-GUARDRAILS.md` in the NEXUS
@@ -346,8 +346,8 @@ handed to an agent without its criteria, controlling documents and data class at
 
 *Per P1. Required, and not omitted when empty.*
 
-1. **This document is a draft.** It has no named sign-off yet; Rule 12 says it does not enter into
-   effect until the owner signs it.
+1. ~~**This document is a draft.**~~ **Signed off 6 October 2026** by Muhammad Alif (owner); in
+   effect. Struck through, not deleted.
 2. **Every row marked *instructed* is unverified.** The tests assert the text reaches the model,
    never that the model follows it. NEXUS's live read of 2026-09-05 found two prompt rules ignored
    on every run; there is no reason to assume Motus is different. A read of real Motus turns, as
