@@ -6,8 +6,8 @@ data is handled, and how to raise a concern.**
 | | |
 |---|---|
 | **Card status** | ⚠️ **Draft, not yet in effect.** Awaiting sign-off by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
-| **Motus status** | ⚠️ **Not live.** The chat window appears on the site, but its server needs a Gemini API key that only the owner sets (the Firebase Blaze plan is in place). Until then Motus replies that it is offline, except for the two fixed safety replies in §3, which work without a key. |
-| **Card version** | 0.4 (draft) |
+| **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
+| **Card version** | 0.5 (draft) |
 | **Last updated** | 2026-10-05 |
 | **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
@@ -196,11 +196,11 @@ card will not invent a service level it cannot keep.
 *Required by guardrail P1; in the body of the card, not a footnote.*
 
 1. **This card is a draft with no named sign-off.** It is not in effect until the owner approves it.
-2. **Motus is not live.** The Cloud Function needs a Gemini API key from a billed project, which
-   only the owner sets. Every statement about replies describes the code, not observed behaviour.
-3. **Prompt-carried safeguards are unverified.** The tests show the rules reach the model, never
-   that it follows them. A read of real turns is the gate before compliance is claimed, and it
-   cannot run until Motus is live.
+2. ~~**Motus is not live.**~~ **Live from 6 October 2026.** Struck through, not deleted. The owner set
+   the Gemini API key, in the billed smartmotus project, himself.
+3. **Prompt-carried safeguards are only spot-checked.** Six live turns on 6 October 2026 followed
+   the rules (sources named, OARS style, injection refused). Six turns are not a read of real use;
+   a fuller read, as NEXUS ran for AURA, is still the gate before compliance is claimed.
 4. ~~**The crisis reply's phone numbers are model-recalled**~~ **Checked 6 October 2026** against
    the services' own websites: 995 is SCDF's emergency ambulance line (scdf.gov.sg) and 1767 is the
    Samaritans of Singapore 24-hour hotline (sos.org.sg). Struck through, not deleted.
@@ -244,7 +244,7 @@ the named source on the date shown, not permanently true.*
 | Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-05 |
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
 | Server logs carry no conversation text (§4) | `functions/motus.js` `console.info` and `console.error` calls | Confirmed 2026-10-05 |
-| Motus is not live (header, gap 2) | Firebase deploy of 2026-10-05 reported no endpoint for `motus` | Confirmed 2026-10-05 |
+| Motus is live (header, gap 2) | Firebase deploy of 2026-10-06; live test turns that day | Confirmed 2026-10-06 |
 | Google's data handling, paid versus unpaid tiers (§4) | Gemini API Additional Terms of Service, updated 2026-04-28 | Terms read 2026-10-06; Google's practice **not independently verified** (gap 7) |
 | Model requested and fallback (§1) | `functions/motus.js` `MODELS`; names from NEXUS `modelAvailability.cjs` (checked 2026-09-06) | Confirmed in code 2026-10-06; tested with simulated responses, **not yet against the live API** |
 | Model follows its prompt-carried rules (§3) | None yet | **Unverifiable until Motus is live** (gap 3) |
@@ -259,6 +259,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| 0.5 (draft) | 2026-10-06 | Motus deployed and live; the first live checks recorded in the header and gap 3. Still awaiting the owner's sign-off. |
 | 0.4 (draft) | 2026-10-06 | Model provider changed from Anthropic's Claude to Google's Gemini at the owner's request: §1, §4 and gaps 2, 7 and 12 rewritten for Google's terms. |
 | 0.3 (draft) | 2026-10-06 | Crisis phone numbers checked against SCDF and Samaritans of Singapore; gap 4 closed. |
 | 0.2 (draft) | 2026-10-05 | §1: Motus converses with the OARS techniques of motivational interviewing, as AURA's wellbeing coach does; stated as a style, not therapy. |

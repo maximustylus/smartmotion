@@ -32,7 +32,9 @@ function render(md) {
   const inline = (s) =>
     esc(s)
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\[([^\]]+)\]\((#[a-z0-9-]+|\/[a-z/#-]*|https?:\/\/[^\s)]+)\)/g, (_, text, href) => {
+      .replace(/\[([^\]]+)\]\((#[a-z0-9-]+|\/[a-z/#-]*|https?:\/\/[^\s)]+|[A-Za-z0-9_./-]+\.md)\)/g, (_, text, href) => {
+        // A repository file (workflows/02-infographic-poster.md) opens on GitHub.
+        if (/\.md$/.test(href) && !/^(https?:|\/|#)/.test(href)) href = `https://github.com/maximustylus/smartmotion/blob/main/${href.replace(/^\.\//, '')}`
         const ext = href.startsWith('http')
         return `<a href="${href}"${ext ? ' target="_blank" rel="noopener"' : ' data-go'}>${text}</a>`
       })

@@ -33,7 +33,7 @@ const ALLOWED_ORIGINS = new Set([
 
 const MAX_TURNS = 12
 const MAX_CHARS = 2000
-const MAX_OUTPUT = 1200
+const MAX_OUTPUT = 2048
 
 // Stable prefix first (persona, then the knowledge base), so prompt caching
 // pays off on every request. Nothing volatile goes above the breakpoint.
@@ -157,6 +157,15 @@ export async function motus(req, res) {
     contents: messages.map((m) => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
     generationConfig: { maxOutputTokens: MAX_OUTPUT, temperature: 0.6 },
   })
+  // Gemini 3 models reason before they answer. Keep that short and out of
+  // the reply: low thinking, and thoughts never returned. Older models
+  // reject thinkingLevel, so it is added only for the Gemini 3 family.
+  const bodyFor = (m) => {
+    if (!/^gemini-3/.test(m)) return payload
+    const b = JSON.parse(payload)
+    b.generationConfig.thinkingConfig = { thinkingLevel: 'low', includeThoughts: false }
+    return JSON.stringify(b)
+  }
   try {
     // Try each model until one accepts the request. The key travels in a
     // header, never in the address, so it cannot end up in a log.
@@ -167,7 +176,7 @@ export async function motus(req, res) {
       const r = await fetch(`${API}${m}:streamGenerateContent?alt=sse`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
-        body: payload,
+        body: bodyFor(m),
       })
       if (r.ok && r.body) {
         upstream = r
