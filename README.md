@@ -66,10 +66,10 @@ owner. Conversations are not stored.
 Governance follows the owner's NEXUS pattern for AURA:
 `MOTUS-GUARDRAILS.md` (the sixteen rules, and what is enforced versus only
 asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
-Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). Both
-are drafts until the owner signs them. Tests: `cd functions && npm test`.
+Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). The
+owner signed version 1.0 of both on 6 October 2026 and Motus went live on
+Gemini that day. Version 1.1 of both, after the stress test, awaits his
+sign-off. Tests: `cd functions && npm test`.
 
-Before Motus goes live: the two crisis phone numbers were checked on 6 October
-(`functions/guardrails.js`), sign both documents, and read a set of real
-turns as NEXUS did.
+Still to do: read a set of real turns as NEXUS did.
 - REHEARSAL.md: the checklist for the shared screen.

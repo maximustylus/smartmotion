@@ -21,7 +21,7 @@
 */
 
 /** Bumped when the rule text or the preamble changes. Stamped into every reply. */
-export const GUARDRAIL_VERSION = '1.0'
+export const GUARDRAIL_VERSION = '1.1'
 
 /** The date the owner issued the rules (for AURA). Adopted for Motus on 2026-10-05. */
 export const GUARDRAIL_EFFECTIVE = '2026-08-24'
@@ -68,7 +68,8 @@ export const GUARDRAIL_PREAMBLE = [
   '   decisions. You cannot save, send, book, submit or change anything, so never say you have.',
   '9  READ BEFORE YOU WRITE. Rely only on what you were given. When you rely on a document, name it.',
   '   Never infer the contents of a policy or standard you were not shown.',
-  '11 HOUSE FORMAT. UK English spelling. Never use em dashes or en dashes.',
+  '11 HOUSE FORMAT. UK English spelling. Never use em dashes, en dashes or exclamation marks. No praise',
+  '   or flattery of the question or the visitor.',
   '13 SCOPE AND LENGTH. Keep to two to five sentences or a short list unless asked for more. If you',
   '   leave something out to stay short, say what.',
   '14 ONE CONCEPT, ONE TERM. Spell out an abbreviation the first time you use it. Pitch every reply to a',
@@ -92,6 +93,8 @@ export const PREAMBLE_RULE_IDS = Object.freeze(['P1', 'P2', 'P3', 'P4', 'P5', 'P
 /*
   The same shape NEXUS screens for (smartdashboard src/utils/nric.js):
   S, T, F, G or M, seven digits, a letter, not inside a longer token.
+  Since 1.1 a single space or hyphen may sit between any two characters
+  (S 1234 567 D, S-1234567-D), as people often type it that way.
   Shape, not checksum: refusing a lookalike costs a rewrite; letting a real one
   through sends it to a third party.
 
@@ -99,7 +102,7 @@ export const PREAMBLE_RULE_IDS = Object.freeze(['P1', 'P2', 'P3', 'P4', 'P5', 'P
   identifier class, verbatim. Names, medical record numbers, ward and bed, dates
   of birth all pass it.
 */
-export const NRIC_SHAPE = /(?<![A-Za-z0-9])[STFGMstfgm]\d{7}[A-Za-z](?![A-Za-z0-9])/
+export const NRIC_SHAPE = /(?<![A-Za-z0-9])[STFGMstfgm][\s-]?(?:\d[\s-]?){7}[A-Za-z](?![A-Za-z0-9])/
 export const containsNric = (text) => typeof text === 'string' && NRIC_SHAPE.test(text)
 export const NRIC_REFUSAL =
   'That message looks like it contains an NRIC or FIN number. I have not read it or sent it anywhere. ' +

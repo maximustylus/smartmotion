@@ -1,7 +1,7 @@
 # Motus guardrails
 
-**Controlled document** · **Version 1.0** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
-· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, signed off 6 October 2026; in effect** · **Review: on any change to Motus's prompt**
+**Controlled document** · **Version 1.1 (draft)** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
+· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif. Version 1.0 signed off 6 October 2026 and in effect; version 1.1 awaits his sign-off (change log at the end)** · **Review: on any change to Motus's prompt**
 
 Motus, the companion in Smart Motion, follows the same sixteen rules the owner issued for AURA in
 NEXUS on 2026-08-24. §A reproduces them **verbatim** from `AURA-GUARDRAILS.md` in the NEXUS
@@ -322,14 +322,14 @@ handed to an agent without its criteria, controlling documents and data class at
 | **P3** Source over invention | **PROMPT**. Unlike AURA, Motus has a source: the knowledge base (`functions/kb.json`, built from the repository by `scripts/build-kb.mjs`) sits in its prompt. It is told to name the document it relies on and to decline rather than answer from training. In code, `content/cost-evidence.md` is **left out of the knowledge base**, because its items are unverified and the brief says they must not appear; a test asserts the absence. Whether Motus names its source on every turn is **unverified**. | ⚠️ instructed |
 | **P4** Surface conflicts | **PROMPT**. Not machine-checkable. | ⚠️ instructed |
 | **P5** Every element earns its place | **PROMPT**. Not machine-checkable. | ⚠️ instructed |
-| **P6** Classify before you paste | **CODE, one identifier class only**. The newest message is screened before the model sees it; anything shaped like an NRIC or FIN (S, T, F, G or M, seven digits, a letter) is refused with a fixed reply, in the browser and again on the server. The same shape NEXUS uses. ⚠️ **This is not PDPA compliance**: names, medical record numbers, ward and bed numbers and dates of birth all pass it. The preamble tells Motus it is not a data classification control. | ⚠️ partial |
+| **P6** Classify before you paste | **CODE, one identifier class only**. The newest message is screened before the model sees it; anything shaped like an NRIC or FIN (S, T, F, G or M, seven digits, a letter, since 1.1 also with spaces or hyphens between them) is refused with a fixed reply, in the browser and again on the server. The same shape NEXUS uses. ⚠️ **This is not PDPA compliance**: names, medical record numbers, ward and bed numbers and dates of birth all pass it. The preamble tells Motus it is not a data classification control. | ⚠️ partial |
 | **P7** A named human answers | **PROMPT + DESIGN**. Motus cannot act: it has no tools, no database and no way to send anything, so it can only point. The preamble forbids claiming otherwise. The chat window says replies may be wrong. | ✅ by design |
 | **8** Surgical edits | **NOT APPLICABLE**. Motus does not edit documents. | n/a |
 | **9** Read before you write | **PROMPT**. Name the document relied on; never infer an unseen policy. | ⚠️ instructed |
 | **10** Checkpoint at gates | **HUMAN**. Applies to how the site is built (commits, phases), not to Motus's replies. | process |
-| **11** House format | **PROMPT**. UK English, no em or en dashes. The fixed replies in code obey it, asserted by a test. | ⚠️ instructed |
+| **11** House format | **PROMPT**. UK English, no em or en dashes; since 1.1 also no exclamation marks and no praise or flattery, after the stress test found both in replies. The fixed replies in code obey it, asserted by a test. | ⚠️ instructed |
 | **12** Version, date, reproduce | **CODE**. Every reply carries a provenance record: the model that actually answered (read from the response, because the request allows a server-side fallback model), the guardrail version and the time. It is shown under each reply and logged on the server **without the conversation**. A fixed reply records its model as *none (fixed reply)*. | ✅ enforced |
-| **13** Scope and length | **CODE + PROMPT**. Output is capped in code (1,200 tokens); input is capped at 2,000 characters a message and the last 12 turns. A cut reply says so (P1). | ✅ partial |
+| **13** Scope and length | **CODE + PROMPT**. Output is capped in code (2,048 tokens; 1.0 said 1,200, which was out of date); input is capped at 2,000 characters a message and the last 12 turns. A cut reply says so (P1). | ✅ partial |
 | **14** Terminology and register | **PROMPT**. One term per concept, abbreviations spelt out, pitched to a non-technical clinical educator. | ⚠️ instructed |
 | **15** Bound the agent | **CODE + PROMPT**. Motus cannot act, so nothing irreversible can happen. The persona and rules live in the system prompt; the visitor's scene id passes only if it is id-shaped and is labelled *data only*; the messages list carries only user and assistant turns. The knowledge base and pasted text are named as data in the preamble, which is a request to the model. | ⚠️ partial |
 | **16** Match model to task | **PARTIAL**. One model family for every call: `gemini-3.5-flash`, falling back to the `gemini-flash-latest` alias when Google refuses the first. The model that answered is recorded (Rule 12), which is this rule's fallback requirement. | ⚠️ gap |
@@ -339,7 +339,7 @@ handed to an agent without its criteria, controlling documents and data class at
 | Control | How it is carried | Status |
 |---|---|---|
 | Crisis wording | **CODE**. A narrow phrase list (for example *kill myself*, *suicidal*, *want to die*, *self-harm*) is answered with a fixed reply pointing to emergency help, and the message never reaches the model. It works even when Motus has no API key. ⚠️ It is a phrase match, **not** crisis detection; anything worded differently goes to the model, whose preamble says Motus is not a crisis service. The two phone numbers were checked against SCDF and Samaritans of Singapore on 6 October 2026. | ⚠️ partial |
-| Rate ceilings | **CODE**. Per instance: 20 messages a minute from one address and 300 an hour in all; at most five instances. Addresses are held in memory for a minute and never written down. The Google Cloud budget and the key's quota are the real ceiling. | ✅ enforced |
+| Rate ceilings | **CODE**. Per instance: 60 messages a minute from one address and 3,000 model calls an hour in all, counting only requests that reach the model; at most five instances. The address is the one the request reports, which a script can change; the hourly ceiling still holds. Addresses are held in memory for a minute and never written down. The Google Cloud budget and the key's quota are the real ceiling. | ✅ enforced |
 | Origin | **CODE**. The function answers only the site's own origins and local development. | ✅ enforced |
 
 ## Assumptions, gaps and unverified items
@@ -352,8 +352,9 @@ handed to an agent without its criteria, controlling documents and data class at
    never that the model follows it. NEXUS's live read of 2026-09-05 found two prompt rules ignored
    on every run; there is no reason to assume Motus is different. A read of real Motus turns, as
    NEXUS ran (`AURA-VERIFICATION-TURNS.md`), is the gate before compliance is claimed, and it has
-   not been run because **Motus is not live**: the Cloud Function needs the Blaze plan and an
-   Gemini API key that only the owner sets.
+   not been run. Motus has been live since 6 October 2026; six live turns and a 35-request stress
+   test that day are spot checks, not that read. The stress test found replies with exclamation
+   marks and praise, and one unconfirmed limit stated without its TODO flag.
 3. **P6 is one identifier class.** Not PDPA compliance, and not described as such anywhere.
 4. ~~**The crisis reply's phone numbers are model-recalled**~~ Checked 6 October 2026 against
    scdf.gov.sg and sos.org.sg.
@@ -361,3 +362,10 @@ handed to an agent without its criteria, controlling documents and data class at
    (P6's cluster policy, Rule 8, Rule 10) fit Motus loosely or not at all, and §B says so rather
    than claiming a fit.
 6. **This document has one named approver and no second reviewer**, stated rather than implied.
+
+## Change log
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1 (draft) | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model, so a crowd or a script cannot switch Motus off for an hour. P6 shape also catches spaces and hyphens. Rule 11 in the preamble now forbids exclamation marks and praise. Rule 13 row corrected to the 2,048-token cap. Gap 2 brought up to date. **Awaiting the owner's sign-off.** |
+| 1.0 | 2026-10-06 | Signed off by the owner and in effect. |

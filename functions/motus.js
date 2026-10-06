@@ -76,24 +76,29 @@ const system = [
 const MODELS = ['gemini-3.5-flash', 'gemini-flash-latest']
 const API = 'https://generativelanguage.googleapis.com/v1beta/models/'
 
-// Two ceilings per instance: 20 a minute from one address, and 300 an hour
-// in all, so a script or a crowd meets a loud limit rather than an unbounded
-// bill. Addresses are held in memory for a minute and never written down.
-// The Google Cloud budget and the Gemini API key's quota are the real ceiling.
+// Two ceilings per instance: 60 a minute from one address (generous, since a
+// hospital network can put a whole room behind one address), and 3,000 model
+// calls an hour in all. Only requests that reach the model count towards the
+// hour, so junk and screened messages cannot use it up. Addresses are held in
+// memory for a minute and never written down. The Google Cloud budget and the
+// Gemini API key's quota are the real ceiling.
 const hits = new Map()
 let hour = { start: 0, n: 0 }
-const PER_MINUTE = 20
-const PER_HOUR = 300
-function limited(ip) {
+const PER_MINUTE = 60
+const PER_HOUR = 3000
+function tooFast(ip) {
   const now = Date.now()
-  if (now - hour.start > 3_600_000) hour = { start: now, n: 0 }
-  hour.n += 1
-  if (hour.n > PER_HOUR) return true
   for (const [k, v] of hits) if (now - v[v.length - 1] > 60_000) hits.delete(k)
   const list = (hits.get(ip) ?? []).filter((t) => now - t < 60_000)
   list.push(now)
   hits.set(ip, list)
   return list.length > PER_MINUTE
+}
+function hourFull() {
+  const now = Date.now()
+  if (now - hour.start > 3_600_000) hour = { start: now, n: 0 }
+  hour.n += 1
+  return hour.n > PER_HOUR
 }
 
 function clean(messages) {
@@ -118,9 +123,15 @@ export async function motus(req, res) {
   if (origin && !ALLOWED_ORIGINS.has(origin)) return res.status(403).json({ error: 'Origin not allowed' })
 
   const ip = (req.headers['x-forwarded-for'] ?? req.socket?.remoteAddress ?? '').toString().split(',')[0].trim()
-  if (limited(ip)) return res.status(429).json({ error: 'Motus needs a breather. Try again in a minute.' })
+  if (tooFast(ip)) return res.status(429).json({ error: 'Motus needs a breather. Try again in a minute.' })
 
-  const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body ?? {})
+  let body
+  try {
+    body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body ?? {})
+  } catch {
+    return res.status(400).json({ error: 'Send JSON.' })
+  }
+  if (!body || typeof body !== 'object') return res.status(400).json({ error: 'Send JSON.' })
   const messages = clean(body.messages)
   if (!messages) return res.status(400).json({ error: 'Send messages ending with a user turn.' })
   // The scene id is used only as a label, so only id-shaped values pass.
@@ -141,6 +152,7 @@ export async function motus(req, res) {
   if (!process.env.GEMINI_API_KEY) {
     return res.status(503).json({ error: 'Motus is offline: no API key is configured on the server.' })
   }
+  if (hourFull()) return res.status(429).json({ error: 'Motus has reached its limit for this hour. Please try again later.' })
 
 
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')

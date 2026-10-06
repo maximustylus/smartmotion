@@ -5,11 +5,11 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ✅ **In effect.** Signed off on 6 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
+| **Card status** | ✅ **Version 1.0 in effect.** Signed off on 6 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. ⏳ **This text is version 1.1, a draft awaiting his sign-off.** It describes changes made after the quality-control stress test of 6 October (see Card versioning). |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 1.0 |
-| **Last updated** | 2026-10-05 |
-| **Describes** | Smart Motion **v0.4.0** · Motus guardrails **v1.0** |
+| **Card version** | 1.1 (draft) |
+| **Last updated** | 2026-10-06 |
+| **Describes** | Smart Motion **v0.5.1** · Motus guardrails **v1.1** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
 
 ---
@@ -96,7 +96,8 @@ measured**; the guidelines permit qualitative statements.*
   limit says so.
 - **Effectiveness, honestly:** the code parts are tested. The prompt parts are tested only to
   **reach** the model. Nothing yet shows the model **follows** them; that needs a read of real
-  turns, which has not been possible because Motus is not live. In the owner's other project,
+  turns. Six live turns and a 35-request stress test on 6 October 2026 are spot checks, not that
+  read (gap 3). In the owner's other project,
   NEXUS, such a read found two prompt rules ignored on every run.
 - **What you can do:** open the document Motus names and check it says what Motus said.
 
@@ -128,8 +129,11 @@ measured**; the guidelines permit qualitative statements.*
 - **Safeguards:** Motus's instructions live only in its system prompt. Its knowledge base, the
   note about which scene you are on and anything you paste are named as data, not instructions.
   The scene note passes only if it is shaped like a scene id. The server answers only this site.
-  Rate ceilings per instance: 20 messages a minute from one address and 300 an hour in all, with at
-  most five instances, so a script meets a limit rather than an unbounded bill. Gemini's own safety
+  Rate ceilings per instance: 60 messages a minute from one address (a hospital network can put a
+  whole room behind one address) and 3,000 calls to the model an hour in all, with at most five
+  instances, so a script meets a limit rather than an unbounded bill. Only messages that reach the
+  model count towards the hour, so junk and screened messages cannot use it up. The address is the
+  one the request reports, which a script can change; the hourly ceiling still holds. Gemini's own safety
   filters apply to every reply, and a reply they block gets a fixed line instead.
 - **Effectiveness, honestly:** no red-team exercise has been run against Motus.
 - **What you can do:** report anything harmful or wrong (§5).
@@ -201,26 +205,32 @@ card will not invent a service level it cannot keep.
    the Gemini API key, in the billed smartmotus project, himself.
 3. **Prompt-carried safeguards are only spot-checked.** Six live turns on 6 October 2026 followed
    the rules (sources named, OARS style, injection refused). Six turns are not a read of real use;
-   a fuller read, as NEXUS ran for AURA, is still the gate before compliance is claimed.
+   a fuller read, as NEXUS ran for AURA, is still the gate before compliance is claimed. A
+   35-request adversarial test the same evening found injection, medical and crisis requests
+   handled, and some breaks of house style (exclamation marks, praise) and one unconfirmed limit
+   stated without its TODO flag. Version 1.1 tightens Rule 11 in the prompt for the first; the
+   prompt cannot guarantee either.
 4. ~~**The crisis reply's phone numbers are model-recalled**~~ **Checked 6 October 2026** against
    the services' own websites: 995 is SCDF's emergency ambulance line (scdf.gov.sg) and 1767 is the
    Samaritans of Singapore 24-hour hotline (sos.org.sg). Struck through, not deleted.
-5. **The identifier check covers NRIC and FIN shapes only.** Not PDPA compliance.
+5. **The identifier check covers NRIC and FIN shapes only.** Not PDPA compliance. Since 1.1 it
+   also catches the number written with spaces or hyphens. Names, ward and bed, phone numbers and
+   medical record numbers still pass it and reach the model.
 6. **No age assurance** exists; the site is open to anyone with the link.
 7. **Google's data handling is taken from its terms, not verified independently.** It depends on
    the key being on the paid tier (§4); an unpaid key would allow Google to use conversations to
    improve its products.
-12. **Google's terms require the API not to power a service directed at, or likely to be used by,
-   people under 18.** Smart Motion is made for adult educators and has no age check (gap 6).
 8. **The IMDA guidelines were not re-read for this card.** Its structure and framing follow the
    owner's signed AURA card (NEXUS, v1.3), which is structured after the guidelines' Annex B. A
-   check against the guidelines themselves is due before sign-off.
+   check against the guidelines themselves is still due; it was not done before the 1.0 sign-off.
 9. **The sixteen rules were written for AURA**, a drafting assistant inside a hospital team tool.
    `MOTUS-GUARDRAILS.md` §B says where they fit Motus loosely or not at all.
 10. **No quantitative safety metrics exist.** Every effectiveness statement is qualitative by
     necessity.
 11. **One model for every request.** Motus does not route by task (Rule 16); the model that
     answered is recorded instead.
+12. **Google's terms require the API not to power a service directed at, or likely to be used by,
+   people under 18.** Smart Motion is made for adult educators and has no age check (gap 6).
 
 ---
 
@@ -234,21 +244,20 @@ the named source on the date shown, not permanently true.*
 | Motus cannot act: no tools, no database, no sending (§1, §2) | `functions/motus.js`: one streaming call with no `tools` | Confirmed 2026-10-05 |
 | Motus is told to use the OARS techniques of motivational interviewing, as style, not therapy (§1) | `functions/motus.js` persona; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
 | Knowledge base built from the repository; cost evidence excluded (§1, §3) | `scripts/build-kb.mjs`; `functions/guardrails.test.js` asserts the exclusion | Confirmed 2026-10-05 |
-
 | Region `asia-southeast1` (§1, §4) | `functions/index.js`; `firebase.json` rewrite | Confirmed 2026-10-05 |
 | Provenance on every reply: model that answered, guardrail version, time (§1) | `functions/guardrails.js` `aiProvenance`; `functions/motus.js`; `site/src/motus/chat.js` | Confirmed 2026-10-05; tested |
 | Preamble leads every request (§3) | `functions/motus.js` `system`; `functions/guardrails.test.js` | Confirmed 2026-10-05; tested to reach the model, not to be followed |
-| NRIC/FIN shape refused, browser and server (§2, §3) | `functions/guardrails.js` `NRIC_SHAPE`; `site/src/motus/chat.js` | Confirmed 2026-10-05; tested |
+| NRIC/FIN shape refused, browser and server, with or without spaces or hyphens (§2, §3) | `functions/guardrails.js` `NRIC_SHAPE`; `site/src/motus/chat.js` | Confirmed 2026-10-06; tested |
 | Crisis phrases answered with a fixed reply, never sent to the model, with or without a key (§3) | `functions/guardrails.js` `screenInput`; `functions/motus.js` | Confirmed 2026-10-05; tested |
 | Phone numbers in the crisis reply (§3) | scdf.gov.sg (995); sos.org.sg (1767) | Confirmed 2026-10-06 |
-| Output capped at 1,200 tokens; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-05 |
-| Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-05 |
+| Output capped at 2,048 tokens; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-06 (1.0 said 1,200, which was out of date) |
+| Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-06 |
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
 | Server logs carry no conversation text (§4) | `functions/motus.js` `console.info` and `console.error` calls | Confirmed 2026-10-05 |
 | Motus is live (header, gap 2) | Firebase deploy of 2026-10-06; live test turns that day | Confirmed 2026-10-06 |
 | Google's data handling, paid versus unpaid tiers (§4) | Gemini API Additional Terms of Service, updated 2026-04-28 | Terms read 2026-10-06; Google's practice **not independently verified** (gap 7) |
-| Model requested and fallback (§1) | `functions/motus.js` `MODELS`; names from NEXUS `modelAvailability.cjs` (checked 2026-09-06) | Confirmed in code 2026-10-06; tested with simulated responses, **not yet against the live API** |
-| Model follows its prompt-carried rules (§3) | None yet | **Unverifiable until Motus is live** (gap 3) |
+| Model requested and fallback (§1) | `functions/motus.js` `MODELS`; names from NEXUS `modelAvailability.cjs` (checked 2026-09-06) | Confirmed in code 2026-10-06; tested with simulated responses, and answering on the live API since that day |
+| Model follows its prompt-carried rules (§3) | Six live turns and a 35-request stress test, 6 October 2026 | **Spot-checked only** (gap 3) |
 
 ---
 
@@ -260,6 +269,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| 1.1 (draft) | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model. NRIC check also catches spaces and hyphens. Rule 11 in the prompt now forbids exclamation marks and praise. Output cap corrected to 2,048 tokens. Statements written before Motus went live brought up to date; gap list renumbered. **Awaiting the owner's sign-off.** |
 | **1.0** | 2026-10-06 | **Signed off by the owner (Muhammad Alif) and in effect.** No content change from 0.5. |
 | 0.5 (draft) | 2026-10-06 | Motus deployed and live; the first live checks recorded in the header and gap 3. Still awaiting the owner's sign-off. |
 | 0.4 (draft) | 2026-10-06 | Model provider changed from Anthropic's Claude to Google's Gemini at the owner's request: §1, §4 and gaps 2, 7 and 12 rewritten for Google's terms. |

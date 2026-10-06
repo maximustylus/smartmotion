@@ -61,8 +61,8 @@ test('the messages sent to the model are user and model turns only, and the key 
 })
 
 test('NRIC and FIN shapes are caught, lookalikes inside longer tokens are not', () => {
-  for (const t of ['S1234567D', 'my id is t7654321z.', '(F1234567N)', 'G1234567X please']) assert.ok(containsNric(t), t)
-  for (const t of ['NS1234567X', 'S12345678', 'S123456D', 'move 4 of 8', '']) assert.ok(!containsNric(t), t)
+  for (const t of ['S1234567D', 'my id is t7654321z.', '(F1234567N)', 'G1234567X please', 'S 1234 567 D', 'S-1234567-D', 'IC: S 1 2 3 4 5 6 7 D']) assert.ok(containsNric(t), t)
+  for (const t of ['NS1234567X', 'S12345678', 'S123456D', 'move 4 of 8', 'call 9123 4567', 'S$1234567 budget', '']) assert.ok(!containsNric(t), t)
   assert.equal(containsNric(undefined), false)
 })
 
@@ -203,4 +203,11 @@ test('a reply cut at the length limit says so, and a blocked one gets a fixed li
   assert.match(cut.res.events().filter((e) => e.t).map((e) => e.t).join(''), /Cut short at my length limit/)
   const blocked = await ask(() => sse({ promptFeedback: { blockReason: 'SAFETY' } }))
   assert.match(blocked.res.events().filter((e) => e.t).map((e) => e.t).join(''), /rather not answer/)
+})
+
+test('a body that is not JSON gets a plain 400, not a crash', async () => {
+  const { motus } = await import('./motus.js')
+  const res = fakeRes()
+  await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'json-test' }, body: '{not json' }, res)
+  assert.equal(res.statusCode, 400)
 })

@@ -36,8 +36,10 @@ a motion graphic, not a slide deck.
 - MOTUS-GUARDRAILS.md (rules verbatim plus an honest conformance table) and
   MOTUS-INFO-CARD.md (public card after the IMDA Transparency Guidelines for
   Generative AI Chatbots, served at /motus-info) must change with the code.
-  Both were signed off by the owner on 6 October 2026 (version 1.0). Any change
-  to the prompt or the controls needs a new version and his sign-off again.
+  Both were signed off by the owner on 6 October 2026 (version 1.0). Version
+  1.1 (stress-test fixes: rate limits, NRIC shape, rule 11) awaits his
+  sign-off. Any change to the prompt or the controls needs a new version and
+  his sign-off again.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
   are absent, so it keeps the last measured active time. Never edit the
