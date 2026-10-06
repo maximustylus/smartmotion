@@ -16,11 +16,12 @@ export const usecases = {
     title: 'Personal track: one maker, four tools',
     lead: 'Built on my own devices and accounts, with public material only.',
     items: [
-      { name: 'Smart Motion', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
+      { name: 'Smart Motion', icon: '/usecases/smart-motion.png', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
+      // icon: the app's own icon, supplied by the owner on 6 October 2026.
       // video: the owner's own YouTube Short, opened in the lightbox.
-      { name: 'NEXUS, with AURA', line: '[[TODO: one line on NEXUS and AURA, from the owner]]', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
-      { name: 'Smart Queue Live', line: 'A web app to queue for Apple Vision Pro digital health apps: a headset guide, app posters, feedback and photos. The team side calls, re-queues and moderates.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
-      { name: 'ImmersiFit', line: '[[TODO: one line on ImmersiFit, from the owner]]' },
+      { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', line: '[[TODO: one line on NEXUS and AURA, from the owner]]', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
+      { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', line: 'A web app to queue for Apple Vision Pro digital health apps: a headset guide, app posters, feedback and photos. The team side calls, re-queues and moderates.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
+      { name: 'ImmersiFit', icon: '/usecases/immersifit.png', line: '[[TODO: one line on ImmersiFit, from the owner]]' },
     ],
   },
   corporate: {

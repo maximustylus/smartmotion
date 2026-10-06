@@ -89,6 +89,11 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
     const scene = beat.closest('.scene')
     const phase = scene?.classList.contains('scene--era') ? 'era' : scene?.dataset.phase || ''
     const nums = [...beat.querySelectorAll('[data-year], [data-num]')]
+    // Use-case rows with an icon are not split into lines; they rise as rows.
+    const rows = [...beat.querySelectorAll('.uses li[data-no-split]')]
+    gsap.killTweensOf(rows)
+    if (!animate || reduce()) gsap.set(rows, { y: 0, autoAlpha: 1 })
+    else if (rows.length) gsap.fromTo(rows, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9, stagger: 0.09, ease: 'power3.out', delay: 0.2 })
     if (!animate || reduce()) {
       gsap.set(lines, { yPercent: 0, xPercent: 0, filter: 'none' })
       gsap.set(beat, { '--draw': 1, scale: 1, y: 0 })

@@ -370,7 +370,16 @@ function examplesScene(step) {
     ${eyebrow(copy.quiz.examplesHeading, t.title.split(':')[0])}
     <h3>${t.title.split(': ')[1].replace(/^./, (c) => c.toUpperCase())}</h3>
     <p class="lead">${t.lead}</p>
-    <ul class="rows uses">${t.items.map((u) => `<li>${u.video ? `<button type="button" class="uses__play" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}" aria-label="Watch: ${u.name}"><span class="uses__icon" aria-hidden="true"></span><strong>${u.name}</strong></button>` : `<strong>${u.name}</strong>`}<span>${rich(u.line)}</span></li>`).join('')}</ul>
+    <ul class="rows uses">${t.items.map((u) => {
+      // The app's icon, if there is one; a play badge on it when it has a video.
+      const icon = u.icon ? `<span class="uses__logo" aria-hidden="true"><img src="${u.icon}" alt="" width="40" height="40" decoding="async">${u.video ? '<span class="uses__icon"></span>' : ''}</span>` : u.video ? '<span class="uses__icon" aria-hidden="true"></span>' : ''
+      const head = u.video
+        ? `<button type="button" class="uses__play" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}" aria-label="Watch: ${u.name}">${icon}<strong>${u.name}</strong></button>`
+        : `<span class="uses__name">${icon}<strong>${u.name}</strong></span>`
+      // A row with an icon is not split into masked lines: the icon would
+      // ride inside the first line's mask and the text could not indent.
+      return `<li${u.icon ? ' class="has-logo" data-no-split' : ''}>${head}<span>${rich(u.line)}</span></li>`
+    }).join('')}</ul>
   `
   return {
     id: 'examples',
