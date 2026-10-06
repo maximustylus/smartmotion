@@ -1,3 +1,4 @@
+import '../lib/lightbox.js'
 import { moves, moveById } from '../content/moves.js'
 import { usecases, firstAgent } from '../content/usecases.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
@@ -369,7 +370,7 @@ function examplesScene(step) {
     ${eyebrow(copy.quiz.examplesHeading, t.title.split(':')[0])}
     <h3>${t.title.split(': ')[1].replace(/^./, (c) => c.toUpperCase())}</h3>
     <p class="lead">${t.lead}</p>
-    <ul class="rows uses">${t.items.map((u) => `<li><strong>${u.name}</strong><span>${rich(u.line)}</span></li>`).join('')}</ul>
+    <ul class="rows uses">${t.items.map((u) => `<li>${u.video ? `<button type="button" class="uses__play" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}" aria-label="Watch: ${u.name}"><span class="uses__icon" aria-hidden="true"></span><strong>${u.name}</strong></button>` : `<strong>${u.name}</strong>`}<span>${rich(u.line)}</span></li>`).join('')}</ul>
   `
   return {
     id: 'examples',

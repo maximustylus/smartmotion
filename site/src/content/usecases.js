@@ -15,7 +15,8 @@ export const usecases = {
     lead: 'Built on my own devices and accounts, with public material only.',
     items: [
       { name: 'Smart Motion', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
-      { name: 'NEXUS, with AURA', line: '[[TODO: one line on NEXUS and AURA, from the owner]]' },
+      // video: the owner's own YouTube Short, opened in the lightbox.
+      { name: 'NEXUS, with AURA', line: '[[TODO: one line on NEXUS and AURA, from the owner]]', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
       { name: 'C.A.R.E.', line: '[[TODO: one line on C.A.R.E., from the owner]]' },
       { name: 'ImmersiFit', line: '[[TODO: one line on ImmersiFit, from the owner]]' },
     ],

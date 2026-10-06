@@ -1229,3 +1229,66 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
    the particle field, the splash) then stretches and slides off-centre.
    clip, not hidden, so the pinned scenes still stick. */
 .story { overflow-x: clip; }
+
+/* ---------- A use case with a video: the name is a play button ---------- */
+.uses__play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.uses__play strong { text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--accent) 50%, transparent); text-underline-offset: 0.2em; }
+.uses__play:hover strong, .uses__play:focus-visible strong { color: var(--accent); }
+.uses li .uses__icon {
+  flex: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: var(--accent);
+  position: relative;
+}
+.uses li .uses__icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-left: 0.5em solid var(--accent-ink);
+  border-top: 0.32em solid transparent;
+  border-bottom: 0.32em solid transparent;
+  transform: translateX(0.08em);
+}
+
+/* ---------- Lightbox: a video in a window ---------- */
+.lightbox { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 16px; }
+.lightbox[hidden] { display: none; }
+.lightbox__scrim { position: absolute; inset: 0; background: color-mix(in oklab, var(--bg) 55%, transparent); backdrop-filter: blur(10px); }
+.lightbox__win {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: min(960px, 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--fg) 14%, transparent);
+  background: var(--bg);
+  box-shadow: 0 28px 70px -18px color-mix(in oklab, var(--fg) 45%, transparent);
+}
+.lightbox.is-portrait .lightbox__win { width: min(420px, 100%, calc((100svh - 32px - 40px) * 9 / 16)); }
+.lightbox__head { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-bottom: 1px solid var(--line); font-size: 0.85rem; }
+.lightbox__light, .lightbox__dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.18); padding: 0; }
+.lightbox__light { background: #ff5f57; cursor: pointer; }
+.lightbox__dot { background: #febc2e; }
+.lightbox__dot + .lightbox__dot { background: #28c840; }
+.lightbox__title { margin-left: 6px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lightbox__frame { aspect-ratio: 16 / 9; background: #000; }
+.lightbox.is-portrait .lightbox__frame { aspect-ratio: 9 / 16; }
+.lightbox__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
