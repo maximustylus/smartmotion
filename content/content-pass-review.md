@@ -76,5 +76,5 @@ the letters; a hint beside Copy prompt says to fill in the brackets.
 - Have an angle, and Know your way around the files: the framework and its
   source.
 - Have an angle: Killingsworth and Gilbert (2010) checked against the PDF you supplied on 6 October and now cited; confirm the line.
-- Use it safely: the Will Smith clip links and dates. The Mothership link is in (6 October).
+- Use it safely: the Will Smith and Mothership links are in (6 October); confirm the video shows both 2023 and 2025.
 - The three use cases in content/use-cases.md. (The four type names were confirmed on 5 October: Analyst, Designer, Organiser, Storyteller.)

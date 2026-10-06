@@ -144,6 +144,12 @@ kbd {
 }
 
 /*
+  An outbound link inside copy stays on one line, so the line splitter
+  never has to cut it in two; cut links throw its line breaks off.
+*/
+.beat p a[target='_blank'] { white-space: nowrap; }
+
+/*
   Placeholder marker for anything the owner still has to supply or verify.
   Deliberately loud so none survive to the talk. The story counts these.
 */

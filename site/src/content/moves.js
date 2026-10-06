@@ -135,7 +135,7 @@ export const moves = [
     },
     example: {
       title: 'Spaghetti, then a crocodile',
-      body: 'What was an obvious fake in 2023 is convincing in 2025. [[TODO: Will Smith eating spaghetti, 2023 versus 2025: links only, sources and dates owner to verify]] On 29 September 2026, [Mothership reported](https://mothership.sg/2026/09/fake-crocodile-photo/) that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. The picture that makes a room gasp is the one to check first.',
+      body: '[The Will Smith spaghetti test](https://www.youtube.com/watch?v=xdZt4V50cic) shows it: an obvious fake in 2023, convincing in 2025. On 29 September 2026, [Mothership reported](https://mothership.sg/2026/09/fake-crocodile-photo/) that a person was charged over an image that allegedly showed a crocodile at Pandan Reservoir. The picture that makes a room gasp is the one to check first.',
     },
     promptHeading: 'Check before it goes out',
     cheatsheet: 'use-it-safely',
