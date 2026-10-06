@@ -113,17 +113,34 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     // which some browsers report differently while zoomed or emulated.
     const frame = el.closest(".scene__pin")?.clientHeight || window.innerHeight
     let room = Math.min(frame, window.innerHeight) - 68 - 36
+    // The cover is placed low on purpose, in a box sized to its copy, and
+    // lifts as you scroll: only its height counts.
+    const cover = !!el.closest('#scene-cover')
     // A centred scene gives its copy only the lower part of the frame.
-    if (el.closest('.scene--centre')) room = Math.min(room, (el.closest('.scene__copy')?.clientHeight ?? room) - 24)
-    if (beatHeight(el) <= room) return
+    if (el.closest('.scene--centre') && !cover) room = Math.min(room, (el.closest('.scene__copy')?.clientHeight ?? room) - 24)
+    // It fits when it is short enough and also ends above the frame's
+    // bottom margin, wherever the layout has placed it.
+    const pin = el.closest('.scene__pin')
+    const limit = () => (pin ? pin.getBoundingClientRect().bottom : window.innerHeight) - 24
+    const lowest = () => Math.max(...[...el.children].filter((k) => getComputedStyle(k).position !== 'absolute' && k.getClientRects().length).map((k) => k.getBoundingClientRect().bottom), -Infinity)
+    // Where it will rest, not where its entrance animation has it now.
+    let placed = !cover
+    const fits = () => beatHeight(el) <= room && (!placed || lowest() - (Number(gsap.getProperty(el, 'y')) || 0) <= limit())
+    if (fits()) return
     // Find the largest size that fits, between the floor and full size.
     // A wide screen (a shared laptop window) can go smaller than a phone.
     const floor = window.innerWidth >= 900 ? 0.6 : 0.72
+    // If even the floor leaves it below the margin, shrinking cannot help
+    // (the layout pins it low): judge it by height alone.
+    el.style.zoom = floor
+    if (!fits()) placed = false
+    el.style.zoom = ''
+    if (fits()) return
     let lo = floor, hi = 1
     for (let i = 0; i < 5; i++) {
       const mid = (lo + hi) / 2
       el.style.zoom = mid
-      if (beatHeight(el) <= room) lo = mid
+      if (fits()) lo = mid
       else hi = mid
     }
     el.style.zoom = lo.toFixed(3)

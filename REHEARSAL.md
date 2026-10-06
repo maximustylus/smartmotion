@@ -56,7 +56,7 @@ hidden from the shared screen, and any line left empty goes with them. They
 are still in the page: `O` counts them, the playbook at / shows them all, and
 /talk?todo shows them on the talk. Four beats are a heading only until their
 content arrives, so present them from your own notes: the three use cases
-(NEXUS and AURA, C.A.R.E., ImmersiFit) and the frameworks worked example.
+(NEXUS and AURA, ImmersiFit; Smart Queue Live has its line) and the frameworks worked example.
 
 As of 6 October 2026 the talk holds 18 markers (21 on 5 October): verify
 badges and the content gaps below.

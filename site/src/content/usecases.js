@@ -4,7 +4,9 @@
   track is what SingHealth staff can use at work today, as named by the owner
   on 6 October 2026.
 
-  The one-line descriptions of NEXUS, C.A.R.E. and ImmersiFit, and every
+  Smart Queue Live replaced C.A.R.E. on 6 October 2026 at the owner's
+  request; its line is condensed from his own description that day.
+  The one-line descriptions of NEXUS and ImmersiFit, and every
   utility score, are the owner's to write (content/use-cases.md). The
   SingHealth Office of Digital Empowerment posters the owner shared are not
   for circulation and are not used anywhere in this site.
@@ -17,7 +19,7 @@ export const usecases = {
       { name: 'Smart Motion', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
       // video: the owner's own YouTube Short, opened in the lightbox.
       { name: 'NEXUS, with AURA', line: '[[TODO: one line on NEXUS and AURA, from the owner]]', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
-      { name: 'C.A.R.E.', line: '[[TODO: one line on C.A.R.E., from the owner]]' },
+      { name: 'Smart Queue Live', line: 'A web app to queue for Apple Vision Pro digital health apps: a headset guide, app posters, feedback and photos. The team side calls, re-queues and moderates.', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
       { name: 'ImmersiFit', line: '[[TODO: one line on ImmersiFit, from the owner]]' },
     ],
   },

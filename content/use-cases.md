@@ -22,9 +22,9 @@ point of the formula.
 - Cost:
 - One honest limitation:
 
-## C.A.R.E.
+## Smart Queue Live (replaces C.A.R.E., owner's decision, 6 October 2026)
 
-- One-line description:
+- One-line description (owner, 6 October 2026): a PWA to join a queue to try out Apple Vision Pro digital health applications, a how to use headset, browse app posters, leave feedback, post photos. The PWA also has a separate part for the team to control queue, call queue, re-queue, moderate photos: both workflows.
 - The problem it addresses:
 - Who uses it:
 - How it was built (tools):

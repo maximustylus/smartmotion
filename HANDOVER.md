@@ -33,7 +33,7 @@ workflows and cheat sheets they can reuse.
   shows live room totals from anonymous Firestore counters.
 - Visual style: bright, vibrant, cinematic and sleek. Real tool logos in the
   quiz, from official brand kits, listed in CREDITS.md.
-- Use cases to feature: NEXUS and AURA, C.A.R.E., ImmersiFit.
+- Use cases to feature: NEXUS and AURA, Smart Queue Live (replaced C.A.R.E. on 6 October 2026), ImmersiFit.
 - No separate live demo. The site is the demo.
 - Petri Dish Research Playbook: removed entirely.
 - Model Context Protocol (MCP) server: deferred until after the talk.
