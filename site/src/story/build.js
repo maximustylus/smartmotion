@@ -126,6 +126,7 @@ export function moveBeats(m, n, total = moves.length) {
             <span class="sheet__hint">Fill in the [brackets] before you send it.</span>
             <span class="sheet__status" aria-live="polite"></span>
           </p>
+          <p class="sheet__more"><a href="${link(`site/src/content/cheatsheets/${m.cheatsheet}.md`)}" target="_blank" rel="noopener">This prompt on GitHub <span aria-hidden="true">&nearr;</span></a> <a href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">The five workflows <span aria-hidden="true">&nearr;</span></a></p>
         </div>
       `,
     },
@@ -261,7 +262,7 @@ export function playbookScenes(route) {
           ${eyebrow(copy.closing.eyebrow)}
           <h2>${copy.closing.heading}</h2>
           <p class="lead">${copy.closing.lead}</p>
-          <p class="chips"><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
+          <p class="chips" data-no-split><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/site/src/content/cheatsheets" target="_blank" rel="noopener">All eight prompts &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">The five workflows &nearr;</a><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },
     ],

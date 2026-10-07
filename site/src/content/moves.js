@@ -32,7 +32,7 @@ export const moves = [
     },
     example: {
       title: 'The brief behind this app',
-      body: 'This app was built from a written brief, in phases, with a stop for approval after each. Done is one sentence with four checks: live on the web, rehearsed in full on Zoom, no placeholders marked TODO in view, every claim traceable to a reference. Everything else is negotiable.',
+      body: 'This app was built from [a written brief](https://github.com/maximustylus/smartmotion/blob/main/BRIEF.md), in phases, with a stop for approval after each. Done is one sentence with four checks: live on the web, rehearsed in full on Zoom, no placeholders marked TODO in view, every claim traceable to a reference. Everything else is negotiable.',
     },
     promptHeading: 'Turn your idea into a brief',
     cheatsheet: 'begin-with-the-end',
@@ -75,7 +75,7 @@ export const moves = [
     },
     example: {
       title: 'The icebreaker quiz',
-      body: 'The talk behind this playbook opens with an eight-minute quiz on your phone. Place yourself on four levels of AI readiness, pick the type most like you, then watch the room’s totals move. Taking part is the hook. The totals hold the room. One go per device, anonymous totals only.',
+      body: 'The talk behind this playbook opens with an [eight-minute quiz](https://smartmotion.web.app/play) on your phone. Place yourself on four levels of AI readiness, pick the type most like you, then watch the room’s totals move. Taking part is the hook. The totals hold the room. One go per device, anonymous totals only.',
     },
     promptHeading: 'Plan your opening',
     cheatsheet: 'know-the-hook',
@@ -98,7 +98,7 @@ export const moves = [
     },
     example: {
       title: 'This app, in three folders',
-      body: 'The eight moves and their order live in site/src/content. In site/src/story they become the scenes you scroll through. The app’s quiz talks to its database through site/src/quiz. Ask to reword a move and look in the content folder first. If another folder changes too, ask why.',
+      body: 'The eight moves and their order live in [site/src/content](https://github.com/maximustylus/smartmotion/tree/main/site/src/content). In [site/src/story](https://github.com/maximustylus/smartmotion/tree/main/site/src/story) they become the scenes you scroll through. The app’s quiz talks to its database through [site/src/quiz](https://github.com/maximustylus/smartmotion/tree/main/site/src/quiz). Ask to reword a move and look in the content folder first. If another folder changes too, ask why.',
     },
     promptHeading: 'Before you ask for changes',
     cheatsheet: 'know-the-architecture',
