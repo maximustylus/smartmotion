@@ -1,7 +1,7 @@
 # Motus guardrails
 
-**Controlled document** · **Version 1.3 (draft)** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
-· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif. Version 1.2 signed off 7 October 2026 and in effect; version 1.3 awaits his sign-off (change log at the end)** · **Review: on any change to Motus's prompt**
+**Controlled document** · **Version 1.3** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
+· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, version 1.3 signed off 7 October 2026; in effect (change log at the end)** · **Review: on any change to Motus's prompt**
 
 Motus, the companion in Smart Motion, follows the same sixteen rules the owner issued for AURA in
 NEXUS on 2026-08-24. §A reproduces them **verbatim** from `AURA-GUARDRAILS.md` in the NEXUS
@@ -367,7 +367,7 @@ handed to an agent without its criteria, controlling documents and data class at
 
 | Version | Date | Change |
 |---|---|---|
-| 1.3 (draft) | 2026-10-07 | At the owner's request, "patient" removed from the preamble's P6 paragraph, the fixed identifier reply and the persona, which now also tells Motus never to use the word. §A keeps the owner's AURA rules verbatim, so its wording is unchanged. **Awaiting the owner's sign-off.** |
-| 1.2 | 2026-10-07 | After the final quality-control round. Persona affirmations reworded as acknowledgement without praise (Rule 11). Output cap 8,192 tokens, thinking included (Rule 13). P6 shape also after NFKC normalisation and with dots, underscores and slashes as separators. Per-address hourly cap of 300 model calls. **Signed off by the owner and in effect.** |
+| 1.3 | 2026-10-07 | At the owner's request, "patient" removed from the preamble's P6 paragraph, the fixed identifier reply and the persona, which now also tells Motus never to use the word. §A keeps the owner's AURA rules verbatim, so its wording is unchanged. **Signed off by the owner and in effect.** |
+| 1.2 | 2026-10-07 | After the final quality-control round. Persona affirmations reworded as acknowledgement without praise (Rule 11). Output cap 8,192 tokens, thinking included (Rule 13). P6 shape also after NFKC normalisation and with dots, underscores and slashes as separators. Per-address hourly cap of 300 model calls. Signed off by the owner; superseded by 1.3. |
 | 1.1 | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model, so a crowd or a script cannot switch Motus off for an hour. P6 shape also catches spaces and hyphens. Rule 11 in the preamble now forbids exclamation marks and praise. Rule 13 row corrected to the 2,048-token cap. Gap 2 brought up to date. Signed off by the owner; superseded by 1.2. |
 | 1.0 | 2026-10-06 | Signed off by the owner; superseded by 1.1. |
