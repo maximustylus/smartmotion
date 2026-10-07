@@ -71,9 +71,12 @@ export function moveBeats(m, n, total = moves.length) {
   const source = m.framework?.source
     ? `<span class="source">${m.framework.source}${m.framework.verify ? ` ${todo('verify against the original')}` : ''}</span>`
     : ''
+  // Each beat's drawing: the move's own choice (moves.js forms), else the
+  // particles nest in a corner.
+  const F = m.forms ?? {}
   return [
     {
-      form: 'nest',
+      form: F.move ?? 'nest',
       html: `
         ${eyebrow(`Move ${n} of ${total}`)}
         <h2>${m.name}</h2>
@@ -84,7 +87,7 @@ export function moveBeats(m, n, total = moves.length) {
     // A move without a framework (Have an angle) goes straight to its example.
     ...(m.framework
       ? [{
-          form: m.form,
+          form: F.framework ?? m.form,
           html: `
             ${eyebrow(m.name, copy.beatLabels.framework)}
             <h3>${rich(m.framework.name)}</h3>
@@ -93,19 +96,22 @@ export function moveBeats(m, n, total = moves.length) {
           `,
         }]
       : []),
-    {
-      form: 'nest',
-      html: `
-        ${eyebrow(m.name, copy.beatLabels.example)}
-        <h3>${rich(m.example.title)}</h3>
-        <p>${rich(m.example.body)}</p>
-      `,
-    },
+    // A move whose example was removed (Build on solid frameworks) skips it.
+    ...(m.example
+      ? [{
+          form: F.example ?? 'nest',
+          html: `
+            ${eyebrow(m.name, copy.beatLabels.example)}
+            <h3>${rich(m.example.title)}</h3>
+            <p>${rich(m.example.body)}</p>
+          `,
+        }]
+      : []),
     // The Test move adds a ledger after its example: what a task costs by
     // hand, with AI and AI alone (content/ledger.js).
     ...(ledger.move === m.id ? [ledgerBeat(m)] : []),
     {
-      form: 'nest',
+      form: F.prompt ?? 'nest',
       html: `
         ${eyebrow(m.name, copy.beatLabels.cheatsheet)}
         <h3>${m.promptHeading ?? sheet.title}</h3>
@@ -431,8 +437,9 @@ function examplesScene(step) {
           <ul class="rows"><li>${usecases.personal.title}</li><li>${usecases.corporate.title}</li></ul>
         `,
       },
-      { form: 'nest', html: track(usecases.personal) },
-      { form: 'nest', html: track(usecases.corporate) },
+      // A laptop for the maker's own tools and for what is already in Teams.
+      { form: 'laptop', html: track(usecases.personal) },
+      { form: 'laptop', html: track(usecases.corporate) },
     ],
   }
 }
@@ -441,6 +448,8 @@ function examplesScene(step) {
 function takeHomeScene(step) {
   const agentBeats = [
     {
+      // The highway's two exits rise into a podium: 1st, 2nd and 3rd.
+      form: 'highway>podium',
       html: `
         ${eyebrow('Take-home', 'Corporate track')}
         <h2>${firstAgent.heading}</h2>
@@ -479,6 +488,8 @@ function takeHomeScene(step) {
     form: 'nest',
     beats: [
       {
+        // Two tracks: a highway with two exits.
+        form: 'highway',
         html: `
           ${eyebrow('Take-home', 'Which track are you on?')}
           <h2>${copy.takehome.tracksHeading}</h2>
@@ -514,6 +525,7 @@ function takeHomeScene(step) {
         `,
       },
       {
+        form: 'toolbox',
         html: `
           ${eyebrow('Take-home', 'The tool map')}
           <h2>${copy.takehome.mapHeading}</h2>

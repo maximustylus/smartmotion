@@ -1390,3 +1390,11 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .stats { column-gap: var(--space-3); }
   .gaprows li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* A link window: the source described, and a button to open it. */
+.lightbox.is-card .lightbox__win { width: min(460px, 100%); }
+.lightbox.is-card .lightbox__frame { aspect-ratio: auto; background: var(--bg); }
+.lightbox__card { display: grid; gap: var(--space-3); padding: var(--space-5, 24px); }
+.lightbox__card h3 { margin: 0; font-size: var(--text-h3, 1.3rem); letter-spacing: -0.01em; }
+.lightbox__card p { margin: 0; color: var(--muted); line-height: 1.45; }
+.lightbox__card .btn { justify-self: start; }

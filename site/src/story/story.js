@@ -220,13 +220,15 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       // The utility formula collapses as you scroll through its framework beat.
       const s = scenes[si]
       const bi = scroll.state.beat
-      if (s.id === 'test') field?.setCollapse(bi === 1 ? Math.min(1, Math.max(0, (pb - 0.25) / 0.6)) : bi > 1 ? 1 : 0)
+      // Only the formula's own beat collapses its bars; later beats carry
+      // other drawings (a dollar sign, a notepad), which must not flatten.
+      if (s.id === 'test') field?.setCollapse(bi === 1 ? Math.min(1, Math.max(0, (pb - 0.25) / 0.6)) : 0)
       else field?.setCollapse(0)
       // Framework diagrams build with the scroll: the pyramid rises, the tree
       // grows down, the rings spread, the bar and timeline sweep across.
       const form = s.beats[bi]?.form ?? s.form
       const MODE = { pyramid: 1, tree: 2, rings: 3, bar: 4, timeline: 4, grid: 1, pair: 3, target: 3 }
-      if (bi === 1 && s.phase && MODE[form]) field?.setReveal(MODE[form], Math.min(1, Math.max(0, 0.15 + pb * 1.4)))
+      if (bi === 1 && s.phase && MODE[form]) field?.setReveal(MODE[form], Math.min(1, Math.max(0, 0.25 + pb * 1.6)))
       else field?.setReveal(0, 1)
     },
   })

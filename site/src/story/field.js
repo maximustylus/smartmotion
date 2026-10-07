@@ -472,7 +472,7 @@ const bezier = (p0, p1, p2, p3, th = 0.015) => (r) => {
   const k = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t]
   return [0, 1].map((j) => k[0] * p0[j] + k[1] * p1[j] + k[2] * p2[j] + k[3] * p3[j] + gauss(r) * th)
 }
-function drawing(parts, { rot = 0 } = {}) {
+function drawing(parts, { rot = 0, sx = 1 } = {}) {
   const total = parts.reduce((sum, p) => sum + p[0], 0)
   const c = Math.cos(rot), sn = Math.sin(rot)
   return (n, r) => {
@@ -482,7 +482,7 @@ function drawing(parts, { rot = 0 } = {}) {
       let k = r() * total, j = 0
       while (k > parts[j][0] && j < parts.length - 1) k -= parts[j++][0]
       const [x, y] = parts[j][1](r)
-      const X = x * c - y * sn, Y = x * sn + y * c
+      const X = (x * c - y * sn) * sx, Y = x * sn + y * c
       a[i * 3] = X
       a[i * 3 + 1] = Y
       a[i * 3 + 2] = gauss(r) * 0.03
@@ -783,6 +783,183 @@ const scaleForm = drawing([
   [3, disc(1.15, 0.0, 0.08)],
 ])
 
+// ---------- Talk drawings, chosen by the owner on 7 October 2026 ----------
+
+// An outlined rectangle, as four edges.
+const rect = (x0, y0, x1, y1, th = 0.018, w = 1) => [
+  [3 * w, seg(x0, y0, x1, y0, th)],
+  [3 * w, seg(x0, y1, x1, y1, th)],
+  [2 * w, seg(x0, y0, x0, y1, th)],
+  [2 * w, seg(x1, y0, x1, y1, th)],
+]
+// A stroke through points, segment by segment.
+const poly = (pts, w = 3, th = 0.022) => pts.slice(1).map((q, i) => [w, seg(pts[i][0], pts[i][1], q[0], q[1], th)])
+
+// The utility formula: a toolbox, with a screwdriver and a wrench showing.
+const toolboxForm = drawing([
+  ...rect(-1.25, -0.85, 1.25, 0.2, 0.02, 4),
+  [10, box(0, -0.33, 2.4, 0.95)],
+  ...rect(-1.25, 0.2, 1.25, 0.38, 0.016, 2),
+  [10, arc(0, 0.38, 0.38, 0, Math.PI, 0.022)],
+  [4, box(0, -0.02, 0.26, 0.16)],
+  [7, seg(-0.55, 0.38, -0.9, 0.95, 0.03)],
+  [3, seg(-0.9, 0.95, -0.98, 1.08, 0.012)],
+  [7, seg(0.5, 0.38, 0.78, 0.9, 0.035)],
+  [5, arc(0.84, 1.0, 0.13, -0.4, 3.6, 0.018)],
+])
+
+// Two ways to count cost: a dollar sign.
+const dollarForm = drawing([
+  [48, curve([[0.48, 0.55], [0.1, 0.74], [-0.38, 0.62], [-0.42, 0.25], [0, 0.02], [0.42, -0.22], [0.4, -0.6], [-0.08, -0.74], [-0.5, -0.52]], { th: 0.045 })],
+  [22, seg(0, -1.0, 0, 1.0, 0.035)],
+])
+
+// Score it: a notepad with a tick and ruled lines, and a pencil writing.
+const notePencilForm = (() => {
+  const T = [0.12, -0.5], u = [0.58, 0.81], v = [-0.81, 0.58], w = 0.1
+  const at = (t, sd) => [T[0] + u[0] * t + v[0] * sd, T[1] + u[1] * t + v[1] * sd]
+  const span = (t0, t1, half) => (r) => {
+    const t = t0 + (t1 - t0) * r()
+    return at(t, (r() - 0.5) * 2 * (typeof half === 'function' ? half(t) : half))
+  }
+  const edge = (sd) => (r) => at(0.28 + r() * 1.25, sd + gauss(r) * 0.01)
+  const rings = []
+  for (let i = 0; i < 5; i++) rings.push([2, arc(-1.05 + i * 0.3, 0.85, 0.07, 0, TAU, 0.01)])
+  const lines = []
+  for (let i = 0; i < 4; i++) lines.push([4, seg(-1.1, 0.45 - i * 0.28, -0.05, 0.45 - i * 0.28, 0.01)])
+  return drawing([
+    ...rect(-1.3, -0.95, 0.15, 0.85, 0.018, 3),
+    ...rings,
+    ...lines,
+    [5, seg(-0.95, -0.6, -0.78, -0.75, 0.02)],
+    [7, seg(-0.78, -0.75, -0.42, -0.35, 0.02)],
+    [4, span(0, 0.28, (t) => (w * t) / 0.28)],
+    [10, edge(w)],
+    [10, edge(-w)],
+    [6, span(0.28, 1.53, w)],
+    [6, span(1.56, 1.72, w)],
+  ])
+})()
+
+// When a demo looks finished: a runner breaking the tape at the finish.
+const runnerForm = (() => {
+  const flag = []
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) if ((i + j) % 2 === 0) flag.push([2, box(1.28 + i * 0.1, 0.5 + j * 0.1, 0.09, 0.09)])
+  return drawing([
+    [10, seg(-1.6, -0.88, 1.6, -0.88, 0.016)],
+    [6, disc(0.2, 0.62, 0.14)],
+    [7, seg(0.12, 0.45, -0.1, -0.08, 0.035)],
+    ...poly([[0.05, 0.32], [0.32, 0.12], [0.5, 0.32]], 3, 0.025),
+    ...poly([[0.05, 0.32], [-0.28, 0.2], [-0.36, -0.06]], 3, 0.025),
+    ...poly([[-0.1, -0.08], [0.2, -0.42], [0.14, -0.86]], 4, 0.03),
+    ...poly([[-0.1, -0.08], [-0.42, -0.42], [-0.75, -0.36]], 4, 0.03),
+    [10, seg(1.24, -0.88, 1.24, 0.8, 0.022)],
+    [6, seg(0.16, 0.22, 1.24, 0.22, 0.01)],
+    [6, bezier([0.08, 0.22], [-0.3, 0.3], [-0.6, 0.0], [-1.05, 0.1], 0.01)],
+    ...flag,
+  ])
+})()
+
+// One maker, and Teams: a laptop.
+const laptopForm = (() => {
+  const keys = []
+  for (let j = 0; j < 3; j++) keys.push([5, (r) => [-1.05 + r() * 2.1, -0.3 - j * 0.09 + gauss(r) * 0.006]])
+  return drawing([
+    ...rect(-1.05, -0.15, 1.05, 0.95, 0.02, 4),
+    ...rect(-0.92, -0.04, 0.92, 0.84, 0.01, 1.5),
+    [6, seg(-0.75, 0.62, 0.2, 0.62, 0.01)],
+    [6, seg(-0.75, 0.42, 0.5, 0.42, 0.01)],
+    [6, seg(-0.75, 0.22, -0.05, 0.22, 0.01)],
+    [8, seg(-1.05, -0.15, 1.05, -0.15, 0.018)],
+    [8, seg(-1.5, -0.62, 1.5, -0.62, 0.02)],
+    [4, seg(-1.05, -0.15, -1.5, -0.62, 0.018)],
+    [4, seg(1.05, -0.15, 1.5, -0.62, 0.018)],
+    ...keys,
+    ...rect(-0.3, -0.58, 0.3, -0.42, 0.008, 0.8),
+  ])
+})()
+
+// Build on solid frameworks: a hammer.
+const hammerForm = drawing(
+  [
+    [14, seg(-0.07, -1.0, -0.07, 0.48, 0.012)],
+    [14, seg(0.07, -1.0, 0.07, 0.48, 0.012)],
+    [10, box(0, -0.26, 0.12, 1.45)],
+    ...rect(-0.55, 0.48, 0.5, 0.82, 0.016, 2.5),
+    [12, box(-0.02, 0.65, 1.0, 0.32)],
+    [6, bezier([-0.55, 0.78], [-0.85, 0.82], [-1.0, 0.6], [-1.05, 0.38], 0.03)],
+    [5, bezier([-0.55, 0.52], [-0.72, 0.52], [-0.82, 0.42], [-0.86, 0.34], 0.02)],
+  ],
+  { rot: 0.5 },
+)
+
+// Use it safely: a hard hat.
+const hardhatForm = drawing([
+  [26, arc(0, -0.25, 0.95, 0, Math.PI, 0.025)],
+  [12, (r) => { const a = r() * Math.PI, q = Math.sqrt(r()) * 0.93; return [Math.cos(a) * q, -0.25 + Math.sin(a) * q] }],
+  [10, seg(-0.16, -0.25, -0.16, 0.66, 0.014)],
+  [10, seg(0.16, -0.25, 0.16, 0.66, 0.014)],
+  [16, seg(-1.45, -0.27, 1.45, -0.27, 0.03)],
+  [6, bezier([-1.45, -0.27], [-1.2, -0.45], [1.2, -0.45], [1.45, -0.27], 0.015)],
+])
+
+// Two tracks: a highway into the distance with two exits, one each side.
+const highwayForm = (() => {
+  const dashes = []
+  for (let i = 0; i < 6; i++) {
+    const t0 = i / 6, t1 = t0 + 0.07
+    const y0 = -0.95 + t0 * 1.85, y1 = -0.95 + t1 * 1.85
+    dashes.push([2, seg(0, y0, 0, y1, 0.012)])
+  }
+  return drawing([
+    [14, seg(-1.3, -0.95, -0.18, 0.9, 0.02)],
+    [14, seg(1.3, -0.95, 0.18, 0.9, 0.02)],
+    ...dashes,
+    [9, bezier([-0.82, -0.15], [-1.0, 0.05], [-1.3, 0.2], [-1.65, 0.24], 0.02)],
+    [7, bezier([-0.66, 0.12], [-0.85, 0.3], [-1.15, 0.42], [-1.6, 0.46], 0.02)],
+    [9, bezier([0.82, -0.15], [1.0, 0.05], [1.3, 0.2], [1.65, 0.24], 0.02)],
+    [7, bezier([0.66, 0.12], [0.85, 0.3], [1.15, 0.42], [1.6, 0.46], 0.02)],
+    ...rect(-1.45, 0.6, -1.0, 0.85, 0.01, 0.8),
+    [2, seg(-1.22, 0.38, -1.22, 0.6, 0.01)],
+    ...rect(1.0, 0.6, 1.45, 0.85, 0.01, 0.8),
+    [2, seg(1.22, 0.38, 1.22, 0.6, 0.01)],
+  ], { sx: 0.62 })
+})()
+
+// Your first agent: a podium, first, second and third.
+const podiumForm = drawing([
+  ...rect(-0.42, -0.9, 0.42, 0.32, 0.02, 4),
+  ...rect(-1.3, -0.9, -0.42, -0.12, 0.02, 3),
+  ...rect(0.42, -0.9, 1.3, -0.42, 0.02, 2.5),
+  [8, box(0, -0.29, 0.8, 1.18)],
+  [5, box(-0.86, -0.51, 0.84, 0.74)],
+  [4, box(0.86, -0.66, 0.84, 0.44)],
+  [5, seg(0, -0.4, 0, 0.12, 0.022)],
+  [2, seg(0, 0.12, -0.08, 0.04, 0.02)],
+  [5, curve([[-1.0, -0.3], [-0.86, -0.22], [-0.74, -0.32], [-1.0, -0.62], [-0.72, -0.62]], { th: 0.02 })],
+  [4, curve([[0.72, -0.56], [0.86, -0.5], [0.94, -0.58], [0.84, -0.65], [0.94, -0.72], [0.86, -0.8], [0.72, -0.76]], { th: 0.02 })],
+  [6, disc(0, 0.6, 0.14)],
+  [4, seg(0, 0.46, 0, 0.34, 0.03)],
+])
+
+// The stroll: a walker on a winding path, footprints behind, a tree ahead.
+const strollForm = (() => {
+  const steps = []
+  for (let i = 0; i < 5; i++) steps.push([1.5, disc(-1.45 + i * 0.22, -0.78 + (i % 2) * 0.07, 0.035)])
+  return drawing([
+    [14, bezier([-1.65, -0.85], [-0.6, -0.95], [0.4, -0.6], [1.65, -0.72], 0.02)],
+    ...steps,
+    [6, disc(-0.25, 0.55, 0.13)],
+    [7, seg(-0.25, 0.4, -0.22, -0.18, 0.03)],
+    ...poly([[-0.24, 0.3], [-0.05, 0.05], [0.0, -0.12]], 3, 0.022),
+    ...poly([[-0.24, 0.3], [-0.42, 0.06], [-0.48, -0.1]], 3, 0.022),
+    ...poly([[-0.22, -0.18], [-0.05, -0.5], [0.05, -0.8]], 4, 0.026),
+    ...poly([[-0.22, -0.18], [-0.38, -0.5], [-0.52, -0.78]], 4, 0.026),
+    [6, seg(1.05, -0.68, 1.05, -0.1, 0.03)],
+    [14, (r) => { const a = r() * TAU, q = Math.sqrt(r()); return [1.05 + Math.cos(a) * q * 0.42, 0.25 + Math.sin(a) * q * 0.38] }],
+  ])
+})()
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
@@ -1073,7 +1250,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their
@@ -1141,7 +1318,27 @@ export function createField(host) {
     later(5.1, () => retarget(robot, 1.1, 'power3.out'))
   }
 
-  function morphTo(name, { instant = false, anchor, enter, slot = 0 } = {}) {
+  // A two-step form, "first>second": show the first, then morph into the
+  // second (a toolbox becoming a bar graph, a highway's exits becoming a
+  // podium). The pair is the current form, so a re-fit does not replay it.
+  function morphTo(name, opts = {}) {
+    if (!name.includes('>')) return go(name, opts)
+    if (name === current) return
+    const [first, second] = name.split('>')
+    go(first, opts)
+    current = name
+    if (opts.instant || reduce()) {
+      go(second, { ...opts, instant: true })
+      current = name
+      return
+    }
+    later(1.9, () => {
+      go(second, { anchor: opts.anchor, slot: opts.slot })
+      current = name
+    })
+  }
+
+  function go(name, { instant = false, anchor, enter, slot = 0 } = {}) {
     // Each nesting picks a perch and a shape from the slot, so the field
     // never returns to the same corner twice in a row.
     if (name === 'nest') {

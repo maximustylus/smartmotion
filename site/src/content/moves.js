@@ -38,6 +38,8 @@ export const moves = [
   },
   {
     id: 'angle',
+    // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
+    forms: { move: 'angle', example: 'stroll', prompt: 'pencil' },
     phase: 'analyse',
     name: 'Have an angle',
     angle: 'An assistant multiplies what you bring. Vague brief, confident guess.',
@@ -98,6 +100,8 @@ export const moves = [
   },
   {
     id: 'frameworks',
+    // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
+    forms: { move: 'hammer' },
     phase: 'develop',
     name: 'Build on solid frameworks',
     angle: 'The assistant is new. The questions about good teaching are not.',
@@ -109,16 +113,16 @@ export const moves = [
       note: 'For competence, Miller’s pyramid: knows, knows how, shows how, does. For feedback, R2C2: relationship, reactions, content, coaching. For design, the Six Principles of Learning Design (6PoLD). For support, the Zone of Proximal Development: what a learner can do with help, but not yet alone. Each gives you a question to ask.',
       verify: false,
     },
-    example: {
-      title: 'One tool on Miller’s pyramid',
-      body: '[[TODO: worked example, owner to supply from the use cases]]',
-    },
+    // The worked example beat was removed at the owner's request on 7 October 2026.
+    example: null,
     promptHeading: 'Before your tool reaches learners',
     cheatsheet: 'build-on-frameworks',
     form: 'pyramid',
   },
   {
     id: 'safe',
+    // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
+    forms: { move: 'hardhat', prompt: 'lens' },
     phase: 'implement',
     name: 'Use it safely',
     angle: 'An answer can sound sure. An image can look real. Either can be false.',
@@ -140,6 +144,8 @@ export const moves = [
   },
   {
     id: 'test',
+    // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
+    forms: { move: 'toolbox', framework: 'toolbox>columns', example: 'dollar', prompt: 'notepencil' },
     phase: 'evaluate',
     name: 'Test it with the utility formula',
     angle: 'Score a tool on five questions, then multiply. One zero, and the rest counts for nothing.',
@@ -163,6 +169,8 @@ export const moves = [
   },
   {
     id: 'reality',
+    // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
+    forms: { move: 'lens', example: 'timeline80s', prompt: 'runner' },
     phase: 'evaluate',
     name: 'Reality check',
     angle: 'An idea in five minutes. A working demo in two hours. The final 10% takes six months.',
