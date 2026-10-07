@@ -960,6 +960,132 @@ const strollForm = (() => {
   ])
 })()
 
+// ---------- Playbook drawings, ported on 7 October 2026 ----------
+
+// Begin with the end in mind: a summit with a flag at the top.
+const summitForm = drawing([
+  [18, seg(-1.6, -0.9, -0.15, 0.75, 0.025)],
+  [18, seg(-0.15, 0.75, 1.6, -0.9, 0.025)],
+  [8, seg(-0.95, -0.15, -0.55, 0.05, 0.015)],
+  [6, seg(0.55, -0.15, 0.95, -0.05, 0.015)],
+  [6, seg(-1.6, -0.9, 1.6, -0.9, 0.015)],
+  [8, seg(-0.15, 0.75, -0.15, 1.05, 0.016)],
+  [8, (r) => { const t = r(), u = r(); return [-0.15 + t * 0.45, 1.05 - u * 0.22 * (1 - t * 0.5)] }],
+])
+
+// A brief: a page with a folded corner, a heading and lines.
+const briefForm = (() => {
+  const lines = []
+  for (let i = 0; i < 5; i++) lines.push([4, seg(-0.55, 0.32 - i * 0.24, 0.55 - (i === 4 ? 0.4 : 0), 0.32 - i * 0.24, 0.01)])
+  return drawing([
+    [8, seg(-0.8, -0.95, 0.8, -0.95, 0.016)],
+    [8, seg(-0.8, -0.95, -0.8, 0.95, 0.016)],
+    [6, seg(-0.8, 0.95, 0.4, 0.95, 0.016)],
+    [7, seg(0.8, -0.95, 0.8, 0.55, 0.016)],
+    [4, seg(0.4, 0.95, 0.8, 0.55, 0.016)],
+    [3, seg(0.4, 0.95, 0.4, 0.55, 0.012)],
+    [3, seg(0.4, 0.55, 0.8, 0.55, 0.012)],
+    [6, seg(-0.55, 0.65, 0.15, 0.65, 0.03)],
+    ...lines,
+  ])
+})()
+
+// An idea: a light bulb with rays.
+const bulbForm = (() => {
+  const rays = []
+  for (let i = 0; i < 7; i++) {
+    const a = Math.PI * (0.1 + (i * 0.8) / 6)
+    rays.push([2.5, seg(Math.cos(a) * 0.82, 0.25 + Math.sin(a) * 0.82, Math.cos(a) * 1.08, 0.25 + Math.sin(a) * 1.08, 0.014)])
+  }
+  return drawing([
+    [26, arc(0, 0.25, 0.6, -0.35, Math.PI + 0.35, 0.022)],
+    [6, seg(-0.56, 0.05, -0.3, -0.45, 0.018)],
+    [6, seg(0.56, 0.05, 0.3, -0.45, 0.018)],
+    [5, seg(-0.3, -0.5, 0.3, -0.5, 0.016)],
+    [5, seg(-0.28, -0.62, 0.28, -0.62, 0.016)],
+    [4, seg(-0.22, -0.74, 0.22, -0.74, 0.016)],
+    [6, curve([[-0.18, -0.4], [-0.1, 0.15], [0, -0.05], [0.1, 0.15], [0.18, -0.4]], { th: 0.012 })],
+    ...rays,
+  ])
+})()
+
+// Know the hook: a fishing hook on its line.
+const hookForm = drawing([
+  [10, seg(0.3, 1.05, 0.3, 0.45, 0.014)],
+  [5, arc(0.3, 0.38, 0.08, 0, TAU, 0.012)],
+  [12, seg(0.3, 0.3, 0.3, -0.35, 0.03)],
+  [24, arc(-0.05, -0.35, 0.35, Math.PI * 1.05, TAU, 0.03)],
+  [8, seg(-0.4, -0.35, -0.4, -0.05, 0.028)],
+  [4, seg(-0.4, -0.05, -0.28, -0.2, 0.018)],
+  [6, curve([[-1.6, -0.85], [-1.0, -0.75], [-0.4, -0.95], [0.3, -0.8], [1.0, -0.95], [1.6, -0.82]], { th: 0.012 })],
+])
+
+// Plan your opening: a microphone on a stand.
+const micForm = drawing([
+  [22, arc(0, 0.5, 0.32, Math.PI, TAU + Math.PI, 0.022)],
+  [10, box(0, 0.5, 0.42, 0.42)],
+  [6, seg(-0.3, 0.1, -0.3, 0.5, 0.012)],
+  [6, seg(0.3, 0.1, 0.3, 0.5, 0.012)],
+  [10, arc(0, 0.1, 0.48, Math.PI, TAU, 0.02)],
+  [8, seg(0, -0.38, 0, -0.85, 0.022)],
+  [8, seg(-0.45, -0.88, 0.45, -0.88, 0.022)],
+])
+
+// Understand the file system: three folders, one open.
+const folderForm = (() => {
+  const folder = (x, y, w, h) => [
+    [5, seg(x, y, x + w, y, 0.015)],
+    [4, seg(x, y, x, y + h, 0.015)],
+    [4, seg(x + w, y, x + w, y + h, 0.015)],
+    [5, seg(x + w * 0.4, y + h, x + w, y + h, 0.015)],
+    [2, seg(x, y + h + 0.1, x + w * 0.3, y + h + 0.1, 0.015)],
+    [2, seg(x + w * 0.3, y + h + 0.1, x + w * 0.4, y + h, 0.015)],
+    [1, seg(x, y + h, x, y + h + 0.1, 0.015)],
+    [4, box(x + w / 2, y + h / 2, w * 0.9, h * 0.8)],
+  ]
+  return drawing([...folder(-1.55, -0.6, 0.85, 0.6), ...folder(-0.42, -0.6, 0.85, 0.6), ...folder(0.7, -0.6, 0.85, 0.6), [6, seg(-1.1, 0.25, 1.1, 0.25, 0.012)], [4, seg(0, 0.25, 0, 0.75, 0.012)], ...rect(-0.3, 0.75, 0.3, 1.0, 0.012, 1)])
+})()
+
+// Before your tool reaches learners: a graduation cap.
+const capForm = drawing([
+  [12, seg(-1.2, 0.35, 0, 0.85, 0.02)],
+  [12, seg(0, 0.85, 1.2, 0.35, 0.02)],
+  [12, seg(1.2, 0.35, 0, -0.15, 0.02)],
+  [12, seg(0, -0.15, -1.2, 0.35, 0.02)],
+  [10, (r) => { const u = r(), v = r(); return [(u - v) * 1.2, 0.35 + (u + v - 1) * 0.5] }],
+  [10, bezier([-0.7, 0.1], [-0.7, -0.45], [0.7, -0.45], [0.7, 0.1], 0.02)],
+  [5, seg(-0.7, 0.1, -0.7, -0.2, 0.018)],
+  [5, seg(0.7, 0.1, 0.7, -0.2, 0.018)],
+  [6, seg(0.95, 0.45, 1.05, -0.35, 0.012)],
+  [4, disc(1.05, -0.42, 0.07)],
+])
+
+// Spaghetti, then a crocodile: a photo with a question mark over it.
+const photoForm = drawing([
+  ...rect(-1.4, -0.85, 0.9, 0.85, 0.02, 4),
+  [10, seg(-1.3, -0.75, -0.6, 0.15, 0.016)],
+  [10, seg(-0.6, 0.15, -0.05, -0.45, 0.016)],
+  [8, seg(-0.25, -0.25, 0.25, 0.25, 0.016)],
+  [8, seg(0.25, 0.25, 0.8, -0.4, 0.016)],
+  [6, arc(0.45, 0.55, 0.13, 0, TAU, 0.014)],
+  [9, arc(1.15, 0.45, 0.32, -0.6, Math.PI, 0.025), 0],
+  [5, seg(1.15, 0.13, 1.15, -0.2, 0.025), 0],
+  [3, disc(1.15, -0.4, 0.06), 0],
+])
+
+// Copy, paste, check: a clipboard with a list and a tick.
+const clipboardForm = (() => {
+  const rows = []
+  for (let i = 0; i < 4; i++) rows.push([4, seg(-0.35, 0.35 - i * 0.3, 0.55, 0.35 - i * 0.3, 0.012)], [2, box(-0.55, 0.35 - i * 0.3, 0.12, 0.12)])
+  return drawing([
+    ...rect(-0.85, -0.95, 0.85, 0.8, 0.02, 4),
+    ...rect(-0.35, 0.72, 0.35, 0.95, 0.016, 1.5),
+    ...rows,
+    [3, seg(-0.62, -0.55, -0.55, -0.62, 0.015)],
+    [4, seg(-0.55, -0.62, -0.4, -0.45, 0.015)],
+  ])
+})()
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
@@ -1250,7 +1376,7 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their

@@ -461,6 +461,7 @@ function takeHomeScene(step) {
       `,
     },
     {
+      form: 'agents',
       html: `
         ${eyebrow('Take-home', copy.beatLabels.cheatsheet)}
         <h3>Describe your agent</h3>
@@ -510,6 +511,7 @@ function takeHomeScene(step) {
         `,
       },
       {
+        form: 'clipboard',
         html: `
           ${eyebrow('Take-home', 'Five workflows')}
           <h2>${copy.takehome.workflowsHeading}</h2>

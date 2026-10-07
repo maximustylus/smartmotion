@@ -973,13 +973,16 @@ html.overlay-open { overflow: hidden; }
 }
 .scene--cover.scene--centre .scene__pin { grid-template-rows: 56% minmax(0, 1fr); }
 
-/* Colophon, bottom left, out of the way. */
+/* Colophon, centred at the bottom, out of the way. */
 .colophon {
   position: fixed;
-  left: max(var(--space-5), env(safe-area-inset-left, 0px));
-  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
   z-index: 5;
   display: flex;
+  justify-content: center;
+  white-space: nowrap;
   gap: 10px;
   font-size: 0.72rem;
   color: var(--faint);

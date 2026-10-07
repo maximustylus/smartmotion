@@ -59,8 +59,8 @@ export const lanes = [
     line: 'Infographics, posters and slides, each starting from a content plan.',
     steps: [
       { tool: 'Canva', track: 'both', note: 'Familiar on both tracks; AI uses capped monthly' },
-      { tool: 'Claude Design, export to PowerPoint', track: 'personal', note: 'Design first, then a PowerPoint file', verify: true },
-      { tool: 'Codex or code, to Google Slides', track: 'personal', note: 'Turns an outline into slides', verify: true },
+      { tool: 'Claude Design, export to PowerPoint', track: 'personal', note: 'Design first, then a PowerPoint file' },
+      { tool: 'Codex or code, to Google Slides', track: 'personal', note: 'Codex’s Google Drive plugin works with Slides' },
       { tool: 'Copilot in PowerPoint', track: 'corporate', note: 'Needs the paid licence' },
     ],
     workflow: 2,
@@ -70,9 +70,9 @@ export const lanes = [
     name: 'Move',
     line: 'The agent prepares the storyboard and the prompts. The generators make the clips.',
     steps: [
-      { tool: 'Google Slides, to Google Vids', track: 'personal', note: 'Your slides become a narrated video', verify: true },
-      { tool: 'Gemini with Veo, Nano Banana and Flow', track: 'personal', note: 'Clips, images and assembly; credits are daily', verify: true },
-      { tool: 'MCP to OpenRouter: Kling AI, Seedance, Veo', track: 'personal', note: 'One connector, several video generators', verify: true },
+      { tool: 'Google Slides, to Google Vids', track: 'personal', note: 'Your slides become a narrated video' },
+      { tool: 'Gemini, Nano Banana and Flow', track: 'personal', note: 'Clips, images and assembly; daily and monthly credits' },
+      { tool: 'OpenRouter API: Kling AI, Seedance, Veo', track: 'personal', note: 'One API key, several video generators' },
       { tool: 'Clipchamp, if enabled', track: 'corporate', note: 'Assemble your own footage; no generated clips found' },
     ],
     workflow: 1,

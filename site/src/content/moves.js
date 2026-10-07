@@ -17,6 +17,8 @@
 export const moves = [
   {
     id: 'end',
+    // Particle drawings for this move's beats (7 October 2026).
+    forms: { move: 'summit', example: 'brief', prompt: 'bulb' },
     phase: 'analyse',
     name: 'Begin with the end in mind',
     angle: 'Decide what done looks like while the page is still blank.',
@@ -58,6 +60,8 @@ export const moves = [
   },
   {
     id: 'hook',
+    // Particle drawings for this move's beats (7 October 2026).
+    forms: { move: 'hook', example: 'grid', prompt: 'mic' },
     phase: 'design',
     name: 'Know the hook, keep the engagement',
     angle: 'Open with something the room does, not something it watches.',
@@ -79,6 +83,8 @@ export const moves = [
   },
   {
     id: 'architecture',
+    // Particle drawings for this move's beats (7 October 2026).
+    forms: { move: 'folder', example: 'tree', prompt: 'code' },
     phase: 'design',
     name: 'Understand the file system and architecture',
     angle: 'Think of a resuscitation trolley: you did not build it, but you know which drawer holds what.',
@@ -86,9 +92,9 @@ export const moves = [
       'Building an app by describing it, without reading the code, is called vibe coding. The assistant does the filing. You still need to learn where things live, so you can ask for a change and check it was made.',
     framework: {
       name: 'Keep content, structure and behaviour apart',
-      source: null,
-      note: 'Content is what a page says. Structure is how it is laid out. Behaviour is what happens when you tap or type. Give each its own place, and give every file one job. Then you know where to look, and a change to the words leaves the rest alone. [[TODO: owner to confirm the framework and its source]]',
-      verify: true,
+      source: 'Dijkstra (1974), the separation of concerns',
+      note: 'Content is what a page says. Structure is how it is laid out. Behaviour is what happens when you tap or type. Give each its own place, and give every file one job. Then you know where to look, and a change to the words leaves the rest alone.',
+      verify: false,
     },
     example: {
       title: 'This app, in three folders',
@@ -101,7 +107,7 @@ export const moves = [
   {
     id: 'frameworks',
     // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
-    forms: { move: 'hammer' },
+    forms: { move: 'hammer', prompt: 'cap' },
     phase: 'develop',
     name: 'Build on solid frameworks',
     angle: 'The assistant is new. The questions about good teaching are not.',
@@ -122,7 +128,7 @@ export const moves = [
   {
     id: 'safe',
     // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
-    forms: { move: 'hardhat', prompt: 'lens' },
+    forms: { move: 'hardhat', example: 'photo', prompt: 'lens' },
     phase: 'implement',
     name: 'Use it safely',
     angle: 'An answer can sound sure. An image can look real. Either can be false.',
