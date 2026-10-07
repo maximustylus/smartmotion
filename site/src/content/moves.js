@@ -133,7 +133,7 @@ export const moves = [
     name: 'Use it safely',
     angle: 'An answer can sound sure. An image can look real. Either can be false.',
     principle:
-      'Safe use is a habit, not a switch: know the source, keep patient data out of the chat, and treat a striking image as a claim to check. The assistant drafts. You countersign.',
+      'Safe use is a habit, not a switch: know the source, keep health information out of the chat, and treat a striking image as a claim to check. The assistant drafts. You countersign.',
     framework: {
       name: 'From made-up answers to “AI psychosis”',
       source: 'Østergaard (2023); Mata v. Avianca (2023)',

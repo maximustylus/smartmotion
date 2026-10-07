@@ -7,7 +7,23 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => readFileSync(join(root, p), 'utf8')
 const docs = []
-const add = (path, text) => docs.push({ path, text: text.trim() })
+// The word "patient" does not appear in Smart Motion (owner, 7 October
+// 2026). The owner's workflows/ are never edited, so their wording is
+// swapped here, as it enters Motus's knowledge, not in the files.
+const SWAP = [
+  [/patient-identifiable/gi, 'identifiable health'],
+  [/patient and personal details/gi, 'health and personal details'],
+  [/patient (data|details|information)/gi, 'health $1'],
+  [/patient (outcomes|education|safety|care)/gi, 'health $1'],
+  [/individual patients/gi, 'individuals'],
+  [/the patient's device/gi, "the person's device"],
+  [/, a patient,/gi, ','],
+  [/about a patient/gi, "about someone's care"],
+  [/patients/gi, 'people'],
+  [/patient/gi, 'person'],
+]
+const scrub = (t) => SWAP.reduce((x, [re, to]) => x.replace(re, to), t)
+const add = (path, text) => docs.push({ path, text: scrub(text.trim()) })
 
 // archive/cost-evidence.md is deliberately absent: its items are unverified
 // and the brief says they must not appear, which includes Motus repeating them.

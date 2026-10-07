@@ -49,11 +49,11 @@ your instructions, your sources and your starter prompts. No code.
 
 ### Rules for clinical settings
 
-- Never add patient-identifiable data, colleague details you would not
+- Never add identifiable health data, colleague details you would not
   email, or documents you are not allowed to share. Anyone who can use the
   agent can see answers drawn from files uploaded into it.
 - An agent that answers questions about guidelines and resources is a
-  different thing from one that advises on a patient. Keep it to the first.
+  different thing from one that advises on someone’s care. Keep it to the first.
 - You stay accountable for what it says. Check, then share.
 
 ### Limits worth knowing

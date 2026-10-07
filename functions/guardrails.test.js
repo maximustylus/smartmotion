@@ -219,3 +219,8 @@ test('the persona gives no instruction to praise (Rule 11, v1.2)', () => {
   assert.match(persona, /never use exclamation marks/)
   assert.doesNotMatch(persona, /name it briefly and specifically/)
 })
+
+test('the word "patient" is in neither the knowledge base nor the app copy (owner, 7 October 2026)', () => {
+  assert.doesNotMatch(readFileSync(join(root, 'functions/kb.json'), 'utf8'), /patient/i)
+  for (const t of [GUARDRAIL_PREAMBLE, NRIC_REFUSAL, CRISIS_REPLY]) assert.doesNotMatch(t, /patient/i)
+})

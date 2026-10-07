@@ -67,7 +67,9 @@ a motion graphic, not a slide deck.
   or image in our own copy. Will Smith clips: no likeness in our own copy or
   images. On 7 October 2026 the owner chose to open both sources (the
   YouTube clip and the Mothership report) inside the in-app window.
-- No patient data, colleague details or internal hospital documents.
+- No health information about anyone, colleague details or internal hospital
+  documents. The word "patient" does not appear anywhere in Smart Motion, the
+  app or Motus (owner, 7 October 2026); say "health information" instead.
 - Firestore stores anonymous aggregate counters only.
 - Copy has word limits so each beat fits a phone screen: angle 18,
   principle 40, framework note 55, example 50, prompt 170 words.

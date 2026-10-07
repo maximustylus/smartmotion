@@ -52,13 +52,13 @@ export const firstAgent = {
     { title: 'Try it before you share it', body: 'On the Try it tab, ask ten real questions and check each answer against its source.' },
     { title: 'Share small first', body: 'Share with a few colleagues. A wider release goes through your administrators.' },
   ],
-  note: 'Never add patient or identifying data. SharePoint sources depend on your licence. Actions, flows and connections to other systems need Copilot Studio: ask your IT team first.',
+  note: 'Never add health or identifying data. SharePoint sources depend on your licence. Actions, flows and connections to other systems need Copilot Studio: ask your IT team first.',
   promptIntro: 'Paste this into the Describe tab, then fill the brackets.',
   prompt: `I want an agent that helps [who] with [one task].
 
 Answer only from the files and pages I add. If the answer is not there, say so plainly and do not guess.
 
-Never give medical advice, diagnose, or make a decision about a patient, and never ask for patient or identifying details.
+Never give medical advice, diagnose, or make a decision about anyone’s care, and never ask for health or identifying details.
 
 Keep answers short, in UK English, and name the document each answer comes from.
 

@@ -21,7 +21,7 @@
 */
 
 /** Bumped when the rule text or the preamble changes. Stamped into every reply. */
-export const GUARDRAIL_VERSION = '1.2'
+export const GUARDRAIL_VERSION = '1.3'
 
 /** The date the owner issued the rules (for AURA). Adopted for Motus on 2026-10-05. */
 export const GUARDRAIL_EFFECTIVE = '2026-08-24'
@@ -80,7 +80,7 @@ export const GUARDRAIL_PREAMBLE = [
   '   say that you found it and carry on.',
   '',
   'NOT YOURS TO CLAIM (P6). You are not a data classification control. If a message appears to carry',
-  'patient-identifiable information, colleague details or internal documents, say so, do not repeat',
+  'identifiable health information, colleague details or internal documents, say so, do not repeat',
   'them back, and ask the visitor to remove them. Never imply that content is safe because you saw it.',
   'You do not give medical advice, diagnosis or treatment, and you are not a crisis service.',
 ].join('\n')
@@ -109,7 +109,7 @@ export const NRIC_SHAPE = /(?<![A-Za-z0-9])[STFGMstfgm][\s-]?(?:\d[\s-]?){7}[A-Z
 export const containsNric = (text) => typeof text === 'string' && NRIC_SHAPE.test(text.normalize('NFKC').replace(/[._/]/g, ' '))
 export const NRIC_REFUSAL =
   'That message looks like it contains an NRIC or FIN number. I have not read it or sent it anywhere. ' +
-  'Please remove the number and ask again. Smart Motion never needs patient or staff details.'
+  'Please remove the number and ask again. Smart Motion never needs health or staff details.'
 
 // ---------- Crisis wording ----------
 

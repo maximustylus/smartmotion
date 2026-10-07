@@ -73,7 +73,7 @@ export function openChat(host, { onTalking, onOpen }) {
       <a class="mchat__info" href="${INFO}" target="_blank" rel="noopener" aria-label="Motus info card: what it does, how it is kept safe, how your data is handled" title="Motus info card">i</a>
     </header>
     <div class="mchat__notice" role="note" hidden>
-      <p>Motus is an AI companion. It can state wrong things confidently, so check what it tells you. It is not for medical advice or crises. Never enter patient, colleague or identifying details. <a href="${INFO}" target="_blank" rel="noopener">Info card</a></p>
+      <p>Motus is an AI companion. It can state wrong things confidently, so check what it tells you. It is not for medical advice or crises. Never enter health, colleague or identifying details. <a href="${INFO}" target="_blank" rel="noopener">Info card</a></p>
       <button type="button" class="mchat__notice-x" aria-label="Dismiss the AI safety notice">Got it</button>
     </div>
     <div class="mchat__log" aria-live="polite"></div>
@@ -83,7 +83,7 @@ export function openChat(host, { onTalking, onOpen }) {
       <input id="mchat-input" type="text" autocomplete="off" maxlength="2000" placeholder="Ask about a move, a workflow, a framework…" data-own-keys>
       <button type="submit" class="btn" aria-label="Send">Send</button>
     </form>
-    <p class="mchat__note">AI replies from the playbook. May be wrong. No patient data, ever. <a href="${INFO}" target="_blank" rel="noopener">How Motus works</a></p>
+    <p class="mchat__note">AI replies from the playbook. May be wrong. No health information, ever. <a href="${INFO}" target="_blank" rel="noopener">How Motus works</a></p>
   `
   host.append(panel)
   const log = panel.querySelector('.mchat__log')
