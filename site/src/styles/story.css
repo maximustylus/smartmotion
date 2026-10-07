@@ -1422,3 +1422,6 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 /* Under each prompt card: the prompt's own file and the workflows. */
 .sheet__more { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0 0; font-size: 0.82rem; }
 .sheet__more a { color: var(--accent); text-underline-offset: 0.15em; }
+
+/* A use case's own web app, one tap away. */
+.uses li .uses__open { display: inline-block; margin-left: 0.4em; color: var(--accent); font-weight: 600; white-space: nowrap; font-size: 1em; }

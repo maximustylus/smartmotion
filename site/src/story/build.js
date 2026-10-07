@@ -281,6 +281,8 @@ export function playbookScenes(route) {
       out.push(moveScene(m, moves.indexOf(m) + 1))
     }
   }
+  // The use cases sit before the take-home, as in the talk (owner, 7 October 2026).
+  out.push({ ...examplesScene({ title: 'Use cases' }), phase: 'evaluate' })
   out.push(takeHomeScene({ title: 'Take-home' }))
   out.push(list)
   return out
@@ -421,7 +423,9 @@ function examplesScene(step) {
         : `<span class="uses__name">${icon}<strong>${u.name}</strong></span>`
       // A row with an icon is not split into masked lines: the icon would
       // ride inside the first line's mask and the text could not indent.
-      return `<li${u.icon ? ' class="has-logo" data-no-split' : ''}>${head}<span>${rich(u.line)}</span></li>`
+      // A live web app gets its own link under the line.
+      const open = u.url ? ` <a class="uses__open" href="${u.url}" target="_blank" rel="noopener">Open ${u.short ?? u.name} <span aria-hidden="true">&nearr;</span></a>` : ''
+      return `<li${u.icon ? ' class="has-logo" data-no-split' : ''}>${head}<span>${rich(u.line)}${open}</span></li>`
     }).join('')}</ul>
   `
   return {

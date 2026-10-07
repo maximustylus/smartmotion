@@ -71,3 +71,4 @@ source that is not listed here.
 | verified | Ministry of Manpower. (2026, June 30). *Occupational Wages 2025, Table 1*. https://stats.mom.gov.sg/Pages/Occupational-Wages-Tables2025.aspx (read 7 October 2026: university lecturer, SSOC 23101, median gross monthly wage S$13,403, June 2025. Used in the ledger.) |
 | verified | Anthropic. (2026). *Plans and pricing*. https://claude.com/pricing (read 7 October 2026: Max "From $100 Per month", with 5x or 20x more usage than Pro; the owner is on Max 5x. Used in the ledger as S$128 a month at S$1.2771 to US$1.) |
 | owner | Muhammad Alif. (2026). *Linktree*. https://linktr.ee/muhammad.alif (the owner's own page, linked from the Contact page) |
+| owner | Muhammad Alif. (2026). *Smart Queue Live* [Web app]. https://smartqueuelive.web.app (the owner's own app; address from its repository's Firebase project, page title read 7 October 2026. Linked from the Smart Queue Live use case.) |
