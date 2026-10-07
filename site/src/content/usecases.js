@@ -18,12 +18,12 @@ export const usecases = {
     title: 'Personal track: one maker, four tools',
     lead: 'Built on my own devices and accounts, with public material only.',
     items: [
-      { name: 'Smart Motion', icon: '/usecases/smart-motion.png', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
+      { name: 'Smart Motion', icon: '/usecases/smart-motion.png', tag: 'This playbook and talk', line: 'This playbook and talk. Built with Claude Code from a written brief, in {{active}} of active time.' },
       // icon: the app's own icon, supplied by the owner on 6 October 2026.
       // video: the owner's own YouTube Short, opened in the lightbox.
-      { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', line: 'A dashboard web app. Individuals: community screening and resources. Professionals: rostering, social battery and a dashboard. Demo mode to try.', url: 'https://smartdashboard.web.app', short: 'NEXUS', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
-      { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', line: 'Queue to try Apple Vision Pro health apps, with a headset guide, posters, feedback and photos. The team side runs the queue.', url: 'https://smartqueuelive.web.app', short: 'Smart Queue Live', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
-      { name: 'ImmersiFit', icon: '/usecases/immersifit.png', line: 'A feasibility study: adolescents exercise immersively in Apple Vision Pro with an AI coach. An iPad companion lets the exercise physiologist watch heart rate live.', video: '/usecases/immersifit-kkh.mp4', videoTitle: 'ImmersiFit at KKH', landscape: true },
+      { name: 'NEXUS, with AURA', icon: '/usecases/nexus.png', tag: 'A dashboard for individuals and professionals', line: 'A dashboard web app. Individuals: community screening and resources. Professionals: rostering, social battery and a dashboard. Demo mode to try.', url: 'https://smartdashboard.web.app', short: 'NEXUS', video: 'VEMsfBM_tdM', videoTitle: 'NEXUS, with AURA' },
+      { name: 'Smart Queue Live', icon: '/usecases/smart-queue-live.png', tag: 'Queue to try Apple Vision Pro health apps', line: 'Queue to try Apple Vision Pro health apps, with a headset guide, posters, feedback and photos. The team side runs the queue.', url: 'https://smartqueuelive.web.app', short: 'Smart Queue Live', video: 'hoDLo3XJBBw', videoTitle: 'Smart Queue Live' },
+      { name: 'ImmersiFit', icon: '/usecases/immersifit.png', tag: 'Exercise in a headset, a feasibility study', line: 'A feasibility study: adolescents exercise immersively in Apple Vision Pro with an AI coach. An iPad companion lets the exercise physiologist watch heart rate live.', video: '/usecases/immersifit-kkh.mp4', videoTitle: 'ImmersiFit at KKH', landscape: true },
     ],
   },
   corporate: {

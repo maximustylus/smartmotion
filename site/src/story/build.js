@@ -61,7 +61,7 @@ function ledgerBeat(m) {
       </div>
       <p class="ledger__catch">${L.catch}</p>
       ${L.learn ? `<p class="ledger__learn">${rich(L.learn)}</p>` : ''}
-      <p class="note">${L.sources} <a href="${link(L.report)}" target="_blank" rel="noopener">Full research <span aria-hidden="true">&nearr;</span></a></p>
+      <p class="note"><span class="ledger__src">${L.sources} </span><a href="${link(L.report)}" target="_blank" rel="noopener">Full research <span aria-hidden="true">&nearr;</span></a></p>
     `,
   }
 }
@@ -428,7 +428,15 @@ function examplesScene(step) {
       // ride inside the first line's mask and the text could not indent.
       // A live web app gets its own link under the line.
       const open = u.url ? ` <a class="uses__open" href="${u.url}" target="_blank" rel="noopener">Open ${u.short ?? u.name} <span aria-hidden="true">&nearr;</span></a>` : ''
-      return `<li${u.icon ? ' class="has-logo" data-no-split' : ''}>${head}<span>${rich(u.line)}${open}</span></li>`
+      // On a phone: the logo, one short line and one link (open the app, or
+      // watch its video). The full line shows on wider screens.
+      const tagLink = u.url
+        ? `<a class="uses__go" href="${u.url}" target="_blank" rel="noopener">Open <span aria-hidden="true">&nearr;</span></a>`
+        : u.video
+          ? `<button type="button" class="uses__go" data-video="${u.video}" data-title="${u.videoTitle ?? u.name}"${u.landscape ? ' data-landscape' : ''}>Watch <span aria-hidden="true">&#9654;</span></button>`
+          : ''
+      const tag = u.tag ? `<span class="uses__tag">${u.tag}${tagLink ? ` ${tagLink}` : ''}</span>` : ''
+      return `<li${u.icon ? ' class="has-logo" data-no-split' : ''}>${head}<span class="uses__line">${rich(u.line)}${open}</span>${tag}</li>`
     }).join('')}</ul>
   `
   return {

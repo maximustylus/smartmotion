@@ -49,6 +49,8 @@ export function createScroll(root, scenes, { onScene, onProgress }) {
         autoSplit: true,
         onSplit(self) {
           beat._lines = self.lines
+          // Let the fit guard know the lines (and so the height) changed.
+          beat.dispatchEvent(new CustomEvent('smartmotion:resplit', { bubbles: true }))
           // A shown beat's visibility is 'inherit' (set by autoAlpha), so
           // read what the browser computed, not the inline value.
           const shown = getComputedStyle(beat).visibility === 'visible'

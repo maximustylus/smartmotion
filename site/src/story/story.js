@@ -106,8 +106,44 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     const zoom = parseFloat(el.style.zoom) || 1
     return Math.max(...rects.map((r) => r.bottom)) - Math.min(...rects.map((r) => r.top)) + (parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) * zoom
   }
-  function fitBeat(el) {
+  // A beat keeps the size it was given for this window, so arriving again,
+  // or the second check after the lines settle, does not re-size it: each
+  // size change re-splits the lines and shook the page for a few seconds.
+  const fitted = new WeakMap()
+  const viewKey = (el) => `${window.innerWidth}x${el.closest('.scene__pin')?.clientHeight || window.innerHeight}`
+  function fitBeat(el, { recheck = false, force = false } = {}) {
     if (!el) return
+    const known = fitted.get(el)
+    if (known && known.key === viewKey(el) && !force) {
+      if ((el.style.zoom || '') !== known.zoom) el.style.zoom = known.zoom
+      // The later check may only shrink a beat that now overflows; it never
+      // nudges one that already fits.
+      if (!recheck || !overflows(el)) return
+      // A recheck only ever shrinks, so it settles instead of bouncing.
+      const before = parseFloat(known.zoom) || 1
+      fitFresh(el)
+      const after = parseFloat(el.style.zoom) || 1
+      el.style.zoom = after < before ? el.style.zoom : known.zoom
+      fitted.set(el, { key: viewKey(el), zoom: el.style.zoom || '' })
+      return
+    }
+    fitFresh(el)
+    fitted.set(el, { key: viewKey(el), zoom: el.style.zoom || '' })
+  }
+  // When the current beat's lines re-split (a new width, the web font), its
+  // height can change: check again, shrinking only.
+  root.addEventListener('smartmotion:resplit', (e) => { if (e.target === current) fitBeat(current, { recheck: true }) })
+  // True when the beat, at its current size, runs past its room.
+  function overflows(el) {
+    const frame = el.closest('.scene__pin')?.clientHeight || window.innerHeight
+    if (beatHeight(el) > Math.min(frame, window.innerHeight) - 68 - 36 + 2) return true
+    const kids = [...el.children].filter((k) => getComputedStyle(k).position !== 'absolute' && k.getClientRects().length)
+    const pin = el.closest('.scene__pin')?.getBoundingClientRect()
+    if (!kids.length || !pin) return false
+    const top = Math.min(...kids.map((k) => k.getBoundingClientRect().top)) - (Number(gsap.getProperty(el, 'y')) || 0)
+    return top < pin.top + 56
+  }
+  function fitFresh(el) {
     el.style.zoom = ''
     // The height the beat really has: its pinned frame, not the window,
     // which some browsers report differently while zoomed or emulated.
@@ -204,7 +240,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       dimUnderCopy()
       // Once more after the lines have re-split at the new size.
       clearTimeout(fitTimer)
-      fitTimer = setTimeout(() => (fitBeat(current), dimUnderCopy()), 450)
+      fitTimer = setTimeout(() => (fitBeat(current, { recheck: true }), dimUnderCopy()), 450)
       field?.morphTo(s.beats[bi]?.form ?? s.form, { anchor: s.beats[bi]?.anchor ?? s.anchor, enter: sceneChanged ? s.enter : undefined, slot: si * 3 + bi })
       if (sceneChanged) motus?.travel(si, scenes.length, s.title)
       if (sceneChanged && s.id === 'questions') setTimeout(() => motus?.say('Questions? Ask me, or ask the room.', 4000), 1200)
@@ -247,8 +283,8 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
           if (scroll.state.scene === i) {
             api?.onBeat?.(scroll.state.beat)
             // The scene's content (quiz options) arrived after the first fit.
-            fitBeat(current)
-            setTimeout(() => fitBeat(current), 450)
+            fitBeat(current, { force: true })
+            setTimeout(() => fitBeat(current, { recheck: true }), 450)
           }
         })
         .catch((err) => console.error('[smartmotion] scene failed to mount', s.id, err))
