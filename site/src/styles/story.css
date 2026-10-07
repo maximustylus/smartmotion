@@ -442,6 +442,9 @@ html.overlay-open { overflow: hidden; }
 /* ---------- The journey: one grammar per ADDIE phase, plus eras ---------- */
 
 .beat { --draw: 0; }
+/* The phase frames and marks are drawing only: they must never sit over a
+   link or button and catch its click (the Implement frame covers the beat). */
+.beat::before, .beat::after { pointer-events: none; }
 
 /* Analyse: a single focus line grows beside the copy. */
 .scene[data-phase='analyse'] .beat { padding-left: var(--space-5); position: relative; }
@@ -1410,13 +1413,11 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .gaprows li { grid-template-columns: 1fr; gap: 2px; }
 }
 
-/* A link window: the source described, and a button to open it. */
-.lightbox.is-card .lightbox__win { width: min(460px, 100%); }
-.lightbox.is-card .lightbox__frame { aspect-ratio: auto; background: var(--bg); }
-.lightbox__card { display: grid; gap: var(--space-3); padding: var(--space-5, 24px); }
-.lightbox__card h3 { margin: 0; font-size: var(--text-h3, 1.3rem); letter-spacing: -0.01em; }
-.lightbox__card p { margin: 0; color: var(--muted); line-height: 1.45; }
-.lightbox__card .btn { justify-self: start; }
+/* A page window: a web page, tall, with a way out to a full tab. */
+.lightbox.is-page .lightbox__win { width: min(1000px, 100%); }
+.lightbox.is-page .lightbox__frame { aspect-ratio: auto; height: calc(100svh - 32px - 40px - 44px); position: relative; background: #fff; }
+.lightbox__out { position: absolute; right: 12px; bottom: -36px; font-size: 0.82rem; color: var(--accent); }
+.lightbox.is-page .lightbox__win { padding-bottom: 44px; }
 
 /* Under each prompt card: the prompt's own file and the workflows. */
 .sheet__more { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0 0; font-size: 0.82rem; }

@@ -62,7 +62,9 @@ a motion graphic, not a slide deck.
 - UK English. No em dashes or en dashes. No exclamation marks. No hype.
 - Items in content/cost-evidence.md are unverified and must not appear.
 - Pandan Reservoir case: "charged" and "allegedly"; no name, nationality
-  or image. Will Smith clips: links only, no likeness.
+  or image in our own copy. Will Smith clips: no likeness in our own copy or
+  images. On 7 October 2026 the owner chose to open both sources (the
+  YouTube clip and the Mothership report) inside the in-app window.
 - No patient data, colleague details or internal hospital documents.
 - Firestore stores anonymous aggregate counters only.
 - Copy has word limits so each beat fits a phone screen: angle 18,
