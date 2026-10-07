@@ -3,6 +3,7 @@ import { moves, moveById } from '../content/moves.js'
 import { usecases, firstAgent } from '../content/usecases.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
 import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
+import { ledger } from '../content/ledger.js'
 import { copy } from '../content/copy.js'
 import { types } from '../quiz/tools.js'
 import { rich, todo } from '../content/render.js'
@@ -36,6 +37,33 @@ const eyebrow = (a, b) => `<p class="eyebrow">${a}${b ? ` <span class="eyebrow__
 
 // Particles are B-roll: they come out for the framework diagram and nest
 // for the beats that are copy.
+function ledgerBeat(m) {
+  const L = ledger
+  return {
+    form: m.form,
+    html: `
+      ${eyebrow(m.name, L.label)}
+      <h3>${L.heading}</h3>
+      <div class="ledger" data-no-split role="table" aria-label="${L.heading}">
+        <div class="ledger__row ledger__row--head" role="row">
+          <span class="ledger__name" role="columnheader"></span>
+          ${L.cols.map((c) => `<span class="ledger__col" role="columnheader">${c}</span>`).join('')}
+        </div>
+        ${L.rows
+          .map(
+            (r) => `<div class="ledger__row" role="row">
+              <span class="ledger__name" role="rowheader">${r.name}</span>
+              ${r.cells.map((c, i) => `<span class="ledger__cell" role="cell" data-col="${L.cols[i]}"><b>${c.big}</b>${c.small ? `<small>${c.small}</small>` : ''}</span>`).join('')}
+            </div>`,
+          )
+          .join('')}
+      </div>
+      <p class="ledger__catch">${L.catch}</p>
+      <p class="note">${L.sources} <a href="${link(L.report)}" target="_blank" rel="noopener">Full research <span aria-hidden="true">&nearr;</span></a></p>
+    `,
+  }
+}
+
 export function moveBeats(m, n, total = moves.length) {
   const sheet = cheatsheet(m.cheatsheet)
   const source = m.framework.source
@@ -68,6 +96,9 @@ export function moveBeats(m, n, total = moves.length) {
         <p>${rich(m.example.body)}</p>
       `,
     },
+    // The Test move adds a ledger after its example: what a task costs by
+    // hand, with AI and AI alone (content/ledger.js).
+    ...(ledger.move === m.id ? [ledgerBeat(m)] : []),
     {
       form: 'nest',
       html: `
