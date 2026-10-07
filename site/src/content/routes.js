@@ -36,6 +36,9 @@ export const routes = {
       { move: 'safe', minutes: 6 },
       { era: 'agents' },
       { scene: 'takehome', minutes: 2, title: 'Take-home' },
+      // The closing, added by the owner on 7 October 2026. No minutes yet:
+      // the hour is fully allotted, and the owner decides where they come from.
+      { scene: 'stay' },
       { scene: 'questions' },
     ],
   },

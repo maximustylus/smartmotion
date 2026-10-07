@@ -1374,3 +1374,19 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   .ledger__col, .ledger__name { font-size: 0.62rem; letter-spacing: 0.04em; }
   .ledger__cell b { font-size: 1em; }
 }
+
+/* ---------- Here to stay: the closing ---------- */
+/* One grid for the whole list, so the number column fits the widest number. */
+.stats { list-style: none; padding: 0; margin: var(--space-3) 0 0; display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-4); max-width: 40rem; align-items: baseline; }
+.stats li { display: contents; }
+.stats b, .stats span { padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
+.stats b { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1; }
+.stats span { font-size: var(--text-lead); line-height: 1.3; }
+.gaprows { list-style: none; padding: 0; margin: var(--space-3) 0 0; display: grid; max-width: 40rem; border-top: 1px solid var(--line); }
+.gaprows li { display: grid; grid-template-columns: 1fr auto; gap: var(--space-4); align-items: baseline; padding: 0.6em 0; border-bottom: 1px solid var(--line); }
+.gaprows b { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.stay__close { margin-top: var(--space-3); font-weight: 600; max-width: 40rem; }
+@media (max-width: 599px) {
+  .stats { column-gap: var(--space-3); }
+  .gaprows li { grid-template-columns: 1fr; gap: 2px; }
+}

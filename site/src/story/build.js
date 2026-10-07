@@ -4,6 +4,7 @@ import { usecases, firstAgent } from '../content/usecases.js'
 import { phases, eraBefore, eras } from '../content/journey.js'
 import { tracks, workflows, compare, link, lanes } from '../content/tracks.js'
 import { ledger } from '../content/ledger.js'
+import { stay } from '../content/stay.js'
 import { copy } from '../content/copy.js'
 import { types } from '../quiz/tools.js'
 import { rich, todo } from '../content/render.js'
@@ -67,7 +68,7 @@ function ledgerBeat(m) {
 
 export function moveBeats(m, n, total = moves.length) {
   const sheet = cheatsheet(m.cheatsheet)
-  const source = m.framework.source
+  const source = m.framework?.source
     ? `<span class="source">${m.framework.source}${m.framework.verify ? ` ${todo('verify against the original')}` : ''}</span>`
     : ''
   return [
@@ -80,15 +81,18 @@ export function moveBeats(m, n, total = moves.length) {
         <p>${rich(m.principle)}</p>
       `,
     },
-    {
-      form: m.form,
-      html: `
-        ${eyebrow(m.name, copy.beatLabels.framework)}
-        <h3>${rich(m.framework.name)}</h3>
-        <p>${rich(m.framework.note)}</p>
-        ${source}
-      `,
-    },
+    // A move without a framework (Have an angle) goes straight to its example.
+    ...(m.framework
+      ? [{
+          form: m.form,
+          html: `
+            ${eyebrow(m.name, copy.beatLabels.framework)}
+            <h3>${rich(m.framework.name)}</h3>
+            <p>${rich(m.framework.note)}</p>
+            ${source}
+          `,
+        }]
+      : []),
     {
       form: 'nest',
       html: `
@@ -540,6 +544,42 @@ function takeHomeScene(step) {
   }
 }
 
+// The talk's closing before Questions: AI is here to stay, and the gap is
+// training (content/stay.js).
+function stayScene() {
+  const S = stay
+  return {
+    id: 'stay',
+    title: S.label,
+    minutes: 0,
+    form: 'rocket',
+    beats: [
+      {
+        html: `
+          ${eyebrow(S.label)}
+          <h2>${S.now.heading}</h2>
+          <ul class="stats" data-no-split>
+            ${S.now.stats.map((x) => `<li><b>${x.big}</b><span>${x.line}</span></li>`).join('')}
+          </ul>
+          <p class="note">${rich(S.source)}</p>
+        `,
+      },
+      {
+        html: `
+          ${eyebrow(S.label, 'The gap')}
+          <h2>${S.gap.heading}</h2>
+          <p class="lead">${S.gap.lead}</p>
+          <ul class="gaprows" data-no-split>
+            ${S.gap.rows.map((r) => `<li><span>${r.why}</span><b>${r.act}</b></li>`).join('')}
+          </ul>
+          <p class="stay__close">${S.gap.close}</p>
+          <p class="note">${rich(S.source)}</p>
+        `,
+      },
+    ],
+  }
+}
+
 function questionsScene() {
   return {
     id: 'questions',
@@ -572,6 +612,7 @@ export function routeScenes(route) {
     if (step.scene === 'quiz') return { ...quizScene(step), phase: 'design' }
     if (step.scene === 'examples') return { ...examplesScene(step), phase: 'evaluate' }
     if (step.scene === 'questions') return questionsScene()
+    if (step.scene === 'stay') return stayScene()
     if (step.scene === 'takehome') return takeHomeScene(step)
     if (step.era) {
       const era = eras.find((e) => e.id === step.era)

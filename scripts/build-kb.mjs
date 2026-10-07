@@ -38,7 +38,7 @@ const { copy } = await import(join(root, 'site/src/content/copy.js'))
 
 add(
   'app/moves.md',
-  moves.map((m, i) => `## Move ${i + 1}: ${m.name} (scene id: ${m.id}, phase: ${m.phase})\nAngle: ${strip(m.angle)}\n${strip(m.principle)}\nFramework: ${strip(m.framework.name)}. ${strip(m.framework.note)} Source: ${strip(m.framework.source ?? 'TODO')}\nWorked example: ${strip(m.example.title)}. ${strip(m.example.body)}\nPrompt to copy (${strip(m.promptHeading ?? '')}): site/src/content/cheatsheets/${m.cheatsheet}.md`).join('\n\n'),
+  moves.map((m, i) => `## Move ${i + 1}: ${m.name} (scene id: ${m.id}, phase: ${m.phase})\nAngle: ${strip(m.angle)}\n${strip(m.principle)}\n${m.framework ? `Framework: ${strip(m.framework.name)}. ${strip(m.framework.note)} Source: ${strip(m.framework.source ?? 'TODO')}` : 'Framework: none (removed by the owner).'}\nWorked example: ${strip(m.example.title)}. ${strip(m.example.body)}\nPrompt to copy (${strip(m.promptHeading ?? '')}): site/src/content/cheatsheets/${m.cheatsheet}.md`).join('\n\n'),
 )
 add(
   'app/journey.md',
@@ -56,7 +56,7 @@ add(
 
 Tagline: ${copy.tagline}
 Cover: ${copy.coverLead}
-Every move has four beats: the move itself, then "${copy.beatLabels.framework}" (the framework behind it), "${copy.beatLabels.example}" (a worked example) and "${copy.beatLabels.cheatsheet}" (a prompt to copy).
+Every move has up to four beats: the move itself, then "${copy.beatLabels.framework}" (the framework behind it; Have an angle has none), "${copy.beatLabels.example}" (a worked example) and "${copy.beatLabels.cheatsheet}" (a prompt to copy).
 Last page of the playbook: ${copy.closing.heading}. ${copy.closing.lead}
 Last page of the talk: ${copy.questions.heading}. ${copy.questions.lead}
 

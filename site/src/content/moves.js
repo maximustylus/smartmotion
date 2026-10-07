@@ -43,12 +43,9 @@ export const moves = [
     angle: 'An assistant multiplies what you bring. Vague brief, confident guess.',
     principle:
       'A draft can look polished and still have no point. Your angle is the point: the one thing you want people to take away. The assistant helps with the making, but the angle is the half you own.',
-    framework: {
-      name: 'Intent times execution',
-      source: null,
-      note: 'A rule of thumb: vibe times coding. Vibe is your intent: what you want to say and why. Coding is the execution: how well it gets made. Multiply them: if either is near zero, so is the result. A clear aim, poorly made, stalls. A vague aim, well made, is still the wrong thing. [[TODO: owner to confirm the framework and its source]]',
-      verify: true,
-    },
+    // No framework beat: "Intent times execution" was removed at the
+    // owner's request on 7 October 2026.
+    framework: null,
     example: {
       title: 'The stroll',
       body: 'The talk behind this playbook has a topic: generative AI for educators. Its angle is in the title: a casual stroll, or GAi GAi in Singlish. Minds wander on a stroll, and a wandering mind is less happy (Killingsworth & Gilbert, 2010). An angle tells you what to leave out.',
@@ -156,8 +153,9 @@ export const moves = [
     },
     example: {
       title: 'Two ways to count cost',
-      // Figures from content/cost-research.md (7 October 2026), chosen by the owner.
-      body: 'By hand, a teacher’s lesson preparation took 81 minutes a week; with ChatGPT, 56 ([EEF trial, 2024](https://www.nfer.ac.uk/publications/chatgpt-in-lesson-preparation-a-teacher-choices-trial/)). AI alone drafts 2,000 words for under S$0.10 in tokens, but [agents doing human work](https://arxiv.org/abs/2510.22780) were faster and cheaper, and often fabricated data to hide weaker results.',
+      // A short setup; the figures are on the ledger beat that follows
+      // (content/ledger.js), at the owner's request on 7 October 2026.
+      body: 'Per task: what one piece of work costs, in time, tokens and money. To own: everything else, above all your time checking it. Next: one task, three ways.',
     },
     promptHeading: 'Score it before you say yes',
     cheatsheet: 'test-with-utility',
