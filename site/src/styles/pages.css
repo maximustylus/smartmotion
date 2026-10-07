@@ -10,6 +10,10 @@
   z-index: -1;
   pointer-events: none;
   background:
+    radial-gradient(60% 50% at 0% 0%, var(--wash-1), transparent 70%),
+    radial-gradient(50% 45% at 100% 8%, var(--wash-2), transparent 70%),
+    radial-gradient(60% 55% at 100% 100%, var(--wash-3), transparent 70%),
+    radial-gradient(55% 50% at 0% 100%, var(--wash-4), transparent 70%),
     radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--accent) 16%, var(--bg)) 0%, transparent 60%),
     radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--accent) 7%, var(--bg)) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg) 0%, color-mix(in oklab, var(--fg) 7%, var(--bg)) 100%);

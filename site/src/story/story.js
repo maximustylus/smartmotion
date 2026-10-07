@@ -16,7 +16,7 @@ const escapeAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;
 */
 export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
   const scenes = mode === 'route' ? routeScenes(route) : playbookScenes(route)
-  document.title = mode === 'route' ? `${route.title} · Smart Motion` : 'Smart Motion'
+  document.title = mode === 'route' ? route.tab ?? `${route.title} · Smart Motion` : 'Smart Motion'
 
   // The rail at the top: by time budget on a route, one segment per move at home.
   const railed = scenes.filter((s) => (mode === 'route' ? s.minutes > 0 : s.beats && !s.era && !s.className?.includes('scene--phase') && s.id !== 'cover' && s.id !== 'routes'))

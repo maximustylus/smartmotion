@@ -13,6 +13,11 @@
   /* Light: the bare root holds the full palette */
   --bg: #f6f5f2;
   --bg-2: #eeede8;
+  /* The background wash: brand-gradient glows behind every page. */
+  --wash-1: rgba(255, 31, 179, 0.20);
+  --wash-2: rgba(255, 106, 90, 0.16);
+  --wash-3: rgba(255, 210, 63, 0.22);
+  --wash-4: rgba(47, 75, 255, 0.14);
   --fg: #111114;
   --muted: #5e5e66;
   --faint: #8d8d96;
@@ -70,6 +75,10 @@
   :root:not([data-theme='light']) {
     --bg: #0b0b0e;
     --bg-2: #141418;
+    --wash-1: rgba(255, 31, 179, 0.24);
+    --wash-2: rgba(255, 106, 90, 0.14);
+    --wash-3: rgba(166, 255, 31, 0.10);
+    --wash-4: rgba(110, 132, 255, 0.22);
     --fg: #f2f1ee;
     --muted: #a2a2ac;
     --faint: #6f6f79;
@@ -90,6 +99,10 @@
 :root[data-theme='dark'] {
   --bg: #0b0b0e;
   --bg-2: #141418;
+  --wash-1: rgba(255, 31, 179, 0.24);
+  --wash-2: rgba(255, 106, 90, 0.14);
+  --wash-3: rgba(166, 255, 31, 0.10);
+  --wash-4: rgba(110, 132, 255, 0.22);
   --fg: #f2f1ee;
   --muted: #a2a2ac;
   --faint: #6f6f79;

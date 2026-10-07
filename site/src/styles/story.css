@@ -1012,6 +1012,10 @@ html.overlay-open { overflow: hidden; }
   z-index: -1;
   pointer-events: none;
   background:
+    radial-gradient(60% 50% at 0% 0%, var(--wash-1), transparent 70%),
+    radial-gradient(50% 45% at 100% 8%, var(--wash-2), transparent 70%),
+    radial-gradient(60% 55% at 100% 100%, var(--wash-3), transparent 70%),
+    radial-gradient(55% 50% at 0% 100%, var(--wash-4), transparent 70%),
     radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 18%, var(--bg)) 0%, transparent 60%),
     radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 8%, var(--bg)) 0%, transparent 60%),
     linear-gradient(180deg, color-mix(in oklab, var(--fg) 0%, var(--bg)) 0%, color-mix(in oklab, var(--fg) 7%, var(--bg)) 100%);
@@ -1022,6 +1026,10 @@ html.overlay-open { overflow: hidden; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .app::before {
     background:
+      radial-gradient(60% 50% at 0% 0%, var(--wash-1), transparent 70%),
+      radial-gradient(50% 45% at 100% 8%, var(--wash-2), transparent 70%),
+      radial-gradient(60% 55% at 100% 100%, var(--wash-3), transparent 70%),
+      radial-gradient(55% 50% at 0% 100%, var(--wash-4), transparent 70%),
       radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 16%, var(--bg)) 0%, transparent 60%),
       radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 7%, var(--bg)) 0%, transparent 60%),
       linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
@@ -1029,11 +1037,18 @@ html.overlay-open { overflow: hidden; }
 }
 :root[data-theme='dark'] .app::before {
   background:
+    radial-gradient(60% 50% at 0% 0%, var(--wash-1), transparent 70%),
+    radial-gradient(50% 45% at 100% 8%, var(--wash-2), transparent 70%),
+    radial-gradient(60% 55% at 100% 100%, var(--wash-3), transparent 70%),
+    radial-gradient(55% 50% at 0% 100%, var(--wash-4), transparent 70%),
     radial-gradient(90% 55% at 50% -8%, color-mix(in oklab, var(--field) 16%, var(--bg)) 0%, transparent 60%),
     radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--field) 7%, var(--bg)) 0%, transparent 60%),
     linear-gradient(180deg, color-mix(in oklab, #ffffff 5%, var(--bg)) 0%, #000 100%);
 }
 
+
+/* The gradient wash (tokens.css --wash-*) rides on top of the story's own
+   background, in all three theme states. */
 
 /* Cover parallax: the copy lifts gently while the pixel M holds, as the page scrolls on. */
 .scene--cover .scene__copy { will-change: transform; transform: translateY(calc(var(--lift, 0) * -48px)); transition: transform 0.2s linear; }

@@ -8,6 +8,8 @@ export const routes = {
   'gai-gai': {
     id: 'gai-gai',
     title: 'GAi GAi with me',
+    // The browser tab's name for this route, kept short for the shared screen.
+    tab: 'GAi GAi',
     subtitle: 'A Casual Stroll into Generative AI for Educators.',
     voice: 'Ai MAi?',
     event: 'CGH Educator Lunch and Learn Series',
