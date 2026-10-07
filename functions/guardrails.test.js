@@ -61,7 +61,7 @@ test('the messages sent to the model are user and model turns only, and the key 
 })
 
 test('NRIC and FIN shapes are caught, lookalikes inside longer tokens are not', () => {
-  for (const t of ['S1234567D', 'my id is t7654321z.', '(F1234567N)', 'G1234567X please', 'S 1234 567 D', 'S-1234567-D', 'IC: S 1 2 3 4 5 6 7 D']) assert.ok(containsNric(t), t)
+  for (const t of ['S1234567D', 'my id is t7654321z.', '(F1234567N)', 'G1234567X please', 'S 1234 567 D', 'S-1234567-D', 'IC: S 1 2 3 4 5 6 7 D', 'S.1234567.D', 'S1234567/D', 'Ｓ１２３４５６７Ｄ']) assert.ok(containsNric(t), t)
   for (const t of ['NS1234567X', 'S12345678', 'S123456D', 'move 4 of 8', 'call 9123 4567', 'S$1234567 budget', '']) assert.ok(!containsNric(t), t)
   assert.equal(containsNric(undefined), false)
 })
@@ -210,4 +210,12 @@ test('a body that is not JSON gets a plain 400, not a crash', async () => {
   const res = fakeRes()
   await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'json-test' }, body: '{not json' }, res)
   assert.equal(res.statusCode, 400)
+})
+
+test('the persona gives no instruction to praise (Rule 11, v1.2)', () => {
+  const src = readFileSync(join(root, 'functions/motus.js'), 'utf8')
+  const persona = src.slice(src.indexOf('const persona'), src.indexOf('const system'))
+  assert.match(persona, /without praise/)
+  assert.match(persona, /never use exclamation marks/)
+  assert.doesNotMatch(persona, /name it briefly and specifically/)
 })

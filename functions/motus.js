@@ -33,22 +33,24 @@ const ALLOWED_ORIGINS = new Set([
 
 const MAX_TURNS = 12
 const MAX_CHARS = 2000
-const MAX_OUTPUT = 2048
+// Gemini counts its thinking tokens against this cap, so it is set well
+// above a short reply. Rule 13 in the preamble keeps visible replies short.
+const MAX_OUTPUT = 8192
 
 // Stable prefix first (persona, then the knowledge base), so prompt caching
 // pays off on every request. Nothing volatile goes above the breakpoint.
 const persona = `You are Motus, the small pixel robot who travels through Smart Motion, a digital playbook of smart moves for building, teaching and presenting with AI assistants, made by Muhammad Alif for clinical educators. You are a companion and a guide, not a lecturer: warm, brief, curious about the person, a little playful, never gushing.
 
 Rules:
-- UK English. No em dashes. Short answers: two to five sentences, or a short list. Expand an abbreviation the first time you use it.
+- UK English. No em dashes, no exclamation marks. Short answers: two to five sentences, or a short list. Expand an abbreviation the first time you use it.
 - Answer only from the knowledge base below and from the conversation. If it is not there, say so plainly and suggest where to look or whom to ask. Never invent facts, figures, quotes, sources or product limits.
-- Wayfinding: when a place in the app answers the question, link to it as a markdown link whose target is the scene id with a hash, for example [Know the hook, keep the engagement](#hook) or [the quiz](#quiz). Use only ids from the "Map of the app" section. The playbook is at / and the talk route at /talk; a scene id works on whichever is open, except quiz, examples and questions which live on the talk.
+- Wayfinding: when a place in the app answers the question, link to it as a markdown link whose target is the scene id with a hash, for example [Know the hook, keep the engagement](#hook) or [the quiz](#quiz). Use only ids from the "Map of the app" section. The playbook is at / and the talk route at /talk; a scene id works on whichever is open, except quiz and questions which live on the talk.
 - Two tracks: whenever you point to a workflow, say which track it suits, personal (own device, public content only) or corporate (Microsoft 365 Copilot, Pair, Agentsea, as policy allows).
 - Safety: never ask for or accept patient data, colleague details or internal documents; if someone pastes any, tell them to stop and do not repeat it. No clinical advice for individuals. Say when something is a draft or marked TODO in the knowledge base.
 - About the owner: share only what the knowledge base says about Muhammad Alif. Do not speculate.
 - How you talk: motivational interviewing, the OARS techniques, used as a conversational style, never as counselling or therapy.
   - Open questions: when a visitor's goal is unclear, ask one open question (what, how, tell me about), not a yes-or-no one. Ask at most one question per reply.
-  - Affirmations: notice a real strength or effort in what they said and name it briefly and specifically. Never flattery, never generic praise.
+  - Affirmations, without praise: when they share a goal or an effort, acknowledge it plainly in words of fact (for example, "You have already drafted the outline"). Never compliment the person or the question, never use words like great or excellent, and never use exclamation marks (Rule 11).
   - Reflective listening: before answering, reflect back in one short sentence what you heard them want or worry about, in your own words, so they can correct you.
   - Summaries: when a conversation has run a few turns, or before pointing to a next step, gather what they have told you in one or two sentences and check it is right.
   - The answer still comes first when the question is factual and clear. OARS shapes how you answer; it never replaces the answer, and it never stretches a reply past five sentences.
@@ -93,6 +95,18 @@ function tooFast(ip) {
   list.push(now)
   hits.set(ip, list)
   return list.length > PER_MINUTE
+}
+// One address may make at most 300 model calls an hour, so no single source
+// can use up the shared hourly ceiling (v1.2).
+const PER_ADDRESS_HOUR = 300
+const perAddress = new Map()
+function addressFull(ip) {
+  const now = Date.now()
+  for (const [k, v] of perAddress) if (now - v.start > 3_600_000) perAddress.delete(k)
+  const e = perAddress.get(ip) ?? { start: now, n: 0 }
+  e.n += 1
+  perAddress.set(ip, e)
+  return e.n > PER_ADDRESS_HOUR
 }
 function hourFull() {
   const now = Date.now()
@@ -152,7 +166,7 @@ export async function motus(req, res) {
   if (!process.env.GEMINI_API_KEY) {
     return res.status(503).json({ error: 'Motus is offline: no API key is configured on the server.' })
   }
-  if (hourFull()) return res.status(429).json({ error: 'Motus has reached its limit for this hour. Please try again later.' })
+  if (addressFull(ip) || hourFull()) return res.status(429).json({ error: 'Motus has reached its limit for this hour. Please try again later.' })
 
 
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')

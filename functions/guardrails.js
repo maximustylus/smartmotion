@@ -21,7 +21,7 @@
 */
 
 /** Bumped when the rule text or the preamble changes. Stamped into every reply. */
-export const GUARDRAIL_VERSION = '1.1'
+export const GUARDRAIL_VERSION = '1.2'
 
 /** The date the owner issued the rules (for AURA). Adopted for Motus on 2026-10-05. */
 export const GUARDRAIL_EFFECTIVE = '2026-08-24'
@@ -103,7 +103,10 @@ export const PREAMBLE_RULE_IDS = Object.freeze(['P1', 'P2', 'P3', 'P4', 'P5', 'P
   of birth all pass it.
 */
 export const NRIC_SHAPE = /(?<![A-Za-z0-9])[STFGMstfgm][\s-]?(?:\d[\s-]?){7}[A-Za-z](?![A-Za-z0-9])/
-export const containsNric = (text) => typeof text === 'string' && NRIC_SHAPE.test(text)
+// Since 1.2 the text is normalised first: full-width digits and letters
+// become plain ones (NFKC), and dots, underscores and slashes count as
+// separators like spaces and hyphens.
+export const containsNric = (text) => typeof text === 'string' && NRIC_SHAPE.test(text.normalize('NFKC').replace(/[._/]/g, ' '))
 export const NRIC_REFUSAL =
   'That message looks like it contains an NRIC or FIN number. I have not read it or sent it anywhere. ' +
   'Please remove the number and ask again. Smart Motion never needs patient or staff details.'

@@ -5,11 +5,11 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ✅ **In effect.** Version 1.1 signed off on 6 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. It supersedes 1.0 (signed the same day) with the fixes from that evening's quality-control stress test (see Card versioning). |
+| **Card status** | ✅ **In effect.** Version 1.2 signed off on 7 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. It supersedes 1.1 with the fixes from the final quality-control round (see Card versioning). |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 1.1 |
-| **Last updated** | 2026-10-06 |
-| **Describes** | Smart Motion **v0.5.1** · Motus guardrails **v1.1** |
+| **Card version** | 1.2 |
+| **Last updated** | 2026-10-07 |
+| **Describes** | Smart Motion **v0.6.0** · Motus guardrails **v1.2** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
 
 ---
@@ -25,7 +25,9 @@ Motus is the small robot at the bottom right of Smart Motion. Tap it and a chat 
 - **Explain the playbook.** What a move means, what a framework is, which of the five workflows
   fits your need, and whether it suits the personal or the corporate track.
 - **Answer from the playbook only.** Motus's knowledge is a fixed set of documents built from this
-  site's own repository (the moves, the eras, the workflows, the brief and this card). It is told
+  site's own repository (the moves, the eras, the workflows, the brief, the use cases, the
+  corporate agents guide, the checked cost research, the owner's check of Jensen Huang's remarks
+  and this card). It is told
   to name the document it relies on and to say so when the answer is not there.
 
 ### How Motus talks
@@ -91,8 +93,9 @@ measured**; the guidelines permit qualitative statements.*
 
 - **Safeguards:** a guardrail preamble leads every request. It forbids invented facts, figures,
   quotes and sources, requires Motus to name the document it relies on, and requires it to say
-  when something is missing or marked TODO. The playbook's unverified cost figures are **left out
-  of Motus's knowledge base** in code. Output length is capped in code, and a reply cut at the
+  when something is missing or marked TODO. The unverified cost items in content/cost-evidence.md
+  are **left out of Motus's knowledge base** in code; only the checked cost research, with every
+  figure sourced, goes in. Output length is capped in code, and a reply cut at the
   limit says so.
 - **Effectiveness, honestly:** the code parts are tested. The prompt parts are tested only to
   **reach** the model. Nothing yet shows the model **follows** them; that needs a read of real
@@ -132,8 +135,10 @@ measured**; the guidelines permit qualitative statements.*
   Rate ceilings per instance: 60 messages a minute from one address (a hospital network can put a
   whole room behind one address) and 3,000 calls to the model an hour in all, with at most five
   instances, so a script meets a limit rather than an unbounded bill. Only messages that reach the
-  model count towards the hour, so junk and screened messages cannot use it up. The address is the
-  one the request reports, which a script can change; the hourly ceiling still holds. Gemini's own safety
+  model count towards the hour, so junk and screened messages cannot use it up. Since 1.2 one
+  address may make at most 300 model calls an hour, so no single source can use up the shared
+  hour. The address is the one the request reports, which a script can change; the hourly ceiling
+  still holds. Gemini's own safety
   filters apply to every reply, and a reply they block gets a fixed line instead.
 - **Effectiveness, honestly:** no red-team exercise has been run against Motus.
 - **What you can do:** report anything harmful or wrong (§5).
@@ -214,15 +219,17 @@ card will not invent a service level it cannot keep.
    the services' own websites: 995 is SCDF's emergency ambulance line (scdf.gov.sg) and 1767 is the
    Samaritans of Singapore 24-hour hotline (sos.org.sg). Struck through, not deleted.
 5. **The identifier check covers NRIC and FIN shapes only.** Not PDPA compliance. Since 1.1 it
-   also catches the number written with spaces or hyphens. Names, ward and bed, phone numbers and
+   also catches the number written with spaces or hyphens, and since 1.2 with dots, underscores,
+   slashes or full-width characters. Names, ward and bed, phone numbers and
    medical record numbers still pass it and reach the model.
 6. **No age assurance** exists; the site is open to anyone with the link.
 7. **Google's data handling is taken from its terms, not verified independently.** It depends on
    the key being on the paid tier (§4); an unpaid key would allow Google to use conversations to
    improve its products.
-8. **The IMDA guidelines were not re-read for this card.** Its structure and framing follow the
-   owner's signed AURA card (NEXUS, v1.3), which is structured after the guidelines' Annex B. A
-   check against the guidelines themselves is still due; it was not done before the 1.0 sign-off.
+8. **The IMDA guidelines were read, but the card was not checked clause by clause.** The PDF was
+   read on 7 October 2026 and its Annex B, Sample Chatbot Info Card, confirmed as the format this
+   card follows (references.md). The card's structure follows the owner's signed AURA card (NEXUS,
+   v1.3). A clause-by-clause check against the guidelines is still due.
 9. **The sixteen rules were written for AURA**, a drafting assistant inside a hospital team tool.
    `MOTUS-GUARDRAILS.md` §B says where they fit Motus loosely or not at all.
 10. **No quantitative safety metrics exist.** Every effectiveness statement is qualitative by
@@ -250,8 +257,8 @@ the named source on the date shown, not permanently true.*
 | NRIC/FIN shape refused, browser and server, with or without spaces or hyphens (§2, §3) | `functions/guardrails.js` `NRIC_SHAPE`; `site/src/motus/chat.js` | Confirmed 2026-10-06; tested |
 | Crisis phrases answered with a fixed reply, never sent to the model, with or without a key (§3) | `functions/guardrails.js` `screenInput`; `functions/motus.js` | Confirmed 2026-10-05; tested |
 | Phone numbers in the crisis reply (§3) | scdf.gov.sg (995); sos.org.sg (1767) | Confirmed 2026-10-06 |
-| Output capped at 2,048 tokens; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-06 (1.0 said 1,200, which was out of date) |
-| Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-06 |
+| Output capped at 8,192 tokens, thinking included; replies kept short by Rule 13; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-06 (1.0 said 1,200, which was out of date) |
+| Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`, `PER_ADDRESS_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-07 |
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
 | Server logs carry no conversation text (§4) | `functions/motus.js` `console.info` and `console.error` calls | Confirmed 2026-10-05 |
 | Motus is live (header, gap 2) | Firebase deploy of 2026-10-06; live test turns that day | Confirmed 2026-10-06 |
@@ -269,7 +276,8 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
-| **1.1** | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model. NRIC check also catches spaces and hyphens. Rule 11 in the prompt now forbids exclamation marks and praise. Output cap corrected to 2,048 tokens. Statements written before Motus went live brought up to date; gap list renumbered. **Signed off by the owner (Muhammad Alif) and in effect.** |
+| **1.2** | 2026-10-07 | After the final quality-control round. The persona no longer asks for affirmations that read as praise: it acknowledges plainly, with no compliments or exclamation marks (Rule 11). Output cap raised to 8,192 tokens, because Gemini's thinking counted against 2,048 and cut broad answers short; Rule 13 still keeps replies short. NRIC check also catches dots, underscores, slashes and full-width characters. One address limited to 300 model calls an hour. Knowledge list and gap 8 brought up to date; describes v0.6.0. **Signed off by the owner (Muhammad Alif) and in effect.** |
+| 1.1 | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model. NRIC check also catches spaces and hyphens. Rule 11 in the prompt now forbids exclamation marks and praise. Output cap corrected to 2,048 tokens. Statements written before Motus went live brought up to date; gap list renumbered. Signed off by the owner (Muhammad Alif); superseded by 1.2. |
 | 1.0 | 2026-10-06 | Signed off by the owner (Muhammad Alif); superseded by 1.1. No content change from 0.5. |
 | 0.5 (draft) | 2026-10-06 | Motus deployed and live; the first live checks recorded in the header and gap 3. Still awaiting the owner's sign-off. |
 | 0.4 (draft) | 2026-10-06 | Model provider changed from Anthropic's Claude to Google's Gemini at the owner's request: §1, §4 and gaps 2, 7 and 12 rewritten for Google's terms. |
