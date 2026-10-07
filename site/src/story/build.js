@@ -220,7 +220,10 @@ export function phaseScene(phase) {
       `,
     },
   ]
-  if (phase.quote) beats.push({ form: 'nest', html: `${eyebrow('ADDIE', phase.name)}${quoteBlock(phase.quote)}` })
+  // A quote page keeps a drawing of its own: Turing's short distance ahead
+  // is a spyglass, and "Balancing is an act" keeps Evaluate's balance scale.
+  const QUOTE_FORM = { analyse: 'spyglass', evaluate: 'scale' }
+  if (phase.quote) beats.push({ form: QUOTE_FORM[phase.id] ?? 'nest', html: `${eyebrow('ADDIE', phase.name)}${quoteBlock(phase.quote)}` })
   return { id: `phase${phase.id}`, title: phase.name, minutes: 0, phase: phase.id, className: 'scene--phase', form: PHASE_FORM[phase.id] ?? 'nest', beats }
 }
 

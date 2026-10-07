@@ -1086,6 +1086,29 @@ const clipboardForm = (() => {
   ])
 })()
 
+// Analyse, with Turing's "We can only see a short distance ahead": a
+// spyglass, drawn out in three sections, looking up and to the right.
+const spyglassForm = (() => {
+  const tube = (x0, x1, h, w = 4) => [
+    [w, seg(x0, h, x1, h, 0.016)],
+    [w, seg(x0, -h, x1, -h, 0.016)],
+    [w * 0.5, box((x0 + x1) / 2, 0, x1 - x0, h * 1.6)],
+  ]
+  const ring = (x, h) => [2, seg(x, -h, x, h, 0.02)]
+  return drawing(
+    [
+      ...tube(-1.55, -1.05, 0.1, 3),
+      ...tube(-1.05, -0.15, 0.16, 4),
+      ...tube(-0.15, 1.15, 0.24, 6),
+      ring(-1.55, 0.1), ring(-1.05, 0.17), ring(-0.15, 0.25),
+      [5, arc(1.15, 0, 0.25, -Math.PI / 2, Math.PI / 2, 0.02)],
+      [3, arc(1.15, 0, 0.25, Math.PI / 2, (3 * Math.PI) / 2, 0.012)],
+      [3, seg(0.15, 0.24, 0.5, 0.24, 0.03)],
+    ],
+    { rot: 0.38 },
+  )
+})()
+
 const vertex = /* glsl */ `
   attribute vec3 aFrom;
   attribute vec3 aTo;
@@ -1378,7 +1401,7 @@ export function createField(host) {
   const cache = { cloud: { positions: Float32Array.from(to) } }
   const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'),
     // The same timeline at half size, for a move beat beside its copy.
-    'timeline80s:stage': (n, r) => { const f = timeline80sForm(n, r, 'robot'); for (let i = 0; i < f.positions.length; i++) f.positions[i] *= 0.48; return f }, chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
+    'timeline80s:stage': (n, r) => { const f = timeline80sForm(n, r, 'robot'); for (let i = 0; i < f.positions.length; i++) f.positions[i] *= 0.48; return f }, chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, spyglass: spyglassForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their
