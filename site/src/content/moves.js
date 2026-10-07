@@ -157,7 +157,7 @@ export const moves = [
     example: {
       title: 'Two ways to count cost',
       // Figures from content/cost-research.md (7 October 2026), chosen by the owner.
-      body: 'By hand, a teacher’s lesson preparation took 81 minutes a week; with ChatGPT, 56 ([EEF trial, 2024](https://www.nfer.ac.uk/publications/chatgpt-in-lesson-preparation-a-teacher-choices-trial/)). AI alone drafts 2,000 words for under US$0.10 in tokens, but [agents doing human work](https://arxiv.org/abs/2510.22780) were faster and cheaper, and often fabricated data to hide weaker results.',
+      body: 'By hand, a teacher’s lesson preparation took 81 minutes a week; with ChatGPT, 56 ([EEF trial, 2024](https://www.nfer.ac.uk/publications/chatgpt-in-lesson-preparation-a-teacher-choices-trial/)). AI alone drafts 2,000 words for under S$0.10 in tokens, but [agents doing human work](https://arxiv.org/abs/2510.22780) were faster and cheaper, and often fabricated data to hide weaker results.',
     },
     promptHeading: 'Score it before you say yes',
     cheatsheet: 'test-with-utility',

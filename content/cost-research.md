@@ -6,6 +6,13 @@ tokens and money. Every figure below was read from the source named beside
 it; nothing is estimated. This file is separate from content/cost-evidence.md,
 whose items are unverified and must not appear.
 
+**Currency.** All money is in Singapore dollars (S$), converted from the
+US dollar prices at S$1.2771 to US$1: the cross rate from the European
+Central Bank's euro reference rates of 6 October 2026 (S$1.4392 and
+US$1.1269 to €1). The MAS rates page refused automated reading. Prices are
+before GST and card charges. The per-million-token price lists stay in
+US$, as the providers publish them.
+
 Read the caveats. Most time savings are measured on drafting tasks; checking
 time is often left out; self-reported savings run higher than timed ones.
 
@@ -25,12 +32,13 @@ Queue Live were built elsewhere, so they are not measured here.
 | Owner's prompts | about 108 | about 243 |
 | Tokens written by the AI (output) | 1.2 million | 4.4 million |
 | Tokens read by the AI, mostly from cache | 543 million | 2.08 billion |
-| API-equivalent cost at list prices | about US$440 | about US$2,158 |
+| API-equivalent cost at list prices | about S$562 (US$440) | about S$2,755 (US$2,158) |
 
 **Money, actually paid:** the owner is on Claude Max 5x since July 2026.
 Anthropic's pricing page (read 7 October 2026) shows Max "From $100 Per
 month", with a choice of 5x or 20x more usage than Pro; 5x is the lower
-option, so about US$100 a month, about US$400 from July to October. The
+option, so about S$128 (US$100) a month, about S$511 (US$400) from July to
+October. The
 API-equivalent figure is what the same tokens would cost if bought one by
 one at Anthropic's list prices; it is not what was paid.
 
@@ -99,8 +107,8 @@ ways to talk about money honestly:
   tasks are software, machine learning and security tasks, well specified
   and machine scored; METR calls ability "jagged".
 - **What it costs per task.** SWE-bench Verified (February 2026), 500 coding
-  tasks: Claude 4.5 Opus resolved 76.8% at about US$0.75 per task attempted;
-  Gemini 3 Flash 75.8% at about US$0.36.
+  tasks: Claude 4.5 Opus resolved 76.8% at about S$0.96 (US$0.75) per task
+  attempted; Gemini 3 Flash 75.8% at about S$0.45 (US$0.36).
 - **Against people doing the same work.** Wang et al. (2025): agents were
   "88.3% faster" and cost "90.4-96.2% less", but "produce work of inferior
   quality, yet often mask their deficiencies via data fabrication."
@@ -109,8 +117,8 @@ ways to talk about money honestly:
   summarisation leaderboard (Vectara, September 2026): best model 1.8%,
   Claude Opus 4.6 12.2%, Gemini 3.1 Pro Preview 10.4%.
 - **A 2,000-word draft, AI alone.** About 2,667 output tokens (at 0.75 words
-  a token): about US$0.05 on Opus 5.5 (US$20 per million output), about
-  US$0.02 on Gemini 3.5 Flash (US$9), plus the prompt. That buys a draft, not
+  a token): about S$0.07 (US$0.05) on Opus 5.5 (US$20 per million output),
+  about S$0.03 (US$0.02) on Gemini 3.5 Flash (US$9), plus the prompt. That buys a draft, not
   a checked draft: add the person's checking time.
 
 Current list prices (US$ per million tokens, input / output, read 7 October
