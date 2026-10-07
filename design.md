@@ -1,7 +1,7 @@
 # Smart Motion design brief
 
-Decided in the UI/UX interviews on 3 October 2026. Supplements brief.md.
-Where the two differ, this file wins.
+Decided in the UI/UX interviews on 3 October 2026. The build brief it
+supplemented is now in archive/BRIEF.md; this file is the current one.
 
 ## What Smart Motion is
 

@@ -3,7 +3,7 @@
 Research for the Test move ("Two ways to count cost"), done on 7 October
 2026 at the owner's request. Three ways of working, three currencies: time,
 tokens and money. Every figure below was read from the source named beside
-it; nothing is estimated. This file is separate from content/cost-evidence.md,
+it; nothing is estimated. This file is separate from archive/cost-evidence.md,
 whose items are unverified and must not appear.
 
 **Currency.** All money is in Singapore dollars (S$), converted from the

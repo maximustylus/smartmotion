@@ -93,7 +93,7 @@ measured**; the guidelines permit qualitative statements.*
 
 - **Safeguards:** a guardrail preamble leads every request. It forbids invented facts, figures,
   quotes and sources, requires Motus to name the document it relies on, and requires it to say
-  when something is missing or marked TODO. The unverified cost items in content/cost-evidence.md
+  when something is missing or marked TODO. The unverified cost items in archive/cost-evidence.md
   are **left out of Motus's knowledge base** in code; only the checked cost research, with every
   figure sourced, goes in. Output length is capped in code, and a reply cut at the
   limit says so.

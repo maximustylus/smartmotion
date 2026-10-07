@@ -5,12 +5,14 @@ Smart moves, with you in charge.
 A digital interactive playbook of smart moves for building, teaching and
 presenting with AI assistants. Eight moves, each with a framework, a worked
 example and a cheatsheet you can paste into any assistant. Routes string
-moves into sessions; the first route is the talk "GAi GAi with me" for the
-CGH Educator Lunch and Learn Series on 7 October 2026.
+moves into sessions; the first route, the talk "GAi GAi with me", was
+given at the CGH Educator Lunch and Learn Series on 7 October 2026.
 
-- brief.md: what the talk needs and the rules for content.
 - design.md: what Smart Motion is, the moves, the routes, the design system.
-- workflows/: the cheatsheets as plain prompts.
+- references.md: every source the app cites.
+- workflows/: the owner's five workflows and the two tracks.
+- archive/: dated documents from the build and the talk (the brief, the
+  handover, the rehearsal checklist).
 - site/: the Vite app, deployed to smartmotion.web.app on Firebase Hosting.
 - firestore.rules: anonymous quiz counters, increments only.
 
@@ -58,8 +60,8 @@ cd functions && GEMINI_API_KEY=... node local.mjs
 ```
 
 Motus answers only from `functions/kb.json`, which is built from README,
-design.md, BRIEF.md, HANDOVER.md, references.md, content/ (except the
-unverified cost evidence), workflows/, the info card and the app's own
+design.md, the archived brief, references.md, content/, workflows/, the
+info card and the app's own
 moves and journey. Fill content/profile.md so it can answer about the
 owner. Conversations are not stored.
 
@@ -68,8 +70,7 @@ Governance follows the owner's NEXUS pattern for AURA:
 asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
 Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). The
 owner signed version 1.0 of both on 6 October 2026 and Motus went live on
-Gemini that day. Version 1.1 of both, after the stress test, was signed
-off the same evening. Tests: `cd functions && npm test`.
+Gemini that day; version 1.2, after the final quality-control round, was
+signed off on 7 October 2026. Tests: `cd functions && npm test`.
 
 Still to do: read a set of real turns as NEXUS did.
-- REHEARSAL.md: the checklist for the shared screen.

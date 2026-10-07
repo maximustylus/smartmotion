@@ -9,9 +9,9 @@ const read = (p) => readFileSync(join(root, p), 'utf8')
 const docs = []
 const add = (path, text) => docs.push({ path, text: text.trim() })
 
-// content/cost-evidence.md is deliberately absent: its items are unverified
+// archive/cost-evidence.md is deliberately absent: its items are unverified
 // and the brief says they must not appear, which includes Motus repeating them.
-for (const f of ['README.md', 'design.md', 'BRIEF.md', 'HANDOVER.md', 'references.md', 'content/use-cases.md', 'content/profile.md', 'content/corporate-agents.md', 'content/cost-research.md', 'content/huang-maths.md', 'MOTUS-INFO-CARD.md']) {
+for (const f of ['README.md', 'design.md', 'archive/BRIEF.md', 'references.md', 'content/use-cases.md', 'content/profile.md', 'content/corporate-agents.md', 'content/cost-research.md', 'content/huang-maths.md', 'MOTUS-INFO-CARD.md']) {
   try { add(f, read(f)) } catch { /* optional */ }
 }
 for (const f of readdirSync(join(root, 'workflows')).filter((f) => f.endsWith('.md'))) add(`workflows/${f}`, read(`workflows/${f}`))

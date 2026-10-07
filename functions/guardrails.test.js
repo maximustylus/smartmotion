@@ -118,7 +118,7 @@ test('the handler answers a screened message without a key and without the model
 
 test('the knowledge base leaves out the unverified cost evidence', () => {
   const kb = JSON.parse(readFileSync(join(root, 'functions/kb.json'), 'utf8'))
-  assert.ok(!kb.some((d) => d.path === 'content/cost-evidence.md'))
+  assert.ok(!kb.some((d) => /cost-evidence\.md$/.test(d.path)))
   assert.ok(kb.some((d) => d.path === 'MOTUS-INFO-CARD.md'), 'the info card is in the knowledge base')
 })
 

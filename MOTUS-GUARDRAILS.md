@@ -318,7 +318,7 @@ handed to an agent without its criteria, controlling documents and data class at
 | Rule | How it is carried | Status |
 |---|---|---|
 | **P1** Fail loud | **PROMPT + CODE**. The preamble requires Motus to say what is missing, assumed or marked TODO. In code: a reply cut at the length limit ends with *"Cut short at my length limit"* instead of a silent ellipsis, and a failed request shows its error in the chat rather than nothing. | ⚠️ partial |
-| **P2** Define done | **PROMPT**. Motus names the reading it is answering and asks back only when any answer would be guesswork. Acceptance criteria for the site itself are the owner's (BRIEF.md). | ⚠️ instructed |
+| **P2** Define done | **PROMPT**. Motus names the reading it is answering and asks back only when any answer would be guesswork. Acceptance criteria for the site itself are the owner's (archive/BRIEF.md). | ⚠️ instructed |
 | **P3** Source over invention | **PROMPT**. Unlike AURA, Motus has a source: the knowledge base (`functions/kb.json`, built from the repository by `scripts/build-kb.mjs`) sits in its prompt. It is told to name the document it relies on and to decline rather than answer from training. In code, `content/cost-evidence.md` is **left out of the knowledge base**, because its items are unverified and the brief says they must not appear; a test asserts the absence. Whether Motus names its source on every turn is **unverified**. | ⚠️ instructed |
 | **P4** Surface conflicts | **PROMPT**. Not machine-checkable. | ⚠️ instructed |
 | **P5** Every element earns its place | **PROMPT**. Not machine-checkable. | ⚠️ instructed |

@@ -11,10 +11,11 @@ a motion graphic, not a slide deck.
 
 ## Read first
 
-- BRIEF.md (version 1.2), HANDOVER.md and design.md. The newer file wins.
+- design.md: what Smart Motion is and its design system.
 - content/voice.md: the voice every line of copy follows.
-- content/content-pass-review.md: decisions and TODOs waiting on the owner.
 - references.md: nothing may be cited that is not listed there.
+- archive/: the build brief, handover and talk documents, dated after the
+  talk on 7 October 2026. History, not current guidance.
 
 ## Where things live
 
@@ -61,7 +62,7 @@ a motion graphic, not a slide deck.
   as [[TODO: what is needed]]. Live effort figures are written as
   {{active}}, {{elapsed}}, {{commits}}, {{prompts}}, {{sittings}}.
 - UK English. No em dashes or en dashes. No exclamation marks. No hype.
-- Items in content/cost-evidence.md are unverified and must not appear.
+- Items in archive/cost-evidence.md are unverified and must not appear.
 - Pandan Reservoir case: "charged" and "allegedly"; no name, nationality
   or image in our own copy. Will Smith clips: no likeness in our own copy or
   images. On 7 October 2026 the owner chose to open both sources (the

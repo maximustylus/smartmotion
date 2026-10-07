@@ -9,7 +9,7 @@
   Copy is plain text. [[TODO: ...]] marks something the owner still has to
   supply and shows as a TODO chip; {{active}}, {{elapsed}}, {{commits}},
   {{prompts}} and {{sittings}} are live figures kept by scripts/steward.mjs.
-  See render.js. Content rules from BRIEF.md apply: nothing invented, and
+  See render.js. Content rules from CLAUDE.md apply: nothing invented, and
   sources listed here must be verified against the originals in
   references.md before publishing.
 */
@@ -32,7 +32,7 @@ export const moves = [
     },
     example: {
       title: 'The brief behind this app',
-      body: 'This app was built from [a written brief](https://github.com/maximustylus/smartmotion/blob/main/BRIEF.md), in phases, with a stop for approval after each. Done is one sentence with four checks: live on the web, rehearsed in full on Zoom, no placeholders marked TODO in view, every claim traceable to a reference. Everything else is negotiable.',
+      body: 'This app was built from [a written brief](https://github.com/maximustylus/smartmotion/blob/main/archive/BRIEF.md), in phases, with a stop for approval after each. Done is one sentence with four checks: live on the web, rehearsed in full on Zoom, no placeholders marked TODO in view, every claim traceable to a reference. Everything else is negotiable.',
     },
     promptHeading: 'Turn your idea into a brief',
     cheatsheet: 'begin-with-the-end',
