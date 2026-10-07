@@ -18,8 +18,8 @@ export const ledger = {
     {
       name: 'Time',
       cells: [
-        { big: '81 min a week', small: 'lesson preparation, EEF trial' },
-        { big: '56 min a week', small: 'the same task, with ChatGPT' },
+        { big: '81.5 min a week', small: 'lesson preparation, EEF trial' },
+        { big: '56.2 min a week', small: 'the same task, with ChatGPT' },
         { big: '88% faster', small: 'agents against people, Wang et al.' },
       ],
     },
@@ -28,7 +28,7 @@ export const ledger = {
       cells: [
         { big: 'None', small: '' },
         { big: '1.2 million', small: 'written to build this playbook' },
-        { big: 'About 2,700', small: 'for a 2,000-word draft' },
+        { big: 'About 2,700', small: 'for a 2,000-word draft, at 0.75 words a token' },
       ],
     },
     {

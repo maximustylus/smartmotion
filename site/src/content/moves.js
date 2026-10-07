@@ -176,7 +176,7 @@ export const moves = [
   {
     id: 'reality',
     // Particle drawings for this move's beats, chosen by the owner on 7 October 2026.
-    forms: { move: 'lens', example: 'timeline80s', prompt: 'runner' },
+    forms: { move: 'lens', example: 'timeline80s:stage', prompt: 'runner' },
     phase: 'evaluate',
     name: 'Reality check',
     angle: 'An idea in five minutes. A working demo in two hours. The final 10% takes six months.',

@@ -31,8 +31,8 @@ Queue Live were built elsewhere, so they are not measured here.
 | Active time, human and AI together | 11.1 hours | 49.3 hours |
 | Owner's prompts | about 108 | about 243 |
 | Tokens written by the AI (output) | 1.2 million | 4.4 million |
-| Tokens read by the AI, mostly from cache | 543 million | 2.08 billion |
-| API-equivalent cost at list prices | about S$562 (US$440) | about S$2,755 (US$2,158) |
+| Tokens read by the AI, mostly from cache (cache reads, priced far lower) | 543 million, mostly cache reads | 2.08 billion, mostly cache reads |
+| API-equivalent cost at list prices (not what was paid; a lower bound, from local logs only) | about S$562 (US$440), not paid | about S$2,755 (US$2,158), not paid |
 
 **Money, actually paid:** the owner is on Claude Max 5x since July 2026.
 Anthropic's pricing page (read 7 October 2026) shows Max "From $100 Per

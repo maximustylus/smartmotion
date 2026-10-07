@@ -119,10 +119,19 @@ export async function mountQuiz(sceneEl, { go }) {
     if (!reduce()) gsap.from(resultEl.children, { y: 16, autoAlpha: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
   }
 
+  let sending = false
   async function finish() {
     if (!state.level) {
       go(1)
       return
+    }
+    // One vote per device: a double tap, or going back and tapping again,
+    // shows the result already given rather than counting twice.
+    if (sending || state.result) return go(3)
+    sending = true
+    for (const b of [beats[1], beats[2]]) {
+      b.querySelector('.played').hidden = false
+      for (const el of b.querySelectorAll('.options')) el.hidden = true
     }
     state.result = { level: state.level, type: state.type, sent: false }
     store.set(state.result)
@@ -155,12 +164,12 @@ export async function mountQuiz(sceneEl, { go }) {
     status.textContent = state.result.sent ? 'Already counted in the room totals.' : 'Your earlier result did not reach the room.'
     for (const b of [beats[1], beats[2]]) {
       b.querySelector('.played').hidden = false
-      b.querySelector('.played [data-go]').addEventListener('click', () => go(3))
       // No second go: the room only counts a device once.
       for (const el of b.querySelectorAll('.options')) el.hidden = true
     }
   }
   if (presenter) resultEl.innerHTML = '<p class="result__line">Your result appears on your phone.</p>'
+  for (const b of [beats[1], beats[2]]) b.querySelector('.played [data-go]')?.addEventListener('click', () => go(3))
   beats[3].querySelector('[data-next]').addEventListener('click', () => go(4))
 
   // ---------- Beat 4: live totals ----------

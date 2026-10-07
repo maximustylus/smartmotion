@@ -1134,7 +1134,7 @@ const vertex = /* glsl */ `
     if (uRevealMode > 0.5) {
       float key = uRevealMode < 1.5 ? (p.y + 1.0) / 2.0
                 : uRevealMode < 2.5 ? (1.0 - p.y) / 2.0
-                : uRevealMode < 3.5 ? length(p.xy) / 1.3
+                : uRevealMode < 3.5 ? length(p.xy) / 1.9
                 : (p.x + 1.7) / 3.4;
       hidden = 1.0 - smoothstep(key - 0.08, key + 0.04, uReveal);
       p *= 1.0 - hidden;
@@ -1376,7 +1376,9 @@ export function createField(host) {
 
   let current = 'cloud'
   const cache = { cloud: { positions: Float32Array.from(to) } }
-  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'), chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
+  const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'),
+    // The same timeline at half size, for a move beat beside its copy.
+    'timeline80s:stage': (n, r) => { const f = timeline80sForm(n, r, 'robot'); for (let i = 0; i < f.positions.length; i++) f.positions[i] *= 0.48; return f }, chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their
@@ -1464,7 +1466,11 @@ export function createField(host) {
     })
   }
 
+  // The single form actually heading to the screen (the half of a pair).
+  let shown = 'cloud'
   function go(name, { instant = false, anchor, enter, slot = 0 } = {}) {
+    if (!name.startsWith('text:') && !SPECIAL[name] && !forms[name] && !NESTS.includes(name) && name !== 'nest') return
+    shown = name
     // Each nesting picks a perch and a shape from the slot, so the field
     // never returns to the same corner twice in a row.
     if (name === 'nest') {
@@ -1607,5 +1613,8 @@ export function createField(host) {
     },
     get count() { return N },
     get debug() { return { mode, current, uniforms, geo } },
+    // Which single form is on screen, so the utility formula collapses only
+    // the bars and never the toolbox before it.
+    get shown() { return shown },
   }
 }

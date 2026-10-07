@@ -222,7 +222,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       const bi = scroll.state.beat
       // Only the formula's own beat collapses its bars; later beats carry
       // other drawings (a dollar sign, a notepad), which must not flatten.
-      if (s.id === 'test') field?.setCollapse(bi === 1 ? Math.min(1, Math.max(0, (pb - 0.25) / 0.6)) : 0)
+      if (s.id === 'test') field?.setCollapse(bi === 1 && field.shown === 'columns' ? Math.min(1, Math.max(0, (pb - 0.25) / 0.6)) : 0)
       else field?.setCollapse(0)
       // Framework diagrams build with the scroll: the pyramid rises, the tree
       // grows down, the rings spread, the bar and timeline sweep across.
@@ -244,7 +244,12 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
       s.mount(root.querySelector(`#scene-${s.id}`), { go: (bi) => scroll.goTo(i, bi) })
         .then((api) => {
           mounted.set(i, api)
-          if (scroll.state.scene === i) api?.onBeat?.(scroll.state.beat)
+          if (scroll.state.scene === i) {
+            api?.onBeat?.(scroll.state.beat)
+            // The scene's content (quiz options) arrived after the first fit.
+            fitBeat(current)
+            setTimeout(() => fitBeat(current), 450)
+          }
         })
         .catch((err) => console.error('[smartmotion] scene failed to mount', s.id, err))
     })

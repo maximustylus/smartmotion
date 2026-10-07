@@ -32,6 +32,8 @@ function render(md) {
   const inline = (s) =>
     esc(s)
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      // Source names in backticks read as plain text.
+      .replace(/`([^`]+)`/g, '$1')
       .replace(/\[([^\]]+)\]\((#[a-z0-9-]+|\/[a-z/#-]*|https?:\/\/[^\s)<>]+|[A-Za-z0-9_./-]+\.md)\)/g, (_, text, href) => {
         // app/*.md are pages of Motus's own notes, built from the site's
         // content; they are not files anyone can open, so name them plainly.
@@ -41,12 +43,15 @@ function render(md) {
         const ext = href.startsWith('http')
         return `<a href="${href}"${ext ? ' target="_blank" rel="noopener"' : ' data-go'}>${text}</a>`
       })
-  const blocks = md.trim().split(/\n{2,}/)
+  // A list that starts straight after a line of text still reads as a list.
+  const blocks = md.trim().replace(/(^|\n)((?!\s*(?:[-*]|\d+\.)\s)[^\n]+)\n(?=\s*(?:[-*]|\d+\.)\s)/g, '$1$2\n\n').split(/\n{2,}/)
   return blocks
     .map((b) => {
       const lines = b.split('\n')
       if (lines.every((l) => /^\s*[-*]\s+/.test(l))) return `<ul>${lines.map((l) => `<li>${inline(l.replace(/^\s*[-*]\s+/, ''))}</li>`).join('')}</ul>`
       if (lines.every((l) => /^\s*\d+\.\s+/.test(l))) return `<ol>${lines.map((l) => `<li>${inline(l.replace(/^\s*\d+\.\s+/, ''))}</li>`).join('')}</ol>`
+      // Items that the blank-line split kept together are split here.
+      if (lines.length > 1 && lines.every((l) => /^\s*[-*]\s+/.test(l) || /^\s*\d+\.\s+/.test(l))) return `<ul>${lines.map((l) => `<li>${inline(l.replace(/^\s*(?:[-*]|\d+\.)\s+/, ''))}</li>`).join('')}</ul>`
       return `<p>${inline(lines.join(' '))}</p>`
     })
     .join('')

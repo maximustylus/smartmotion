@@ -43,7 +43,7 @@ function build() {
 }
 
 export function openVideo(id, title = 'Video', { portrait = true } = {}) {
-  const hosted = /^\/[\w/.-]+\.mp4$/.test(id)
+  const hosted = /^\/usecases\/[\w-]+\.mp4$/.test(id)
   if (!hosted && !/^[\w-]{6,20}$/.test(id)) return
   if (!box) build()
   lastFocus = document.activeElement
@@ -106,7 +106,10 @@ export function close() {
     box.hidden = true
     box.querySelector('.lightbox__frame').innerHTML = ''
     document.documentElement.classList.remove('overlay-open')
-    lastFocus?.focus?.({ preventScroll: true })
+    // Focus goes back only for keyboard users; after a mouse click it would
+    // let Space reopen the window instead of moving the talk on.
+    if (lastFocus?.matches?.(':focus-visible')) lastFocus.focus({ preventScroll: true })
+    else document.activeElement?.blur?.()
   })
 }
 

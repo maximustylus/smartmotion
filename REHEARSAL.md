@@ -34,7 +34,8 @@ Scrolling with the trackpad also works, but keys land exactly on a beat.
 
 Cover, 1963, quiz (8 min), have an angle (5), 1997, test it (7), reality
 check (7), 2011, use cases (15), frameworks (10), 2022, use it safely (6),
-2025, take-home (2), questions. The rail at the top shows time budget by
+2025, take-home (2), here to stay (no minutes), questions. Here to stay and
+questions sit outside the 60-minute budget. The rail at the top shows time budget by
 width; the glowing segment is where you are.
 
 ## If something fails

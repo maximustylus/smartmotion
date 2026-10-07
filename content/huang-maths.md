@@ -5,6 +5,13 @@ Alif Bin Abu Bakar, 7 October 2026), with each quote checked again against
 the news reports on 7 October 2026. The original podcast episode was not
 heard; every quote below is as reported.
 
+## Use only
+
+Quote as confirmed only "Basic math is being forgotten" and "I don't think it
+does", and always say "as reported by" the outlet. Every other line below is
+as reported, and "There are a lot of skills that don't matter" rests on Kotaku
+alone.
+
 ## Bottom line
 
 Nvidia's Chief Executive Officer, Jensen Huang, said on The Ezra Klein Show

@@ -152,12 +152,22 @@ export function createHud(root, scenes, scroll) {
 
   // ---------- Keys ----------
 
+  // A click with the mouse (not the keyboard) leaves no focus behind on the
+  // story's buttons and links, so Space and Enter go back to moving the talk.
+  root.addEventListener('click', (e) => {
+    if (e.detail === 0) return
+    const t = e.target.closest?.('button, a[href]')
+    if (t) setTimeout(() => t.blur(), 0)
+  })
+
   const NEXT = new Set(['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'])
   const PREV = new Set(['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'])
   const ownsKeys = (t) => t.closest?.('input, textarea, select, button, a[href], summary, [role=button], [contenteditable], [data-own-keys]')
 
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return
+    // A video or link window is open: it owns the keys (Esc closes it).
+    if (document.querySelector('.lightbox:not([hidden])')) return
     if (e.target.closest?.('input, textarea, select, [contenteditable]')) return
     // A focused button or link keeps Enter and Space for itself. The
     // presenter's letter keys still work after a click has left focus there.

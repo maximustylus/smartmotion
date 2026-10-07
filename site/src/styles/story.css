@@ -1278,6 +1278,7 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
   width: min(960px, 100%);
   border-radius: 12px;
   overflow: hidden;
@@ -1380,7 +1381,7 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 
 /* ---------- Here to stay: the closing ---------- */
 /* One grid for the whole list, so the number column fits the widest number. */
-.stats { list-style: none; padding: 0; margin: var(--space-3) 0 0; display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-4); max-width: 40rem; align-items: baseline; }
+.stats { list-style: none; padding: 0; margin: var(--space-3) 0 0; display: grid; grid-template-columns: max-content 1fr; column-gap: var(--space-4); max-width: 40rem; align-items: stretch; }
 .stats li { display: contents; }
 .stats b, .stats span { padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
 .stats b { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1; }

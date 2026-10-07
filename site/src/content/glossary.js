@@ -5,7 +5,7 @@
 */
 export const glossary = [
   { term: '6PoLD, Six Principles of Learning Design', def: 'Six principles for designing learning that starts from the outcome. By Helen Bound and Arthur Chia (2020).', scene: 'frameworks', source: 'https://www.ial.edu.sg/getmedia/15f7ede5-0974-49ef-8d0a-b69613ca902b/The-Six-Principles-of-Learning-Design_21092020.pdf' },
-  { term: 'AI Ready Quiz (AIRQ)', def: 'Twelve questions, four levels of AI readiness: AI not-yet Aware, AI Aware, AI Literate, AI Fluent. By the Singapore Institute of Technology, with the Skills and Workforce Development Agency. Take it in your own time.', scene: 'quiz', source: 'https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM' },
+  { term: 'AI Ready Quiz (AIRQ)', def: 'Up to twelve questions, four levels of AI readiness: AI not-yet Aware, AI Aware, AI Literate, AI Fluent. By the Singapore Institute of Technology, with the Skills and Workforce Development Agency. Take it in your own time.', scene: 'quiz', source: 'https://sit.qualtrics.com/jfe/form/SV_9Ro76PBrKGPCpTM' },
   { term: 'ADDIE', def: 'The five phases this playbook follows: Analyse, Design, Develop, Implement, Evaluate. Each phase holds one or two of the eight moves.', scene: 'phaseanalyse' },
   { term: 'AI psychosis', def: 'The press’s name, from 2025, for delusions reported around heavy chatbot use. Not a clinical diagnosis. Østergaard raised the hypothesis in 2023.', scene: 'safe', source: 'https://doi.org/10.1093/schbul/sbad128' },
   { term: 'Agents', def: 'Assistants that take several steps on their own, once you give them a goal, tools and permission. Meta’s Muse, OpenAI’s dots and Claude Code mods arrived in September and October 2026.', scene: 'agents' },
