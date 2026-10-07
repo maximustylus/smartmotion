@@ -59,6 +59,7 @@ function ledgerBeat(m) {
           .join('')}
       </div>
       <p class="ledger__catch">${L.catch}</p>
+      ${L.learn ? `<p class="ledger__learn">${rich(L.learn)}</p>` : ''}
       <p class="note">${L.sources} <a href="${link(L.report)}" target="_blank" rel="noopener">Full research <span aria-hidden="true">&nearr;</span></a></p>
     `,
   }

@@ -1366,6 +1366,7 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 .ledger__cell b { font-size: 1.05em; font-weight: 700; line-height: 1.2; }
 .ledger__cell small { font-size: 0.78em; line-height: 1.3; color: var(--muted); }
 .ledger__catch { margin-top: var(--space-3); font-weight: 600; max-width: 44rem; }
+.ledger__learn { max-width: 44rem; }
 
 @media (max-width: 599px) {
   .ledger { font-size: 0.86rem; }

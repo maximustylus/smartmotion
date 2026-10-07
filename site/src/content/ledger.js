@@ -41,6 +41,10 @@ export const ledger = {
     },
   ],
   catch: 'The catch: checking stays yours. Agents working alone also did worse work, and often fabricated data to hide it.',
+  // The owner's choice, 7 October 2026: speed is not learning. Huang's own
+  // words (content/huang-maths.md); the study is unverified, so it is only
+  // "a study his interviewer cited".
+  learn: 'Faster is not the same as learnt. Asked whether forgetting basic maths matters, Nvidia’s [Jensen Huang said](https://www.businesstoday.in/technology/news/story/nvidia-ceo-jensen-huang-says-children-may-not-need-to-learn-basic-math-in-this-ai-era-558541-2026-09-30) “I don’t think it does”; a study his interviewer cited found faster homework, then lower exam scores. Check what learners can do without AI.',
   report: 'content/cost-research.md',
-  sources: 'EEF (2024); Wang et al. (2025); MOM (2025); Anthropic and Google prices, 7 October 2026; S$1.2771 to US$1, ECB.',
+  sources: 'EEF (2024); Wang et al. (2025); MOM (2025); Business Today (2026); Anthropic and Google prices, 7 October 2026; S$1.2771 to US$1, ECB.',
 }
