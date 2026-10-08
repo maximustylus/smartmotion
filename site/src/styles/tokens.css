@@ -27,6 +27,8 @@
   --accent-soft: #e4e8ff;
   --second: #177a46;
   --todo: #9a5a00;
+  /* Motus's orange from the brand gradient, deepened to read on paper. */
+  --motus-ink: #c2410c;
   --todo-soft: #fff1dc;
 
   /* Particle field colours, read by Three.js */
@@ -88,6 +90,7 @@
     --accent-soft: #1b2050;
     --second: #3fcf7a;
     --todo: #ffb020;
+    --motus-ink: #ff6a5a;
     --todo-soft: #3a2a08;
     --field: #7c90ff;
     --field-alpha: 0.85;
@@ -112,6 +115,7 @@
   --accent-soft: #1b2050;
   --second: #3fcf7a;
   --todo: #ffb020;
+  --motus-ink: #ff6a5a;
   --todo-soft: #3a2a08;
   --field: #7c90ff;
   --field-alpha: 0.85;

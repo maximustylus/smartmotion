@@ -265,7 +265,7 @@ export function playbookScenes(route) {
           ${eyebrow(copy.closing.eyebrow)}
           <h2>${copy.closing.heading}</h2>
           <p class="lead">${copy.closing.lead}</p>
-          <p class="note">${copy.closing.motus}</p>
+          <p class="closing__motus">${copy.closing.motus}</p>
           <p class="chips" data-no-split><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/site/src/content/cheatsheets" target="_blank" rel="noopener">All eight prompts &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/skills" target="_blank" rel="noopener">As Claude skills &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">The five workflows &nearr;</a><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },

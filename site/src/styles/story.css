@@ -773,7 +773,7 @@ html.overlay-open { overflow: hidden; }
   flex: none;
 }
 .beat .lead { color: var(--fg); opacity: 0.86; }
-.beat > p:not(.lead):not(.eyebrow):not(.note) { max-width: 58ch; color: var(--fg); opacity: 0.8; }
+.beat > p:not(.lead):not(.eyebrow):not(.note):not(.closing__motus) { max-width: 58ch; color: var(--fg); opacity: 0.8; }
 
 /* Hide the phone counter when the quiz needs the room. */
 @media (max-width: 599px) {
@@ -965,7 +965,8 @@ html.overlay-open { overflow: hidden; }
 .scene--centre .beat { align-self: start; align-content: start; justify-items: center; }
 .scene--centre .beat .eyebrow { justify-content: center; }
 .scene--centre .lead, .scene--centre .cover__lead { max-width: 40ch; }
-.scene--centre .facts { justify-items: start; }
+/* One width for every row, so the rules line up; years and text read left to right. */
+.scene--centre .facts { justify-items: stretch; width: 100%; text-align: left; }
 .scene--centre .chips { justify-content: center; }
 .scene--centre .rows { text-align: left; }
 @media (orientation: landscape) and (min-width: 900px) {
@@ -1437,3 +1438,15 @@ a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(
 /* On a phone the ledger keeps its link to the full research, which lists
    every source, and drops the line of source names to fit the screen. */
 @media (max-width: 599px) { .ledger__src { display: none; } }
+
+/* The closing nudge about Motus: his voice, in his orange. */
+.closing__motus {
+  font-family: var(--font-voice);
+  font-style: italic;
+  /* The serif runs small beside Geist, so it sits a touch above the lead. */
+  font-size: calc(var(--text-lead) * 1.12);
+  line-height: 1.2;
+  max-width: 32ch;
+  color: var(--motus-ink);
+  text-wrap: balance;
+}
