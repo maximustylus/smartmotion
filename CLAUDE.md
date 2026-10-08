@@ -47,6 +47,10 @@ a motion graphic, not a slide deck.
   and runs before every build. In a cloud session the local session logs
   are absent, so it keeps the last measured active time. Never edit the
   figures by hand. scripts/build-kb.mjs rebuilds Motus's knowledge base.
+- skills/ holds the eight move prompts as Claude skills, built from
+  site/src/content/cheatsheets by scripts/build-skills.mjs. After editing
+  a prompt, run `node scripts/build-skills.mjs`; never edit a SKILL.md by
+  hand. Version 1.0 is a draft until the owner signs it off.
 
 ## Commands
 

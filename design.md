@@ -49,7 +49,7 @@ first route follows the time budget in brief.md.
 | site/src/story/ | Scroll story, scene builders, field, chrome |
 | site/src/quiz/ | The icebreaker and its Firestore client |
 | workflows/ | Cheatsheets as plain prompts, one per move |
-| skills/ | The same cheatsheets as Claude skills, Phase 4 |
+| skills/ | The eight move prompts as Claude skills (Phase 4), built by scripts/build-skills.mjs |
 | firestore.rules | What a client may write: counters, up by one |
 
 ### URLs

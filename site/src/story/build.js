@@ -265,7 +265,8 @@ export function playbookScenes(route) {
           ${eyebrow(copy.closing.eyebrow)}
           <h2>${copy.closing.heading}</h2>
           <p class="lead">${copy.closing.lead}</p>
-          <p class="chips" data-no-split><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/site/src/content/cheatsheets" target="_blank" rel="noopener">All eight prompts &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">The five workflows &nearr;</a><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
+          <p class="note">${copy.closing.motus}</p>
+          <p class="chips" data-no-split><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/site/src/content/cheatsheets" target="_blank" rel="noopener">All eight prompts &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/skills" target="_blank" rel="noopener">As Claude skills &nearr;</a><a class="chip" href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">The five workflows &nearr;</a><a class="chip" href="/glossary">Glossary</a><a class="chip" href="/contact">Contact</a></p>
         `,
       },
     ],
@@ -539,7 +540,7 @@ function takeHomeScene(step) {
               )
               .join('')}
           </ol>
-          <p class="note">All of it lives at <a href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>. Reuse and adapt with credit.</p>
+          <p class="note">All of it lives at <a href="https://github.com/maximustylus/smartmotion/tree/main/workflows" target="_blank" rel="noopener">github.com/maximustylus/smartmotion</a>. The eight move prompts also come as <a href="https://github.com/maximustylus/smartmotion/tree/main/skills" target="_blank" rel="noopener">Claude skills</a>. Reuse and adapt with credit.</p>
         `,
       },
       {

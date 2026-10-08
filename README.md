@@ -11,6 +11,7 @@ given at the CGH Educator Lunch and Learn Series on 7 October 2026.
 - design.md: what Smart Motion is, the moves, the routes, the design system.
 - references.md: every source the app cites.
 - workflows/: the owner's five workflows and the two tracks.
+- skills/: the eight move prompts as Claude skills, built from the prompts by scripts/build-skills.mjs.
 - archive/: dated documents from the build and the talk (the brief, the
   handover, the rehearsal checklist).
 - site/: the Vite app, deployed to smartmotion.web.app on Firebase Hosting.
