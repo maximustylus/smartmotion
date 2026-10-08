@@ -233,3 +233,23 @@ test('the word "patient" is in neither the knowledge base nor the app copy (owne
   assert.doesNotMatch(readFileSync(join(root, 'functions/kb.json'), 'utf8'), /patient/i)
   for (const t of [GUARDRAIL_PREAMBLE, NRIC_REFUSAL, CRISIS_REPLY]) assert.doesNotMatch(t, /patient/i)
 })
+
+test('workflows are linked to their files, and scenes only for what the map says they show (v1.5)', () => {
+  const src = readFileSync(join(root, 'functions/motus.js'), 'utf8')
+  const persona = src.slice(src.indexOf('const persona'), src.indexOf('const system'))
+  assert.match(persona, /never pick a scene because its name sounds close/)
+  assert.match(persona, /never the full web address/)
+  const file = persona.match(/\]\((workflows\/[\w.-]+\.md)\)/)?.[1]
+  assert.ok(file, 'the persona links a workflow file as its example')
+  assert.ok(readFileSync(join(root, file), 'utf8').length > 0, `${file} exists`)
+  const kb = JSON.parse(readFileSync(join(root, 'functions/kb.json'), 'utf8'))
+  const map = kb.find((d) => d.path === 'app/map.md').text
+  assert.match(map, /- takehome: .*The only scene that shows the workflows\./)
+  for (const id of ['phaseanalyse', 'phasedesign', 'phaseevaluate']) assert.match(map, new RegExp(`- ${id}: the ADDIE phase`))
+})
+
+test('a limit reached at Gemini says Motus is resting and the rest of the site works (v1.5)', async () => {
+  const { res, calls } = await ask(() => new Response('limit', { status: 429 }))
+  assert.equal(calls.length, 2)
+  assert.equal(res.events().at(-1).error, 'Motus is resting for now. The rest of Smart Motion works as usual; try Motus again later.')
+})

@@ -61,9 +61,30 @@ add(
   `ADDIE phases, in order:\n${phases.map((p) => `- ${p.name} (scene id: phase${p.id}): ${p.line} Moves: ${p.moves.join(', ')}.${p.quote ? ` Quote: "${p.quote.text}" ${p.quote.who}, ${p.quote.source}.` : ''}`).join('\n')}\n\nEras between the phases:\n${eras.map((e) => `- ${e.title} (scene id: ${e.id}, ${e.years.join(' to ')}): ${e.line} Facts: ${e.facts.map((f) => `${f.year} ${f.text}`).join('; ')}.${e.quote ? ` Quote: "${e.quote.text}" ${e.quote.who}, ${e.quote.source}.` : ''}`).join('\n')}`,
 )
 const r = routes['gai-gai']
+// What each scene shows, so Motus links a scene only for what is on it (v1.5).
+const moveName = (id) => moves.find((m) => m.id === id)?.name ?? id
+const moveParts = (id) => {
+  const m = moves.find((x) => x.id === id)
+  const parts = [m?.framework && 'its framework', m?.example && 'a worked example', 'its prompt'].filter(Boolean)
+  return parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : parts[0]
+}
+const playbookMap = [
+  '- cover: the cover',
+  ...phases.flatMap((p) => {
+    const era = eras.find((e) => e.before === p.id)
+    return [
+      era && `- ${era.id}: the era ${era.title}, ${[...new Set(era.years)].join(' to ')}`,
+      `- phase${p.id}: the ADDIE phase ${p.name}, which opens ${p.moves.length > 1 ? 'the moves' : 'the move'} ${p.moves.map(moveName).join(' and ')}`,
+      ...p.moves.map((id) => `- ${id}: the move ${moveName(id)}, with ${moveParts(id)}`),
+    ]
+  }),
+  '- examples: use cases, with links to NEXUS at https://smartdashboard.web.app and Smart Queue Live at https://smartqueuelive.web.app',
+  `- takehome: the two tracks (${copy.takehome.tracksHeading}), the five workflows (${copy.takehome.workflowsHeading}) and the three lanes (${copy.takehome.mapHeading}). The only scene that shows the workflows.`,
+  '- routes: the list of routes',
+].filter(Boolean).join('\n')
 add(
   'app/map.md',
-  `# Map of the app\n\nPlaybook at / : scene ids in order: cover, ${phases.flatMap((p) => [eras.find((e) => e.before === p.id)?.id, `phase${p.id}`, ...p.moves]).filter(Boolean).join(', ')}, examples (use cases, with links to NEXUS at https://smartdashboard.web.app and Smart Queue Live at https://smartqueuelive.web.app), takehome, routes.\n\nTalk route "${r.title}" at /talk (${r.event}, ${r.when.join(', ')}): scene ids in order: ${r.steps.map((s) => s.scene ?? s.era ?? s.move).join(', ')}. The quiz (scene id: quiz) is the icebreaker: place yourself on four levels of AI readiness, pick the type that sounds like you, then see the room's live, anonymous totals. /play opens the talk on the quiz.\n\nSpeaker: ${r.speaker.name}. ${r.speaker.roles.join('. ')}.\n\nKeys on the shared screen: arrows move between beats, O overview, T timer, B blackout, F full screen, D theme, Z reset room totals, ? help. Motus (that is you) sits at the bottom right; clicking you opens this chat.`,
+  `# Map of the app\n\nPlaybook at / : scene ids in order, each with what that scene shows:\n${playbookMap}\n\nTalk route "${r.title}" at /talk (${r.event}, ${r.when.join(', ')}): scene ids in order: ${r.steps.map((s) => s.scene ?? s.era ?? s.move).join(', ')}. The quiz (scene id: quiz) is the icebreaker: place yourself on four levels of AI readiness, pick the type that sounds like you, then see the room's live, anonymous totals. /play opens the talk on the quiz.\n\nSpeaker: ${r.speaker.name}. ${r.speaker.roles.join('. ')}.\n\nKeys on the shared screen: arrows move between beats, O overview, T timer, B blackout, F full screen, D theme, Z reset room totals, ? help. Motus (that is you) sits at the bottom right; clicking you opens this chat.`,
 )
 
 add(

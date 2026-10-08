@@ -40,6 +40,9 @@ function render(md) {
         if (/^app\//.test(href)) return text
         // A repository file (workflows/02-infographic-poster.md) opens on GitHub.
         if (/\.md$/.test(href) && !/^(https?:|\/|#)/.test(href)) href = `https://github.com/maximustylus/smartmotion/blob/main/${href.replace(/^\.\//, '')}`
+        // A full address of a scene on this site stays in the app (v1.5).
+        const own = href.match(/^https:\/\/smartmotion\.(?:web\.app|firebaseapp\.com)\/(?:talk\/?)?(#[a-z0-9-]+)$/)
+        if (own) href = own[1]
         const ext = href.startsWith('http')
         return `<a href="${href}"${ext ? ' target="_blank" rel="noopener"' : ' data-go'}>${text}</a>`
       })

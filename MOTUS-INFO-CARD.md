@@ -5,11 +5,11 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ✅ **In effect: version 1.4**, signed off on 8 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. |
+| **Card status** | ✅ **In effect: version 1.4**, signed off on 8 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. **Version 1.5 drafted on 8 October 2026, awaiting the owner's sign-off**: workflow links open the workflow itself, and a clearer message when Motus reaches its limit (see Card versioning). |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 1.4 |
+| **Card version** | 1.5 (draft; 1.4 in effect) |
 | **Last updated** | 2026-10-08 |
-| **Describes** | Smart Motion **v1.0.1** · Motus guardrails **v1.4** |
+| **Describes** | Smart Motion **v1.0.2** · Motus guardrails **v1.5** (draft) |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
 
 ---
@@ -21,7 +21,7 @@ Motus is the small robot at the bottom right of Smart Motion. Tap it and a chat 
 ### Capabilities
 
 - **Find your way.** Ask where something is and Motus links you to the scene: a move, an era, the
-  quiz, the take-home.
+  quiz, the take-home. A link to one of the five workflows opens the workflow itself, on GitHub.
 - **Explain the playbook.** What a move means, what a framework is, which of the five workflows
   fits your need, and whether it suits the personal or the corporate track.
 - **Answer from the playbook only.** Motus's knowledge is a fixed set of documents built from this
@@ -138,7 +138,9 @@ measured**; the guidelines permit qualitative statements.*
   model count towards the hour, so junk and screened messages cannot use it up. Since 1.2 one
   address may make at most 300 model calls an hour, so no single source can use up the shared
   hour. The address is the one the request reports, which a script can change; the hourly ceiling
-  still holds. Gemini's own safety
+  still holds. The final ceiling is money: Gemini is paid from credit bought in advance, with
+  automatic top-up off, so when the credit runs out Motus says it is resting and nothing more is
+  charged; the rest of Smart Motion keeps working. Gemini's own safety
   filters apply to every reply, and a reply they block gets a fixed line instead.
 - **Effectiveness, honestly:** no red-team exercise has been run against Motus.
 - **What you can do:** report anything harmful or wrong (§5).
@@ -259,6 +261,7 @@ the named source on the date shown, not permanently true.*
 | Phone numbers in the crisis reply (§3) | scdf.gov.sg (995); sos.org.sg (1767) | Confirmed 2026-10-06 |
 | Output capped at 8,192 tokens, thinking included; replies kept short by Rule 13; input 2,000 characters a message, last 12 turns; a cut reply says so (§3) | `functions/motus.js` `MAX_OUTPUT`, `MAX_CHARS`, `MAX_TURNS` | Confirmed 2026-10-06 (1.0 said 1,200, which was out of date) |
 | Rate ceilings and instance cap (§3, §4) | `functions/motus.js` `PER_MINUTE`, `PER_HOUR`, `PER_ADDRESS_HOUR`; `functions/index.js` `maxInstances` | Confirmed 2026-10-07 |
+| Gemini paid from prepaid credit, automatic top-up off (§3) | The owner's Google Cloud billing page, Prepay: AI Studio, seen 2026-10-08 | Confirmed 2026-10-08 by the owner's screenshot; what Gemini returns when the credit runs out is **not yet observed** |
 | Conversation in session storage, last 12 turns, cleared when the tab closes (§4) | `site/src/motus/chat.js` | Confirmed 2026-10-05 |
 | Server logs carry no conversation text (§4) | `functions/motus.js` `console.info` and `console.error` calls | Confirmed 2026-10-05 |
 | Motus is live (header, gap 2) | Firebase deploy of 2026-10-06; live test turns that day | Confirmed 2026-10-06 |
@@ -276,7 +279,8 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
-| **1.4** | 2026-10-08 | After an independent review. Corrected: your network address is held in memory for up to an hour, not a minute, because the per-address hourly count added in 1.2 keeps it that long; it is still never written down. Requests that carry no origin are now refused, as browsers always send one, so a bare script cannot call Motus; a script can still forge the header, and the rate ceilings and budget remain the backstop. The owner's workflows are now reworded at source to say "health information". **Signed off by the owner (Muhammad Alif) on 8 October 2026 and in effect; deployed that day and checked live: Motus answers on the site, and a request with no origin is refused.** |
+| **1.5** | 2026-10-08 | A live answer linked three workflows to the wrong pages of the app. Motus now links a workflow to the workflow itself, which opens on GitHub, and links a page of the app only when that page shows what it names; its map of the app now says what each page shows. A full address of a page on this site now stays in the app. When Gemini refuses for a limit, Motus says it is resting and the rest of the site works. §3 now names the prepaid credit as the final spending ceiling. **Drafted; awaiting the owner's sign-off. 1.4 stays in effect until then.** |
+| **1.4** | 2026-10-08 | After an independent review. Corrected: your network address is held in memory for up to an hour, not a minute, because the per-address hourly count added in 1.2 keeps it that long; it is still never written down. Requests that carry no origin are now refused, as browsers always send one, so a bare script cannot call Motus; a script can still forge the header, and the rate ceilings and budget remain the backstop. The owner's workflows are now reworded at source to say "health information". Signed off by the owner (Muhammad Alif) on 8 October 2026; in effect until 1.5 is signed off and deployed. Deployed that day and checked live: Motus answers on the site, and a request with no origin is refused. |
 | **1.3** | 2026-10-07 | At the owner's request, Smart Motion no longer uses the clinical word for a person receiving care: the preamble, the persona, the fixed identifier reply, this card and the knowledge base now say "health information". The owner's workflows keep their own wording and are reworded only as they enter the knowledge base. Motus is told never to use the word. Signed off by the owner (Muhammad Alif); superseded by 1.4. |
 | 1.2 | 2026-10-07 | After the final quality-control round. The persona no longer asks for affirmations that read as praise: it acknowledges plainly, with no compliments or exclamation marks (Rule 11). Output cap raised to 8,192 tokens, because Gemini's thinking counted against 2,048 and cut broad answers short; Rule 13 still keeps replies short. NRIC check also catches dots, underscores, slashes and full-width characters. One address limited to 300 model calls an hour. Knowledge list and gap 8 brought up to date; describes v0.6.0. Signed off by the owner (Muhammad Alif); superseded by 1.3. |
 | 1.1 | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model. NRIC check also catches spaces and hyphens. Rule 11 in the prompt now forbids exclamation marks and praise. Output cap corrected to 2,048 tokens. Statements written before Motus went live brought up to date; gap list renumbered. Signed off by the owner (Muhammad Alif); superseded by 1.2. |
