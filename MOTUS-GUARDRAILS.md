@@ -1,7 +1,7 @@
 # Motus guardrails
 
-**Controlled document** · **Version 1.5 (draft; 1.4 in effect)** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
-· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, version 1.4 signed off 8 October 2026 and in effect; version 1.5 drafted 8 October 2026, awaiting sign-off (change log at the end)** · **Review: on any change to Motus's prompt**
+**Controlled document** · **Version 1.5** · **Rules effective 2026-08-24, adopted for Motus 2026-10-05**
+· **Author: drafted for Muhammad Alif (owner)** · **Approver: Muhammad Alif, version 1.5 signed off 8 October 2026; it takes effect when the owner redeploys the function, and 1.4 runs until then (change log at the end)** · **Review: on any change to Motus's prompt**
 
 Motus, the companion in Smart Motion, follows the same sixteen rules the owner issued for AURA in
 NEXUS on 2026-08-24. §A reproduces them **verbatim** from `AURA-GUARDRAILS.md` in the NEXUS
@@ -367,7 +367,7 @@ handed to an agent without its criteria, controlling documents and data class at
 
 | Version | Date | Change |
 |---|---|---|
-| 1.5 | 2026-10-08 | After a live turn linked three workflows to ADDIE phase pages that do not show them. The persona now links a workflow to its file (which opens on GitHub), links a scene only when the map says it shows what is named, and writes a hash, never a full web address. The knowledge base's map now says what each scene shows. The chat keeps a full address of a scene on this site inside the app. A limit refused by Gemini now reads "Motus is resting for now", and the rate-ceiling row names the prepaid credit, not the budget, as the real ceiling. Two tests added. **Drafted; awaiting the owner's sign-off. 1.4 stays in effect until the owner redeploys the function.** |
+| 1.5 | 2026-10-08 | After a live turn linked three workflows to ADDIE phase pages that do not show them. The persona now links a workflow to its file (which opens on GitHub), links a scene only when the map says it shows what is named, and writes a hash, never a full web address. The knowledge base's map now says what each scene shows. The chat keeps a full address of a scene on this site inside the app. A limit refused by Gemini now reads "Motus is resting for now", and the rate-ceiling row names the prepaid credit, not the budget, as the real ceiling. Two tests added. **Signed off by the owner on 8 October 2026. Takes effect when he redeploys the function; 1.4 runs until then.** |
 | 1.4 | 2026-10-08 | After an independent review. Requests with no origin refused (code and test). The info card and the code comment now say an address is held for up to an hour, which the per-address hourly count has done since 1.2. Origin control marked partial, not enforced, since the header can be forged. The rate-ceiling row in this table now says the same. Signed off by the owner on 8 October 2026 and in effect; deployed that day and checked live: Motus answers on the site, and a request with no origin is refused with 403. |
 | 1.3 | 2026-10-07 | At the owner's request, "patient" removed from the preamble's P6 paragraph, the fixed identifier reply and the persona, which now also tells Motus never to use the word. §A keeps the owner's AURA rules verbatim, so its wording is unchanged. Signed off by the owner; superseded by 1.4. |
 | 1.2 | 2026-10-07 | After the final quality-control round. Persona affirmations reworded as acknowledgement without praise (Rule 11). Output cap 8,192 tokens, thinking included (Rule 13). P6 shape also after NFKC normalisation and with dots, underscores and slashes as separators. Per-address hourly cap of 300 model calls. Signed off by the owner; superseded by 1.3. |

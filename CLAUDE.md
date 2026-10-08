@@ -46,9 +46,9 @@ a motion graphic, not a slide deck.
   per-address hourly cap) on 7 October 2026, and version 1.3 (no "patient"
   wording) the same day, and version 1.4 (no-origin requests refused; address
   hold stated as an hour) on 8 October 2026, deployed and checked live that
-  day; 1.4 is in effect. Version 1.5 (workflow links to files, a map of what
-  each scene shows, a "resting" message at the limit) was drafted the same day
-  and awaits his sign-off; it goes live when he redeploys the function. Any change
+  day, and version 1.5 (workflow links to files, a map of what each scene
+  shows, a "resting" message at the limit) the same day; 1.5 goes live when he
+  redeploys the function, and 1.4 runs until then. Any change
   to the prompt or the controls needs a new version and his sign-off again.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
