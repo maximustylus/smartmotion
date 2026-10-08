@@ -53,6 +53,11 @@ firebase functions:secrets:set GEMINI_API_KEY --project smartmotus
 node scripts/build-kb.mjs && firebase deploy --only functions --project smartmotus
 ```
 
+On a fresh clone, run `npm install` in `functions/` first. If the deploy
+stops with "Timeout after 10000", give it longer by putting
+`FUNCTIONS_DISCOVERY_TIMEOUT=60` before the command (needed on the owner's
+Mac, which runs Node 24, on 8 October 2026).
+
 For local work, run the brain beside the dev server with the key in your
 shell; the site proxies `/api` to it:
 
@@ -71,7 +76,7 @@ Governance follows the owner's NEXUS pattern for AURA:
 asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
 Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). The
 owner signed version 1.0 of both on 6 October 2026 and Motus went live on
-Gemini that day; version 1.3 (no "patient" wording), signed off on
-7 October 2026, is in effect. Tests: `cd functions && npm test`.
+Gemini that day; version 1.4 (requests with no origin refused), signed off on
+8 October 2026, is in effect. Tests: `cd functions && npm test`.
 
 Still to do: read a set of real turns as NEXUS did.

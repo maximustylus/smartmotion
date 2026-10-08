@@ -44,9 +44,9 @@ a motion graphic, not a slide deck.
   1.1 (stress-test fixes) was signed off the same evening, and version 1.2
   (final QC: no-praise persona, 8,192-token cap, wider NRIC screen,
   per-address hourly cap) on 7 October 2026, and version 1.3 (no "patient"
-  wording) the same day; 1.3 is in effect. Version 1.4 (no-origin requests
-  refused; address hold stated as an hour) was drafted on 8 October 2026 and
-  awaits his sign-off; it goes live when he redeploys the function. Any change
+  wording) the same day, and version 1.4 (no-origin requests refused; address
+  hold stated as an hour) on 8 October 2026, deployed and checked live that
+  day; 1.4 is in effect. Any change
   to the prompt or the controls needs a new version and his sign-off again.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
@@ -65,6 +65,8 @@ a motion graphic, not a slide deck.
     npm run build        # runs the steward first
     node scripts/build-kb.mjs    # from the repo root, after content changes
     firebase deploy --only hosting   # by hand; normally the GitHub Action deploys
+    cd functions && npm install && cd ..   # once per clone, before a functions deploy
+    FUNCTIONS_DISCOVERY_TIMEOUT=60 npx firebase-tools deploy --only functions --project smartmotus
 
 ## Rules that do not bend
 
