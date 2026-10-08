@@ -50,7 +50,8 @@ a motion graphic, not a slide deck.
 - skills/ holds the eight move prompts as Claude skills, built from
   site/src/content/cheatsheets by scripts/build-skills.mjs. After editing
   a prompt, run `node scripts/build-skills.mjs`; never edit a SKILL.md by
-  hand. Version 1.0 is a draft until the owner signs it off.
+  hand. Version 1.0 was signed off by the owner on 8 October 2026; a change
+  to a prompt or the wrapper needs a new version and his sign-off again.
 
 ## Commands
 

@@ -689,6 +689,21 @@ const checkForm = (() => {
   ])
 })()
 
+// The quiz: a play button. A ring, and a solid triangle pointing right,
+// set a little right of centre so it looks centred to the eye.
+const playForm = (() => {
+  // Uniform points in the triangle (-0.32, 0.5), (-0.32, -0.5), (0.5, 0).
+  const tri = (r) => {
+    let a = r(), b = r()
+    if (a + b > 1) { a = 1 - a; b = 1 - b }
+    return [-0.26 + b * 0.82, 0.5 - a - b * 0.5]
+  }
+  return drawing([
+    [46, arc(0, 0, 0.95, 0, TAU, 0.03)],
+    [54, tri],
+  ])
+})()
+
 // Agents: a hub that sends work out along six spokes to six tasks, inside
 // a dashed ring for the person who oversees them. Thick strokes, so the
 // drawing survives the soft splats of the latest era.
@@ -1401,7 +1416,7 @@ export function createField(host) {
   const cache = { cloud: { positions: Float32Array.from(to) } }
   const SPECIAL = { logo: logoForm, timeline80s: timeline80sForm, 'timeline80s:robot': (n, r) => timeline80sForm(n, r, 'robot'),
     // The same timeline at half size, for a move beat beside its copy.
-    'timeline80s:stage': (n, r) => { const f = timeline80sForm(n, r, 'robot'); for (let i = 0; i < f.positions.length; i++) f.positions[i] *= 0.48; return f }, chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, spyglass: spyglassForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm }
+    'timeline80s:stage': (n, r) => { const f = timeline80sForm(n, r, 'robot'); for (let i = 0; i < f.positions.length; i++) f.positions[i] *= 0.48; return f }, chess: chessForm, phone: phoneForm, bubbles: bubblesForm, lens: lensForm, pencil: pencilForm, code: codeForm, rocket: rocketForm, scale: scaleForm, brain: brainForm, angle: angleForm, target: targetForm, check: checkForm, agents: agentsForm, toolbox: toolboxForm, dollar: dollarForm, notepencil: notePencilForm, runner: runnerForm, laptop: laptopForm, hammer: hammerForm, hardhat: hardhatForm, highway: highwayForm, podium: podiumForm, stroll: strollForm, spyglass: spyglassForm, summit: summitForm, brief: briefForm, bulb: bulbForm, hook: hookForm, mic: micForm, folder: folderForm, cap: capForm, photo: photoForm, clipboard: clipboardForm, play: playForm }
   function build(name) {
     if (name.startsWith('text:')) return { positions: textForm(name.slice(5), N, rng(name.length * 31)) }
     // Variants after the colon share the base form's seed, so their

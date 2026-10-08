@@ -5,7 +5,7 @@ description: "Smart Motion move \"Understand the file system and architecture\".
 
 # Understand the file system and architecture
 
-Version 1.0, 8 October 2026. Draft, awaiting sign-off by the owner, Muhammad Alif.
+Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/know-the-architecture.md. Edit that file, not this one.
 
 ## How to run this skill

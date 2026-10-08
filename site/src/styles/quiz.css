@@ -30,6 +30,12 @@
   grid-template-columns: auto 1fr;
 }
 
+/* On a phone the code is tapped, not scanned, so it gives up width to the
+   words beside it; a narrow column of text ran the beat off short screens. */
+@media (max-width: 600px) {
+  .scan .qr { width: min(34vmin, 200px); }
+}
+
 .scan__link {
   font-weight: 600;
   font-size: var(--text-lead);

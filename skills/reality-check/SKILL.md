@@ -5,7 +5,7 @@ description: "Smart Motion move \"Reality check\". Use before you promise the de
 
 # Reality check
 
-Version 1.0, 8 October 2026. Draft, awaiting sign-off by the owner, Muhammad Alif.
+Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/reality-check.md. Edit that file, not this one.
 
 ## How to run this skill

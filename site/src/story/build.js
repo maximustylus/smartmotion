@@ -329,13 +329,13 @@ function quizScene(step) {
     id: 'quiz',
     title: step.title,
     minutes: step.minutes,
-    form: 'grid',
+    form: 'play',
     className: 'scene--quiz',
     dimFrom: 0,
     mount: (el, ctx) => import('../quiz/quiz.js').then((m) => m.mountQuiz(el, ctx)),
     beats: [
       {
-        form: 'grid',
+        form: 'play',
         html: `
           ${eyebrow('The hook', `${step.minutes} min`)}
           <h2>${copy.quiz.scanHeading}</h2>

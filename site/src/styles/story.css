@@ -133,6 +133,9 @@
      tall hidden beat cannot stretch the cell and push the shown one off
      the top. */
   max-height: calc(100svh - 104px);
+  /* The row keeps to that cap too, or it grows to the tallest beat and the
+     shown one, aligned to its foot, sinks below the screen. */
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .beat {

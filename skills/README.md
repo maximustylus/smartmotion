@@ -1,7 +1,7 @@
 # Smart Motion skills
 
-Version 1.0, 8 October 2026. Draft, awaiting sign-off by the owner,
-Muhammad Alif.
+Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif,
+on 8 October 2026.
 
 The eight prompts from Smart Motion's moves, packaged as Claude skills. A
 skill is a folder Claude reads when your request matches it, so you do not
@@ -54,4 +54,6 @@ editing one, rebuild the skills from the repository root:
 
     node scripts/build-skills.mjs
 
-Do not edit a `SKILL.md` by hand; the next build overwrites it.
+Do not edit a `SKILL.md` by hand; the next build overwrites it. A change
+to a prompt or to the skill wrapper needs a new version and the owner's
+sign-off again.

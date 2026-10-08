@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url'
 
 const VERSION = '1.0'
 const DATE = '8 October 2026'
-const STATUS = 'Draft, awaiting sign-off by the owner, Muhammad Alif.'
+const STATUS = 'Signed off by the owner, Muhammad Alif, on 8 October 2026.'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const { moves } = await import(join(root, 'site/src/content/moves.js'))
