@@ -21,7 +21,7 @@
 */
 
 /** Bumped when the rule text or the preamble changes. Stamped into every reply. */
-export const GUARDRAIL_VERSION = '1.3'
+export const GUARDRAIL_VERSION = '1.4'
 
 /** The date the owner issued the rules (for AURA). Adopted for Motus on 2026-10-05. */
 export const GUARDRAIL_EFFECTIVE = '2026-08-24'

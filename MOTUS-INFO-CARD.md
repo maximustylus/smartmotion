@@ -5,11 +5,11 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ✅ **In effect.** Version 1.3 signed off on 7 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. It supersedes 1.2 (see Card versioning). |
+| **Card status** | ✅ **In effect: version 1.3**, signed off on 7 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. **Version 1.4 drafted on 8 October 2026, awaiting the owner's sign-off**: it corrects how long your network address is held and refuses requests that carry no origin (see Card versioning). |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 1.3 |
-| **Last updated** | 2026-10-07 |
-| **Describes** | Smart Motion **v0.6.0** · Motus guardrails **v1.3** |
+| **Card version** | 1.4 (draft; 1.3 in effect) |
+| **Last updated** | 2026-10-08 |
+| **Describes** | Smart Motion **v1.0.1** · Motus guardrails **v1.4** (draft) |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
 
 ---
@@ -157,8 +157,8 @@ measured**; the guidelines permit qualitative statements.*
   forwarded.
 - **The server writes no conversation down.** It logs, without any of your words: which model
   answered, the guardrail version, the time and the number of tokens used, and the status of any
-  error. Your network address is held in memory for up to a minute for the rate ceiling and is
-  never written down.
+  error. Your network address is held in memory for up to an hour, for the rate ceilings (the
+  per-address hourly count keeps it that long), and is never written down.
 
 ### Who has access
 
@@ -276,6 +276,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| **1.4** | 2026-10-08 | After an independent review. Corrected: your network address is held in memory for up to an hour, not a minute, because the per-address hourly count added in 1.2 keeps it that long; it is still never written down. Requests that carry no origin are now refused, as browsers always send one, so a bare script cannot call Motus; a script can still forge the header, and the rate ceilings and budget remain the backstop. The owner's workflows are now reworded at source to say "health information". **Drafted; awaiting the owner's sign-off. 1.3 stays in effect until then.** |
 | **1.3** | 2026-10-07 | At the owner's request, Smart Motion no longer uses the clinical word for a person receiving care: the preamble, the persona, the fixed identifier reply, this card and the knowledge base now say "health information". The owner's workflows keep their own wording and are reworded only as they enter the knowledge base. Motus is told never to use the word. **Signed off by the owner (Muhammad Alif) and in effect.** |
 | 1.2 | 2026-10-07 | After the final quality-control round. The persona no longer asks for affirmations that read as praise: it acknowledges plainly, with no compliments or exclamation marks (Rule 11). Output cap raised to 8,192 tokens, because Gemini's thinking counted against 2,048 and cut broad answers short; Rule 13 still keeps replies short. NRIC check also catches dots, underscores, slashes and full-width characters. One address limited to 300 model calls an hour. Knowledge list and gap 8 brought up to date; describes v0.6.0. Signed off by the owner (Muhammad Alif); superseded by 1.3. |
 | 1.1 | 2026-10-06 | After the quality-control stress test. Rate ceilings raised to 60 a minute per address and 3,000 model calls an hour, counting only calls that reach the model. NRIC check also catches spaces and hyphens. Rule 11 in the prompt now forbids exclamation marks and praise. Output cap corrected to 2,048 tokens. Statements written before Motus went live brought up to date; gap list renumbered. Signed off by the owner (Muhammad Alif); superseded by 1.2. |

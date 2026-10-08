@@ -106,7 +106,7 @@ test('the handler answers a screened message without a key and without the model
     write(s) { out.push(s) },
     end() { this.ended = true },
   }
-  await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'test' }, body: { messages: [{ role: 'user', content: 'my FIN is G1234567X' }] } }, res)
+  await motus({ method: 'POST', headers: { origin: 'https://smartmotion.web.app' }, socket: { remoteAddress: 'test' }, body: { messages: [{ role: 'user', content: 'my FIN is G1234567X' }] } }, res)
   if (saved !== undefined) process.env.GEMINI_API_KEY = saved
   assert.equal(res.statusCode, 200)
   const events = out.filter((x) => typeof x === 'string').map((x) => JSON.parse(x.replace(/^data: /, '')))
@@ -157,7 +157,7 @@ async function ask(fetchImpl, text = 'What is ADDIE?') {
   process.env.GEMINI_API_KEY = 'test-key'
   const { motus } = await import('./motus.js')
   const res = fakeRes()
-  await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'gem-' + Math.random() }, body: { messages: [{ role: 'user', content: text }], scene: 'hook' } }, res)
+  await motus({ method: 'POST', headers: { origin: 'https://smartmotion.web.app' }, socket: { remoteAddress: 'gem-' + Math.random() }, body: { messages: [{ role: 'user', content: text }], scene: 'hook' } }, res)
   globalThis.fetch = savedFetch
   if (savedKey === undefined) delete process.env.GEMINI_API_KEY
   else process.env.GEMINI_API_KEY = savedKey
@@ -208,8 +208,17 @@ test('a reply cut at the length limit says so, and a blocked one gets a fixed li
 test('a body that is not JSON gets a plain 400, not a crash', async () => {
   const { motus } = await import('./motus.js')
   const res = fakeRes()
-  await motus({ method: 'POST', headers: {}, socket: { remoteAddress: 'json-test' }, body: '{not json' }, res)
+  await motus({ method: 'POST', headers: { origin: 'https://smartmotion.web.app' }, socket: { remoteAddress: 'json-test' }, body: '{not json' }, res)
   assert.equal(res.statusCode, 400)
+})
+
+test('a request with no origin, or a foreign one, is refused before anything else (v1.4)', async () => {
+  const { motus } = await import('./motus.js')
+  for (const headers of [{}, { origin: 'https://evil.example' }]) {
+    const res = fakeRes()
+    await motus({ method: 'POST', headers, socket: { remoteAddress: 'origin-test' }, body: { messages: [{ role: 'user', content: 'hello' }] } }, res)
+    assert.equal(res.statusCode, 403)
+  }
 })
 
 test('the persona gives no instruction to praise (Rule 11, v1.2)', () => {

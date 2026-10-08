@@ -81,8 +81,8 @@ const API = 'https://generativelanguage.googleapis.com/v1beta/models/'
 // Two ceilings per instance: 60 a minute from one address (generous, since a
 // hospital network can put a whole room behind one address), and 3,000 model
 // calls an hour in all. Only requests that reach the model count towards the
-// hour, so junk and screened messages cannot use it up. Addresses are held in
-// memory for a minute and never written down. The Google Cloud budget and the
+// hour, so junk and screened messages cannot use it up. An address is held in
+// memory for up to an hour (the per-address hourly count) and never written down. The Google Cloud budget and the
 // Gemini API key's quota are the real ceiling.
 const hits = new Map()
 let hour = { start: 0, n: 0 }
@@ -134,7 +134,10 @@ export async function motus(req, res) {
   }
   if (req.method === 'OPTIONS') return res.status(204).end()
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' })
-  if (origin && !ALLOWED_ORIGINS.has(origin)) return res.status(403).json({ error: 'Origin not allowed' })
+  // Browsers always send an origin with a POST, so a request without one is a
+  // script, not a visitor (v1.4). A script can still forge the header; the
+  // rate ceilings and the budget remain the backstop.
+  if (!origin || !ALLOWED_ORIGINS.has(origin)) return res.status(403).json({ error: 'Origin not allowed' })
 
   const ip = (req.headers['x-forwarded-for'] ?? req.socket?.remoteAddress ?? '').toString().split(',')[0].trim()
   if (tooFast(ip)) return res.status(429).json({ error: 'Motus needs a breather. Try again in a minute.' })
