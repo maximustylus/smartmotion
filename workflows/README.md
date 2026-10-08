@@ -4,7 +4,8 @@ Practical, copy-and-paste material from the talk "GAi GAi with me: A Casual
 Stroll into Generative AI for Educators" (Changi General Hospital Educator
 Lunch and Learn Series, 7 October 2026).
 
-Version 0.2, 3 October 2026. Draft. Limits and prices were checked on
+Version 0.2.1, 8 October 2026 (0.2 of 3 October, reworded to say "health
+information" throughout, at the owner's request). Draft. Limits and prices were checked on
 3 October 2026 and change without notice. The prompts have not yet been tested
 in every tool. Items marked TODO are not confirmed.
 
@@ -50,7 +51,7 @@ to paste them into, what it costs you, and where each track stops.
 
 ## House rules
 
-- **No patient data** on the personal track, ever. On the corporate track,
+- **No health information** on the personal track, ever. On the corporate track,
   only where your institution's policy explicitly allows it.
 - **Source over invention.** Verify any fact, figure or reference the
   assistant adds, or delete it.

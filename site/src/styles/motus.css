@@ -268,6 +268,8 @@
 @media (max-width: 899px) {
   .scene__copy { padding-right: 84px; }
   .scene--quiz .scene__copy { padding-right: 0; }
+  /* The quiz cards keep the full width; its small print keeps clear of Motus. */
+  .scene--quiz .beat .note { padding-right: 84px; }
 }
 
 /* A short screen (a phone on its side): the starters go, the input stays. */

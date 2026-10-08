@@ -35,6 +35,7 @@ export const copy = {
     playedLine: 'You have already played. One go per device.',
     resultNote: 'The full AI Ready Quiz takes fifteen to twenty minutes and emails you a profile. Do it in your own time.',
     roomHeading: 'The room, live',
+    roomNote: 'Everyone so far, since 7 October 2026.',
     examplesHeading: 'Use cases',
     examplesLead: 'What one maker built at home, and what work already offers.',
   },

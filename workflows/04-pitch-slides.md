@@ -17,7 +17,7 @@ You need:
 
 ```
 I am pitching to [WHO, e.g. head of department, grant panel].
-They care most about: [e.g. patient outcomes, cost, manpower, risk].
+They care most about: [e.g. health outcomes, cost, manpower, risk].
 My ask: [THE DECISION OR RESOURCE YOU WANT].
 Time: [MINUTES] to present, then questions.
 

@@ -79,5 +79,5 @@ Screens and actions:
 ## Where this came from
 
 I use this to map session workflows and app flows for clinical tools I build,
-so that the clinician's console and the patient's device each have a clear,
+so that the clinician's console and the device of the person receiving care each have a clear,
 agreed sequence before any building starts.

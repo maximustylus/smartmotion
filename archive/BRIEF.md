@@ -98,7 +98,7 @@ strong contrast. Respect prefers-reduced-motion. UK English. No em dashes.
 ## Excluded
 - Petri Dish Research Playbook
 - Singapore Institute of Technology course materials and assignments
-- Patient data, colleague details, internal hospital documents
+- Health information, colleague details, internal hospital documents
 
 ## Phases
 Stop after each phase, summarise what is built, what is verified and what is

@@ -96,7 +96,7 @@ the how-to scenes and use generated clips only for the opening and closing.
 ## Check before you use it
 
 - Is every fact and instruction in the video correct and current?
-- Does any scene show a real person, a patient, or a setting that could
+- Does any scene show a real person, someone receiving care, or a setting that could
   identify someone?
 - Do the people shown represent your audience respectfully?
 - Is the video labelled as containing AI-generated footage?

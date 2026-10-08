@@ -395,6 +395,7 @@ function quizScene(step) {
         html: `
           ${eyebrow('The room', '<span data-submissions>0</span> played')}
           <h3>${copy.quiz.roomHeading}</h3>
+          <p class="note">${copy.quiz.roomNote}</p>
           <div class="totals" data-no-split>
             <div class="totals__group">
               <h4>By readiness</h4>

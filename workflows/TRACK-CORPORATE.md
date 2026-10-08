@@ -59,4 +59,4 @@ Copilot" does.
 | Working time | 30 to 60 minutes to set up and test |
 | Gate | Not published |
 | Can it finish? | Yes |
-| Caveat | Pair and Agentsea accept documents up to Restricted / Sensitive Normal. TODO: is patient data ever permitted? Agentsea offers Reference Files (up to 10 files, 30 MB each), Knowledge Spaces and Browse SharePoint; see workflow 5 |
+| Caveat | Pair and Agentsea accept documents up to Restricted / Sensitive Normal. TODO: is health information ever permitted? Agentsea offers Reference Files (up to 10 files, 30 MB each), Knowledge Spaces and Browse SharePoint; see workflow 5 |

@@ -27,10 +27,13 @@ a motion graphic, not a slide deck.
   beats; field.js is the particle field and its drawings; story.js mounts it.
 - site/src/quiz/: the icebreaker and Firestore counters. site/src/motus/:
   the companion and chat. site/src/pages/: glossary and contact pages.
-- workflows/ is the owner's (version 0.2). Never edit it.
+- workflows/ is the owner's (version 0.2.1: "patient" reworded with his
+  go-ahead on 8 October 2026). Never edit it without his explicit go-ahead.
 - functions/: Motus's Cloud Function, on Google Gemini (the owner's choice,
-  6 October 2026, matching NEXUS's AURA). Not deployed; it needs a Gemini API
-  key from a billed project, which only the owner sets. Never handle the key.
+  6 October 2026, matching NEXUS's AURA). Live since 6 October 2026 on the
+  owner's billed Blaze project; the Gemini API key is a secret only he sets.
+  Never handle the key. Functions and kb.json deploy by hand, not by the
+  GitHub Action, so after content changes the owner redeploys functions.
   functions/guardrails.js carries the owner's sixteen rules (from NEXUS's
   AURA), the NRIC/FIN and crisis screens and the provenance stamp; run
   `cd functions && npm test` after touching it.
@@ -41,8 +44,10 @@ a motion graphic, not a slide deck.
   1.1 (stress-test fixes) was signed off the same evening, and version 1.2
   (final QC: no-praise persona, 8,192-token cap, wider NRIC screen,
   per-address hourly cap) on 7 October 2026, and version 1.3 (no "patient"
-  wording) the same day; 1.3 is in effect. Any change to the prompt or the controls needs a new version and
-  his sign-off again.
+  wording) the same day; 1.3 is in effect. Version 1.4 (no-origin requests
+  refused; address hold stated as an hour) was drafted on 8 October 2026 and
+  awaits his sign-off; it goes live when he redeploys the function. Any change
+  to the prompt or the controls needs a new version and his sign-off again.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
   are absent, so it keeps the last measured active time. Never edit the
@@ -89,6 +94,9 @@ a motion graphic, not a slide deck.
   deploys smartmotion.web.app on every push to main (set up by the owner on
   8 October 2026; the key is a repository secret no one handles). So push
   main only with changes that are checked and ready to go live.
+  Before it builds, it runs scripts/check-house-rules.mjs (no dashes, no
+  "patient", across all public content) and the Motus tests; either
+  failing stops the deploy. Run both locally before pushing.
 - Commit each verified change with a plain message.
 - Check every change in a browser at phone size (375 by 812 and 390 by
   664) and wider. A console error counts as a failure. Each beat must fit

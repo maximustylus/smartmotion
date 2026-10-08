@@ -1,7 +1,7 @@
 # Personal track: cost cards
 
 For your own device and your own AI accounts. Use public, de-identified,
-non-sensitive content only. No patient data. No internal documents.
+non-sensitive content only. No health information. No internal documents.
 
 Checked on 3 October 2026. Times are estimates until measured. See
 [COMPARE.md](COMPARE.md) for what the gates mean.

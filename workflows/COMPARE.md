@@ -65,7 +65,7 @@ Check in the app.
 |---|---|---|
 | Microsoft 365 Copilot Chat (no paid licence) | Standard access that varies with capacity; file upload; image generation | Image and upload counts |
 | Microsoft 365 Copilot (paid licence) | Priority access; Copilot inside Word, Excel and PowerPoint; answers grounded in your organisation's files | Counts |
-| Pair | Free to public officers; cleared for data up to Restricted / Sensitive Normal; build and share assistants; document upload | Usage limits; whether patient data is permitted |
+| Pair | Free to public officers; cleared for data up to Restricted / Sensitive Normal; build and share assistants; document upload | Usage limits; whether health information is permitted |
 | Agentsea | Build AI agents in plain language; approved tools and connectors; audit logs and monitoring. In-app guidance: documents up to Restricted / Sensitive Normal; Reference Files up to 10 files of 30 MB each; Knowledge Spaces; Browse SharePoint | Models, quotas |
 
 Sources: https://learn.microsoft.com/en-us/copilot/overview ,
@@ -76,6 +76,6 @@ https://www.synapxe.sg/news/artificial-intelligence/ai-agents-healthcare-profess
 
 - TODO: Which Copilot do I have? Look at the label inside the app.
 - TODO: Is Clipchamp switched on for video assembly?
-- TODO: What classification of data may go into each tool, and is patient data
+- TODO: What classification of data may go into each tool, and is health information
   ever permitted?
 - TODO: Are there quotas on Pair and Agentsea?

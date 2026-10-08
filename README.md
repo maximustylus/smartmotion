@@ -71,7 +71,7 @@ Governance follows the owner's NEXUS pattern for AURA:
 asked) and `MOTUS-INFO-CARD.md` (the public card, after the IMDA
 Transparency Guidelines for Generative AI Chatbots, at `/motus-info`). The
 owner signed version 1.0 of both on 6 October 2026 and Motus went live on
-Gemini that day; version 1.2, after the final quality-control round, was
-signed off on 7 October 2026. Tests: `cd functions && npm test`.
+Gemini that day; version 1.3 (no "patient" wording), signed off on
+7 October 2026, is in effect. Tests: `cd functions && npm test`.
 
 Still to do: read a set of real turns as NEXUS did.

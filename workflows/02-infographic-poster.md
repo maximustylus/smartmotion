@@ -1,7 +1,7 @@
 # Workflow 2: Infographic or poster
 
 Produce a one-page poster or infographic, such as a programme overview, a
-patient education sheet or a study recruitment poster.
+health education sheet or a study recruitment poster.
 
 ## Before you start
 

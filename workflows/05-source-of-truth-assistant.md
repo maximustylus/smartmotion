@@ -74,7 +74,7 @@ For every answer, name the document and section it came from.
 If the documents do not contain the answer, reply "Not found in the sources"
 and suggest who to ask: [CONTACT OR ROLE].
 If two documents disagree, show both and say which is more recent.
-Do not give clinical advice for individual patients.
+Do not give clinical advice about any individual's care.
 ```
 
 ## Step 4: Test before you share

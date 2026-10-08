@@ -105,7 +105,7 @@ priority.
 4. Verification of content/cost-evidence.md
 5. Sources and dates for the Will Smith clips
 6. Whether the frameworks keep a full section or become a short layer
-7. Corporate-track TODOs in workflows/ (licence type, Clipchamp, patient data
+7. Corporate-track TODOs in workflows/ (licence type, Clipchamp, health information
    rules, quotas, whether Agentsea's in-app figures may be published)
 8. Confirmation from the CGH Education Office on public logo use
 
@@ -116,7 +116,7 @@ List these at every checkpoint until closed.
 - Do not invent facts, statistics, quotes, citations or product limits.
 - Do not transcribe figures from screenshots or reuse images found online.
 - Do not embed, host or generate any real person's likeness.
-- Do not include patient data, colleague details, internal hospital documents
+- Do not include health information, colleague details, internal hospital documents
   or Singapore Institute of Technology course materials.
 - Do not reproduce Synapxe or Agentsea graphics or mascots.
 - Do not deploy to the live site without the owner's explicit go-ahead.

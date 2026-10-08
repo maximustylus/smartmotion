@@ -30,6 +30,14 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
 
+      # Gates: nothing deploys if the house rules or Motus's tests fail.
+      - name: House rules
+        run: node scripts/check-house-rules.mjs
+
+      - name: Motus tests
+        working-directory: functions
+        run: npm ci && npm test
+
       - name: Build
         working-directory: site
         run: npm ci && npm run build
