@@ -58,7 +58,7 @@ a motion graphic, not a slide deck.
     npm run dev          # http://localhost:5173, add ?nosplash to skip the splash
     npm run build        # runs the steward first
     node scripts/build-kb.mjs    # from the repo root, after content changes
-    firebase deploy --only hosting   # only when the owner asks
+    firebase deploy --only hosting   # by hand; normally the GitHub Action deploys
 
 ## Rules that do not bend
 
@@ -84,7 +84,11 @@ a motion graphic, not a slide deck.
 - Work happens on phase-1, and main is kept level with it (fast-forwarded on
   6 October), because the site's take-home links point at main on GitHub.
   After pushing phase-1, push main too: git push origin phase-1:main
-- Commit each verified change with a plain message. Deploy only when asked.
+- Pushing main publishes the site: .github/workflows/deploy.yml builds and
+  deploys smartmotion.web.app on every push to main (set up by the owner on
+  8 October 2026; the key is a repository secret no one handles). So push
+  main only with changes that are checked and ready to go live.
+- Commit each verified change with a plain message.
 - Check every change in a browser at phone size (375 by 812 and 390 by
   664) and wider. A console error counts as a failure. Each beat must fit
   the screen; story.js has a fit guard, scroll.js re-splits lines.

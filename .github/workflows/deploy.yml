@@ -1,0 +1,42 @@
+# Publishes smartmotion.web.app whenever main changes.
+#
+# The key lives in this repository's secrets as
+# FIREBASE_SERVICE_ACCOUNT_SMARTMOTUS, created by the owner with
+# `firebase init hosting:github` on 8 October 2026. No person or assistant
+# handles the key itself.
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hosting
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: the steward counts commits and dates for the About page.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Build
+        working-directory: site
+        run: npm ci && npm run build
+
+      - name: Deploy to the live site
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SMARTMOTUS }}
+          projectId: smartmotus
+          channelId: live
