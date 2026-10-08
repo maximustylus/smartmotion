@@ -116,7 +116,7 @@ export function mountContact(root) {
         <p>${esc(sp.summary)}</p>
         <p class="contact__links">
           <a class="btn" href="mailto:muhammad.alif@me.com" data-mail="muhammad.alif@me.com">Email me</a>
-          <a class="btn btn--ghost" href="https://linktr.ee/muhammad.alif" target="_blank" rel="noopener">All my links <span aria-hidden="true">&nearr;</span></a>
+          <a class="btn btn--ghost" href="https://linktr.ee/muhammad.alif" target="_blank" rel="noopener">My socials <span aria-hidden="true">&nearr;</span></a>
         </p>
         <p class="contact__mail" role="status" aria-live="polite" hidden></p>
       </div>

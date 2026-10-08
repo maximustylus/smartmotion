@@ -34,8 +34,7 @@ export function createProfile(topbar, root) {
       <p class="pcard__name">${defaultRoute.speaker.name}</p>
       <p class="pcard__role">${defaultRoute.speaker.roles.join(' \u00b7 ')}</p>
       <p class="pcard__summary">${defaultRoute.speaker.summary}</p>
-      <a class="btn pcard__link" href="${LINK}" target="_blank" rel="noopener">All my links <span aria-hidden="true">&nearr;</span></a>
-      <p class="pcard__handle">linktr.ee/muhammad.alif</p>
+      <a class="btn pcard__link" href="${LINK}" target="_blank" rel="noopener">My socials <span aria-hidden="true">&nearr;</span></a>
     </div>
   `
   root.append(card)

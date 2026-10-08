@@ -838,7 +838,6 @@ html.overlay-open { overflow: hidden; }
 .pcard__role { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 .pcard__summary { font-size: 0.86rem; line-height: 1.45; color: var(--muted); }
 .pcard__link { margin-top: 6px; justify-self: start; min-height: 40px; padding: 0.5em 1em; font-size: 0.9rem; text-decoration: none; }
-.pcard__handle { font-size: 0.75rem; color: var(--faint); font-variant-numeric: tabular-nums; }
 
 @media (max-width: 479px) {
   .pcard { grid-template-columns: 64px 1fr; }

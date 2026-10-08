@@ -17,6 +17,7 @@ export const copy = {
     eyebrow: 'Before you go',
     heading: 'The next move is yours',
     lead: 'Pick one move. Try its prompt on something small this week. Check what comes back. The assistant brings speed. You bring judgement.',
+    motus: 'Did you notice Motus evolving as you moved down the playbook?',
   },
   questions: {
     eyebrow: 'Thank you',
