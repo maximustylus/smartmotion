@@ -5,11 +5,11 @@ data is handled, and how to raise a concern.**
 
 | | |
 |---|---|
-| **Card status** | ✅ **In effect: version 1.4**, signed off on 8 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. **Version 1.5 signed off on 8 October 2026**: workflow links open the workflow itself, and a clearer message when Motus reaches its limit. It takes effect when the function is redeployed; until then replies show guardrails v1.4 (see Card versioning). |
+| **Card status** | ✅ **In effect: version 1.4**, signed off on 8 October 2026 by **Muhammad Alif (owner)**, the named approval Rule 12 of the guardrails requires. **Version 1.5 signed off on 8 October 2026**: workflow links open the workflow itself, and a clearer message when Motus reaches its limit. It takes effect when the function is redeployed; until then replies show guardrails v1.4 (see Card versioning). **Version 1.6 drafted on 15 October 2026 for the owner's sign-off, not in effect**: Motus is written for everyone, not one profession. |
 | **Motus status** | ✅ **Live since 6 October 2026.** First checked that day on the live service: real questions answered from the knowledge base with sources named; crisis and NRIC messages answered by the fixed replies without reaching the model; a prompt-injection attempt reported and refused; other websites blocked. |
-| **Card version** | 1.5 |
-| **Last updated** | 2026-10-08 |
-| **Describes** | Smart Motion **v1.0.2** · Motus guardrails **v1.5** |
+| **Card version** | 1.6 (draft) |
+| **Last updated** | 2026-10-15 |
+| **Describes** | Smart Motion **v1.0.3** · Motus guardrails **v1.6 (draft)** |
 | **Framework** | Structured after the **IMDA Transparency Guidelines for Generative AI Chatbots** (Infocomm Media Development Authority, Singapore, published 20 July 2026), Annex B sample format, following the owner's card for AURA in NEXUS. The guidelines are voluntary; Smart Motion adopts them as its transparency baseline. |
 
 ---
@@ -69,11 +69,11 @@ Google's; what is Smart Motion's own is the prompting, the knowledge base and th
 
 ## 2 · What Motus shouldn't be used for
 
-- **Medical advice, diagnosis or treatment.** Motus is a guide to a teaching playbook. It gives no
+- **Medical advice, diagnosis or treatment.** Motus is a guide to a playbook. It gives no
   clinical advice for any person.
 - **Crisis support.** Motus is not a crisis service. If you are in danger, contact emergency
   services (§3 gives the fixed reply Motus shows).
-- **Health, colleague or internal hospital information.** Never type it. Smart Motion never needs
+- **Health, colleague or internal workplace information.** Never type it. Smart Motion never needs
   it. A message containing something shaped like an NRIC or FIN number is refused before it reaches
   the model, but **nothing else is checked**: names, record numbers and dates of birth would pass.
   The control on what you type is you.
@@ -132,7 +132,7 @@ measured**; the guidelines permit qualitative statements.*
 - **Safeguards:** Motus's instructions live only in its system prompt. Its knowledge base, the
   note about which scene you are on and anything you paste are named as data, not instructions.
   The scene note passes only if it is shaped like a scene id. The server answers only this site.
-  Rate ceilings per instance: 60 messages a minute from one address (a hospital network can put a
+  Rate ceilings per instance: 60 messages a minute from one address (a workplace network can put a
   whole room behind one address) and 3,000 calls to the model an hour in all, with at most five
   instances, so a script meets a limit rather than an unbounded bill. Only messages that reach the
   model count towards the hour, so junk and screened messages cannot use it up. Since 1.2 one
@@ -239,7 +239,7 @@ card will not invent a service level it cannot keep.
 11. **One model for every request.** Motus does not route by task (Rule 16); the model that
     answered is recorded instead.
 12. **Google's terms require the API not to power a service directed at, or likely to be used by,
-   people under 18.** Smart Motion is made for adult educators and has no age check (gap 6).
+   people under 18.** Smart Motion is made for adults and has no age check (gap 6).
 
 ---
 
@@ -279,6 +279,7 @@ between this card and the code is visible.
 
 | Card version | Date | Change |
 |---|---|---|
+| **1.6 (draft)** | 2026-10-15 | Smart Motion is public, so Motus now serves everyone, not one profession. Motus is described as made for anyone who builds, teaches or presents with AI, and pitches replies to a member of the public who is not technical. §2 and §3 say workplace where they said hospital; the fixed NRIC reply says personal details, not staff details, and Motus no longer offers "someone in your care" as a phrase; §2 and point 12 no longer name educators. Smart Motion is still made for adults, with no age check (gap 6). Nothing else changes: the same screens, limits and record of each reply. **Drafted for the owner's sign-off; not in effect.** |
 | **1.5** | 2026-10-08 | A live answer linked three workflows to the wrong pages of the app. Motus now links a workflow to the workflow itself, which opens on GitHub, and links a page of the app only when that page shows what it names; its map of the app now says what each page shows. A full address of a page on this site now stays in the app. When Gemini refuses for a limit, Motus says it is resting and the rest of the site works. §3 now names the prepaid credit as the final spending ceiling. **Signed off by the owner (Muhammad Alif) on 8 October 2026. Takes effect when the function is redeployed; 1.4 runs until then.** |
 | **1.4** | 2026-10-08 | After an independent review. Corrected: your network address is held in memory for up to an hour, not a minute, because the per-address hourly count added in 1.2 keeps it that long; it is still never written down. Requests that carry no origin are now refused, as browsers always send one, so a bare script cannot call Motus; a script can still forge the header, and the rate ceilings and budget remain the backstop. The owner's workflows are now reworded at source to say "health information". Signed off by the owner (Muhammad Alif) on 8 October 2026; in effect until 1.5 is signed off and deployed. Deployed that day and checked live: Motus answers on the site, and a request with no origin is refused. |
 | **1.3** | 2026-10-07 | At the owner's request, Smart Motion no longer uses the clinical word for a person receiving care: the preamble, the persona, the fixed identifier reply, this card and the knowledge base now say "health information". The owner's workflows keep their own wording and are reworded only as they enter the knowledge base. Motus is told never to use the word. Signed off by the owner (Muhammad Alif); superseded by 1.4. |

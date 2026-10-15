@@ -48,7 +48,9 @@ a motion graphic, not a slide deck.
   hold stated as an hour) on 8 October 2026, deployed and checked live that
   day, and version 1.5 (workflow links to files, a map of what each scene
   shows, a "resting" message at the limit) the same day; 1.5 goes live when he
-  redeploys the function, and 1.4 runs until then. Any change
+  redeploys the function, and 1.4 runs until then. Version 1.6 (Motus
+  serves everyone, not one profession) was drafted on 15 October 2026 for
+  his sign-off and is not in effect. Any change
   to the prompt or the controls needs a new version and his sign-off again.
 - scripts/steward.mjs measures build effort into site/src/content/effort.json
   and runs before every build. In a cloud session the local session logs
@@ -82,7 +84,7 @@ a motion graphic, not a slide deck.
   or image in our own copy. Will Smith clips: no likeness in our own copy or
   images. On 7 October 2026 the owner chose to open both sources (the
   YouTube clip and the Mothership report) inside the in-app window.
-- No health information about anyone, colleague details or internal hospital
+- No health information about anyone, colleague details or internal workplace
   documents. The word "patient" does not appear anywhere in Smart Motion, the
   app or Motus (owner, 7 October 2026); say "health information" instead.
 - Firestore stores anonymous aggregate counters only.

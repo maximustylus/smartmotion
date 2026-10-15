@@ -1,7 +1,8 @@
 # Smart Motion skills
 
-Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif,
-on 8 October 2026.
+Version 1.1, 15 October 2026. Drafted for the owner's sign-off: the
+prompts now speak to everyone, not one profession. Version 1.0 was
+signed off by the owner, Muhammad Alif, on 8 October 2026.
 
 The eight prompts from Smart Motion's moves, packaged as Claude skills. A
 skill is a folder Claude reads when your request matches it, so you do not
@@ -14,7 +15,7 @@ prompt under each move at smartmotion.web.app.
 | have-an-angle | Have an angle | before you ask for another version |
 | know-the-hook | Know the hook, keep the engagement | when you sit down to prepare a session |
 | know-the-architecture | Understand the file system and architecture | when your assistant is building an app and can see its files |
-| build-on-frameworks | Build on solid frameworks | while your quiz or feedback form is still a draft |
+| build-on-frameworks | Build on solid frameworks | while your tool is still a draft |
 | use-it-safely | Use it safely | before you share anything an assistant helped you make |
 | test-with-utility | Test it with the utility formula | before you commit to a tool, yours or anyone else's |
 | reality-check | Reality check | before you promise the demo to anyone |

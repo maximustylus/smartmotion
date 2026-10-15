@@ -27,7 +27,7 @@ export const moves = [
     framework: {
       name: 'Covey’s second habit',
       source: 'Stephen R. Covey, The 7 Habits of Highly Effective People (1989), Habit 2; Bound and Chia, The Six Principles of Learning Design (2020)',
-      note: 'The habit: start with a clear picture of your destination. Learning design does the same, working back from the outcome to the activity. If you write learning outcomes before you plan a session, you already do this. With an assistant, that picture is a one-page brief.',
+      note: 'The habit: start with a clear picture of your destination. Learning design does the same, working back from the outcome to the activity. If you have ever planned backwards from a goal, you already do this. With an assistant, that picture is a one-page brief.',
       verify: false,
     },
     example: {
@@ -52,7 +52,7 @@ export const moves = [
     framework: null,
     example: {
       title: 'The stroll',
-      body: 'The talk behind this playbook has a topic: generative AI for educators. Its angle is in the title: a casual stroll, or GAi GAi in Singlish. Minds wander on a stroll, and a wandering mind is less happy (Killingsworth & Gilbert, 2010). An angle tells you what to leave out.',
+      body: 'This playbook began as a talk on generative AI. Its angle was in the title: a casual stroll, or GAi GAi in Singlish. Minds wander on a stroll, and a wandering mind is less happy (Killingsworth & Gilbert, 2010). An angle tells you what to leave out.',
     },
     promptHeading: 'When the draft feels generic',
     cheatsheet: 'have-an-angle',
@@ -87,7 +87,7 @@ export const moves = [
     forms: { move: 'folder', example: 'tree', prompt: 'code' },
     phase: 'design',
     name: 'Understand the file system and architecture',
-    angle: 'Think of a resuscitation trolley: you did not build it, but you know which drawer holds what.',
+    angle: 'Think of a well-kept kitchen: you did not build it, but you know which drawer holds what.',
     principle:
       'Building an app by describing it, without reading the code, is called vibe coding. The assistant does the filing. You still need to learn where things live, so you can ask for a change and check it was made.',
     framework: {
@@ -110,9 +110,9 @@ export const moves = [
     forms: { move: 'hammer', prompt: 'cap' },
     phase: 'develop',
     name: 'Build on solid frameworks',
-    angle: 'The assistant is new. The questions about good teaching are not.',
+    angle: 'The assistant is new. The questions about what works are not.',
     principle:
-      'A solid framework is someone’s careful thinking, in words your colleagues already know. Set the teaching tool you build beside one: see what it covers and what it misses. The assistant suggests the fit. You decide whether it holds.',
+      'A solid framework is someone’s careful thinking, in words your colleagues already know. Set the tool you build beside one: see what it covers and what it misses. The assistant suggests the fit. You decide whether it holds.',
     framework: {
       name: 'Four frameworks, one job each',
       source: 'Miller (1990); Sargeant et al. (2015); Bound and Chia (2020); Vygotsky (1978)',
@@ -121,7 +121,7 @@ export const moves = [
     },
     // The worked example beat was removed at the owner's request on 7 October 2026.
     example: null,
-    promptHeading: 'Before your tool reaches learners',
+    promptHeading: 'Before your tool reaches people',
     cheatsheet: 'build-on-frameworks',
     form: 'pyramid',
   },

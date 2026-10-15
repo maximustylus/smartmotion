@@ -5,7 +5,7 @@ description: "Smart Motion move \"Use it safely\". Use before you share anything
 
 # Use it safely
 
-Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
+Version 1.1, 15 October 2026. Drafted for the owner's sign-off: the prompts now speak to everyone, not one profession. Version 1.0 was signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/use-it-safely.md. Edit that file, not this one.
 
 ## How to run this skill

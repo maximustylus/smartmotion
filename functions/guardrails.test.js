@@ -253,3 +253,10 @@ test('a limit reached at Gemini says Motus is resting and the rest of the site w
   assert.equal(calls.length, 2)
   assert.equal(res.events().at(-1).error, 'Motus is resting for now. The rest of Smart Motion works as usual; try Motus again later.')
 })
+
+test('Motus speaks to everyone, not one profession (v1.6)', () => {
+  const src = readFileSync(join(root, 'functions/motus.js'), 'utf8')
+  const persona = src.slice(src.indexOf('const persona'), src.indexOf('const system'))
+  for (const t of [persona, GUARDRAIL_PREAMBLE]) assert.doesNotMatch(t, /educator|clinical educator/i)
+  assert.match(persona, /anyone who builds, teaches or presents/)
+})

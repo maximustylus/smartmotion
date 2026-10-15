@@ -16,7 +16,7 @@ export const tracks = [
   {
     id: 'corporate',
     name: 'Corporate track',
-    line: 'Your hospital-issued device, with Copilot in Teams, Pair and Agentsea, as your institution allows.',
+    line: 'Your work-issued device, with Copilot in Teams, Pair and Agentsea, as your organisation allows.',
     points: ['Cleared for work information, where your documents already live', 'Fewer media features; no video generator found', 'What you get depends on your licence and local settings'],
     file: 'workflows/TRACK-CORPORATE.md',
   },

@@ -4,7 +4,7 @@ Paste this when you sit down to prepare a session.
 
 ---
 
-I am planning [a session, lesson or talk] for [audience, group size, what they already know]. It lasts [how long] and runs [in person or online].
+I am planning [a session, class or talk] for [audience, group size, what they already know]. It lasts [how long] and runs [in person or online].
 
 Suggest three ways to open it. Each must be something the audience does, not something it watches. Each should take under [number] minutes and need only what people already have in their hands, such as a phone. Everyone should be able to start without help, then be stretched a little.
 

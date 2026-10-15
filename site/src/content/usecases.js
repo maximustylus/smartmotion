@@ -28,7 +28,7 @@ export const usecases = {
   },
   corporate: {
     title: 'Corporate track: already in your Teams',
-    lead: 'Cleared for work information, as your institution allows.',
+    lead: 'Cleared for work information, as your organisation allows.',
     items: [
       { name: 'Copilot agents in Teams', line: 'Prompt Coach, AI Learning Advisor and Idea Coach are ready to use. New agent lets you build your own.' },
       { name: 'Agentsea', line: 'Agents that answer from your documents, with Microsoft SharePoint as the document hub.' },
@@ -58,7 +58,7 @@ export const firstAgent = {
 
 Answer only from the files and pages I add. If the answer is not there, say so plainly and do not guess.
 
-Never give medical advice, diagnose, or make a decision about anyone’s care, and never ask for health or identifying details.
+Never give medical advice, diagnose, or make a decision about anyone’s health, and never ask for health or identifying details.
 
 Keep answers short, in UK English, and name the document each answer comes from.
 

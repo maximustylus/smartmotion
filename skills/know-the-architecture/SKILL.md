@@ -1,11 +1,11 @@
 ---
 name: know-the-architecture
-description: "Smart Motion move \"Understand the file system and architecture\". Use when your assistant is building an app and can see its files. Think of a resuscitation trolley: you did not build it, but you know which drawer holds what."
+description: "Smart Motion move \"Understand the file system and architecture\". Use when your assistant is building an app and can see its files. Think of a well-kept kitchen: you did not build it, but you know which drawer holds what."
 ---
 
 # Understand the file system and architecture
 
-Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
+Version 1.1, 15 October 2026. Drafted for the owner's sign-off: the prompts now speak to everyone, not one profession. Version 1.0 was signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/know-the-architecture.md. Edit that file, not this one.
 
 ## How to run this skill

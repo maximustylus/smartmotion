@@ -15,9 +15,9 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const VERSION = '1.0'
-const DATE = '8 October 2026'
-const STATUS = 'Signed off by the owner, Muhammad Alif, on 8 October 2026.'
+const VERSION = '1.1'
+const DATE = '15 October 2026'
+const STATUS = 'Drafted for the owner\'s sign-off: the prompts now speak to everyone, not one profession. Version 1.0 was signed off by the owner, Muhammad Alif, on 8 October 2026.'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const { moves } = await import(join(root, 'site/src/content/moves.js'))

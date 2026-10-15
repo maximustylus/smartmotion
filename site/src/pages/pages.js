@@ -85,7 +85,7 @@ export function mountGlossary(root) {
         .join('')}
     </dl>
     <h2 id="tracks">Two tracks</h2>
-    <p>Every workflow runs on a personal track, your own device and accounts with public content only, or a corporate track, Microsoft 365 Copilot, Pair and Agentsea as your institution allows. The track files say which tool to paste into, what it costs you and where each track stops.</p>
+    <p>Every workflow runs on a personal track, your own device and accounts with public content only, or a corporate track, Microsoft 365 Copilot, Pair and Agentsea as your organisation allows. The track files say which tool to paste into, what it costs you and where each track stops.</p>
     <h2>Site map</h2>
     <ul class="sitemap">
       ${sitemap.map((s) => `<li><a href="${s.path}">${esc(s.label)}</a><span>${esc(s.note)}</span></li>`).join('')}

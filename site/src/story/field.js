@@ -1061,7 +1061,7 @@ const folderForm = (() => {
   return drawing([...folder(-1.55, -0.6, 0.85, 0.6), ...folder(-0.42, -0.6, 0.85, 0.6), ...folder(0.7, -0.6, 0.85, 0.6), [6, seg(-1.1, 0.25, 1.1, 0.25, 0.012)], [4, seg(0, 0.25, 0, 0.75, 0.012)], ...rect(-0.3, 0.75, 0.3, 1.0, 0.012, 1)])
 })()
 
-// Before your tool reaches learners: a graduation cap.
+// Before your tool reaches people: a graduation cap.
 const capForm = drawing([
   [12, seg(-1.2, 0.35, 0, 0.85, 0.02)],
   [12, seg(0, 0.85, 1.2, 0.35, 0.02)],

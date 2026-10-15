@@ -24,7 +24,7 @@ export const stay = {
       { why: 'A similar share lacked the time', act: 'Make the time' },
       { why: 'About one in four did not know which course to take', act: 'Point to the course' },
     ],
-    close: 'Workers are already using AI. Training is what lags, and educators can close that gap.',
+    close: 'Workers are already using AI. Training is what lags, and anyone who teaches can help close that gap.',
   },
   source: `IMDA Singapore Digital Economy Report 2026, as reported by [CNA, 5 October 2026](${CNA}).`,
 }

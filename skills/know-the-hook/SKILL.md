@@ -5,7 +5,7 @@ description: "Smart Motion move \"Know the hook, keep the engagement\". Use when
 
 # Know the hook, keep the engagement
 
-Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
+Version 1.1, 15 October 2026. Drafted for the owner's sign-off: the prompts now speak to everyone, not one profession. Version 1.0 was signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/know-the-hook.md. Edit that file, not this one.
 
 ## How to run this skill
@@ -18,7 +18,7 @@ Built by scripts/build-skills.mjs from site/src/content/cheatsheets/know-the-hoo
 
 ## The prompt
 
-I am planning [a session, lesson or talk] for [audience, group size, what they already know]. It lasts [how long] and runs [in person or online].
+I am planning [a session, class or talk] for [audience, group size, what they already know]. It lasts [how long] and runs [in person or online].
 
 Suggest three ways to open it. Each must be something the audience does, not something it watches. Each should take under [number] minutes and need only what people already have in their hands, such as a phone. Everyone should be able to start without help, then be stretched a little.
 

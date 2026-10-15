@@ -11,7 +11,7 @@ Score it on five questions, adapted from van der Vleuten's utility of assessment
 Validity: does it do what it claims, and get it right?
 Reliability: does it work every time?
 Educational Impact: do people learn better because of it?
-Acceptability: will learners, colleagues and my organisation accept it?
+Acceptability: will the people who use it, colleagues and my organisation accept it?
 Cost: is it affordable to own for a year? Count people's time, checking, upkeep and the cost of switching away, not only the subscription or usage bill.
 
 Then multiply the scores. If any is near zero, say plainly that the tool's usefulness is near zero, whatever the rest. Otherwise, one unknown makes the result unknown.

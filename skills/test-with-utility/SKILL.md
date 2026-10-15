@@ -5,7 +5,7 @@ description: "Smart Motion move \"Test it with the utility formula\". Use before
 
 # Test it with the utility formula
 
-Version 1.0, 8 October 2026. Signed off by the owner, Muhammad Alif, on 8 October 2026.
+Version 1.1, 15 October 2026. Drafted for the owner's sign-off: the prompts now speak to everyone, not one profession. Version 1.0 was signed off by the owner, Muhammad Alif, on 8 October 2026.
 Built by scripts/build-skills.mjs from site/src/content/cheatsheets/test-with-utility.md. Edit that file, not this one.
 
 ## How to run this skill
@@ -25,7 +25,7 @@ Score it on five questions, adapted from van der Vleuten's utility of assessment
 Validity: does it do what it claims, and get it right?
 Reliability: does it work every time?
 Educational Impact: do people learn better because of it?
-Acceptability: will learners, colleagues and my organisation accept it?
+Acceptability: will the people who use it, colleagues and my organisation accept it?
 Cost: is it affordable to own for a year? Count people's time, checking, upkeep and the cost of switching away, not only the subscription or usage bill.
 
 Then multiply the scores. If any is near zero, say plainly that the tool's usefulness is near zero, whatever the rest. Otherwise, one unknown makes the result unknown.
