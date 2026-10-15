@@ -243,12 +243,11 @@ export function playbookScenes(route) {
           <h1 class="visually-hidden">Smart Motion</h1>
           ${eyebrow(copy.tagline)}
           <p class="cover__lead">${copy.coverLead}</p>
-          <div class="chips">
-            <a class="chip" href="#${moves[0].id}">Moves</a>
-            <a class="chip" href="#wonder">Era</a>
-            <a class="chip" href="/talk">Talk</a>
-          </div>
         `,
+        // The Moves, Era and Talk chips came off on 15 October 2026 (the owner:
+        // redundant between talks). To bring them back for a talk, add after the lead:
+        // <div class="chips"><a class="chip" href="#${moves[0].id}">Moves</a>
+        // <a class="chip" href="#wonder">Era</a><a class="chip" href="/talk">Talk</a></div>
       },
     ],
   }
