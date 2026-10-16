@@ -81,6 +81,38 @@
 
 .motus.is-saying .motus__bubble { opacity: 1; transform: translateY(0); }
 
+/* A callout with a choice in it (the home screen offer). Same ink as the
+   bubble, tail towards Motus, and it can be clicked. */
+.motus__offer {
+  position: absolute;
+  right: 100px;
+  bottom: 70px;
+  width: min(250px, calc(100vw - 120px));
+  padding: 12px 14px;
+  border-radius: 14px 14px 3px 14px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  box-shadow: 0 10px 30px color-mix(in oklab, var(--fg) 22%, transparent);
+  opacity: 0;
+  transform: translateY(8px) scale(0.92);
+  transform-origin: bottom right;
+  transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out);
+}
+.motus__offer.is-on { opacity: 1; transform: none; }
+.motus__offer-text { margin: 0 0 10px; }
+.motus__offer-acts { display: flex; gap: 8px; align-items: center; }
+.motus__offer-acts button {
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  padding: 0.4em 0.9em;
+}
+.motus__offer-yes { border: 0; background: var(--accent); color: var(--accent-ink); }
+.motus__offer-no { border: 1px solid color-mix(in oklab, var(--bg) 35%, transparent); background: transparent; color: var(--bg); }
+
 /* The chat window, in the manner of a desktop window: traffic lights, a
    centred title, a soft frame. Minimise keeps the title bar; maximise
    fills most of the screen. */
@@ -260,6 +292,7 @@
   .motus { right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
   .motus__btn, .motus__btn canvas { width: 88px; height: 88px; }
   .motus__bubble { right: 80px; bottom: 56px; }
+  .motus__offer { right: 92px; bottom: 56px; width: min(240px, calc(100vw - 116px)); }
   .mchat { max-height: min(78svh, 560px, calc(100svh - 120px)); }
   .mchat.is-max { max-height: calc(100svh - 110px); }
 }

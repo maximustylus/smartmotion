@@ -74,10 +74,15 @@ export function createMotus(host, { onOpen } = {}) {
     <button type="button" class="motus__btn" aria-label="Motus, your guide. Open the chat"></button>
     <div class="motus__zz" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
     <div class="motus__bubble" role="status"></div>
+    <div class="motus__offer" role="dialog" aria-label="Motus asks" hidden>
+      <p class="motus__offer-text"></p>
+      <div class="motus__offer-acts"><button type="button" class="motus__offer-yes"></button><button type="button" class="motus__offer-no">Not now</button></div>
+    </div>
   `
   host.append(wrap)
   const btn = wrap.querySelector('.motus__btn')
   const bubble = wrap.querySelector('.motus__bubble')
+  const offerEl = wrap.querySelector('.motus__offer')
 
   // Rendered pixels. Motus starts coarse and sharpens as the eras pass.
   let SIZE = 96
@@ -309,6 +314,32 @@ export function createMotus(host, { onOpen } = {}) {
     sayTimer = setTimeout(() => wrap.classList.remove('is-snoozing', 'is-saying') || (state.mode === 'snooze' && wrap.classList.add('is-snoozing')), ms)
   }
 
+  // A callout Motus speaks with a choice in it, such as the home screen
+  // offer. One at a time; it closes on either answer or after ms.
+  let offerTimer
+  function offer(text, yes, onYes, ms = 20000) {
+    offerEl.querySelector('.motus__offer-text').textContent = text
+    const yesBtn = offerEl.querySelector('.motus__offer-yes')
+    const noBtn = offerEl.querySelector('.motus__offer-no')
+    yesBtn.textContent = yes
+    const close = () => {
+      clearTimeout(offerTimer)
+      offerEl.classList.remove('is-on')
+      setTimeout(() => (offerEl.hidden = true), 300)
+    }
+    yesBtn.onclick = () => (close(), onYes?.())
+    noBtn.onclick = close
+    wake()
+    hop()
+    offerEl.hidden = false
+    void offerEl.offsetWidth
+    offerEl.classList.add('is-on')
+    state.talking = true
+    setTimeout(() => (state.talking = false), 1400)
+    clearTimeout(offerTimer)
+    offerTimer = setTimeout(close, ms)
+  }
+
   // ---------- Loop ----------
 
   const timer = new THREE.Timer()
@@ -403,5 +434,6 @@ export function createMotus(host, { onOpen } = {}) {
       chat.setScene(title)
     },
     say,
+    offer,
   }
 }

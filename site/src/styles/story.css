@@ -1087,24 +1087,7 @@ a.chip:not(.chip--link):focus-visible {
 a.chip:hover, button.chip:hover, .btn:hover { transform: translateY(-1px); }
 a.chip:active, button.chip:active, .btn:active { transform: translateY(0) scale(0.98); }
 
-/* Install chip, shown only when the browser offers an install. */
-.install {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
-  z-index: 6;
-  padding: 0.5em 1em;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--line);
-  background: color-mix(in oklab, var(--bg) 85%, transparent);
-  backdrop-filter: blur(10px);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  color: var(--fg);
-}
-@media (max-width: 599px) { .install { bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); left: var(--space-5); transform: none; } }
+/* The home screen offer is Motus's own callout: see .motus__offer in motus.css. */
 
 
 /* ---------- Take-home: tracks and workflows ---------- */

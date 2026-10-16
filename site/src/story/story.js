@@ -328,20 +328,20 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     })
   }
 
-  // Offer the install when the browser does, once, as a quiet chip.
+  // Offer the install when the browser does, once, in Motus's own voice.
+  // The browser can ask before Motus has loaded, so the offer waits for him.
+  let installAsk = null
+  let installOffered = false
+  const offerInstall = () => {
+    if (!installAsk || !motus || installOffered) return
+    installOffered = true
+    const ask = installAsk
+    motus.offer('I can live on your home screen, one tap from the playbook. Shall I?', 'Add me', () => ask.prompt())
+  }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault()
-    if (root.querySelector('.install')) return
-    const chip = document.createElement('button')
-    chip.type = 'button'
-    chip.className = 'install'
-    chip.textContent = 'Keep Smart Motion on your home screen'
-    chip.addEventListener('click', async () => {
-      chip.remove()
-      await e.prompt()
-    })
-    root.append(chip)
-    setTimeout(() => chip.remove(), 20000)
+    installAsk = e
+    offerInstall()
   })
 
   // Motus joins once the story is live. Its chat reads the scene list.
@@ -355,5 +355,6 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
     if (scroll.state.scene >= 0) motus.travel(scroll.state.scene, scenes.length, scenes[scroll.state.scene].title)
     motus.setFidelity(FIDELITY[root.dataset.era] ?? 1)
     window.motus = motus
+    offerInstall()
   })
 }
