@@ -836,6 +836,9 @@ html.overlay-open { overflow: hidden; }
   object-fit: cover;
 }
 
+/* Firstletter Lab: no photo, so the card is one column. */
+.pcard--org { grid-template-columns: 1fr; width: min(280px, calc(100vw - 32px)); }
+
 .pcard__body { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .pcard__name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
 .pcard__role { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
@@ -845,6 +848,7 @@ html.overlay-open { overflow: hidden; }
 @media (max-width: 479px) {
   .pcard { grid-template-columns: 64px 1fr; }
   .pcard__photo { width: 64px; height: 64px; }
+  .pcard--org { grid-template-columns: 1fr; }
 }
 
 
@@ -996,6 +1000,8 @@ html.overlay-open { overflow: hidden; }
   pointer-events: none;
 }
 .colophon__v { font-variant-numeric: tabular-nums; }
+.colophon a { pointer-events: auto; color: inherit; text-decoration: none; }
+.colophon a:hover { color: var(--fg); }
 
 
 /* A full-bleed scene: the field spans the screen, the copy sits low. */

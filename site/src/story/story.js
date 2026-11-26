@@ -47,7 +47,7 @@ export function mount(root, { mode = 'playbook', route = defaultRoute } = {}) {
         )
         .join('')}
     </main>
-    <footer class="colophon"><span>&copy; Muhammad Alif 2026</span><span class="colophon__v">v${__APP_VERSION__}</span></footer>
+    <footer class="colophon"><a href="https://firstletterlab.sg" target="_blank" rel="noopener">&copy; Firstletter Lab 2026</a><span class="colophon__v">v${__APP_VERSION__}</span></footer>
     <div class="upgrade" aria-hidden="true"></div>
     <div class="cursor" aria-hidden="true"></div>
     <nav class="dots" aria-label="Beats in this scene"></nav>

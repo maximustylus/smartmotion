@@ -79,6 +79,8 @@
   transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
 }
 .page__search input:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.page__foot a { color: inherit; text-decoration: none; }
+.page__foot a:hover { color: var(--fg); }
 .page__foot { margin-top: var(--space-7); font-size: 0.75rem; color: var(--faint); display: flex; gap: 10px; }
 
 /* Glossary: the term on the left, its meaning and links on the right. */

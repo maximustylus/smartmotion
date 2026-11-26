@@ -37,7 +37,7 @@ function shell(eyebrow, title, body) {
         <h1>${title}</h1>
       </header>
       ${body}
-      <footer class="page__foot">&copy; Muhammad Alif 2026 <span>v${__APP_VERSION__}</span></footer>
+      <footer class="page__foot"><a href="https://firstletterlab.sg" target="_blank" rel="noopener">&copy; Firstletter Lab 2026</a> <span>v${__APP_VERSION__}</span></footer>
     </main>
   `
 }

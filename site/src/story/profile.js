@@ -1,20 +1,20 @@
 import { genieIn, genieOut } from '../lib/genie.js'
-import { defaultRoute } from '../content/routes.js'
 
 /*
-  The owner's avatar in the top bar. Tapping it genies a card down from the
-  photo, in the manner of a window minimising in reverse: a thin stretch
-  from the avatar that fills out and settles. Linktree does not allow
-  itself to be framed, so the card carries the link.
+  The button in the top bar. Tapping it genies a card down from the button,
+  in the manner of a window minimising in reverse: a thin stretch that
+  fills out and settles. The card points to Firstletter Lab, which makes
+  Smart Motion (owner, 26 November 2026).
 */
 
-const LINK = 'https://linktr.ee/muhammad.alif'
+const NAME = 'Firstletter Lab'
+const LINK = 'https://firstletterlab.sg'
 
 export function createProfile(topbar, root) {
   const btn = document.createElement('button')
   btn.type = 'button'
   btn.className = 'avatar'
-  btn.setAttribute('aria-label', `About ${defaultRoute.speaker.name}`)
+  btn.setAttribute('aria-label', `About ${NAME}`)
   btn.setAttribute('aria-expanded', 'false')
   btn.innerHTML = `
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -24,17 +24,14 @@ export function createProfile(topbar, root) {
   topbar.append(btn)
 
   const card = document.createElement('div')
-  card.className = 'pcard'
+  card.className = 'pcard pcard--org'
   card.hidden = true
   card.setAttribute('role', 'dialog')
-  card.setAttribute('aria-label', defaultRoute.speaker.name)
+  card.setAttribute('aria-label', NAME)
   card.innerHTML = `
-    <img class="pcard__photo" src="/profile/alif.jpg" alt="${defaultRoute.speaker.name}">
     <div class="pcard__body">
-      <p class="pcard__name">${defaultRoute.speaker.name}</p>
-      <p class="pcard__role">${defaultRoute.speaker.roles.join(' \u00b7 ')}</p>
-      <p class="pcard__summary">${defaultRoute.speaker.summary}</p>
-      <a class="btn pcard__link" href="${LINK}" target="_blank" rel="noopener">My socials <span aria-hidden="true">&nearr;</span></a>
+      <p class="pcard__name">${NAME}</p>
+      <a class="btn pcard__link" href="${LINK}" target="_blank" rel="noopener">firstletterlab.sg <span aria-hidden="true">&nearr;</span></a>
     </div>
   `
   root.append(card)
