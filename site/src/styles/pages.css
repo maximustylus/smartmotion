@@ -121,6 +121,7 @@
   backdrop-filter: blur(14px) saturate(1.2);
 }
 .contact { display: grid; grid-template-columns: 112px 1fr; gap: var(--space-5); align-items: start; }
+.contact--org { grid-template-columns: 1fr; }
 .contact > div { display: grid; gap: 10px; }
 .contact__photo { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; }
 .contact__name { font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; }

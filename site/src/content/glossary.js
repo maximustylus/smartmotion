@@ -33,7 +33,7 @@ export const sitemap = [
   { path: '/talk', label: 'GAi GAi with me', note: 'The talk route, 7 October 2026' },
   { path: '/play', label: 'Play the quiz', note: 'The icebreaker, on your phone' },
   { path: '/glossary', label: 'Glossary', note: 'This page' },
-  { path: '/contact', label: 'Contact', note: 'Muhammad Alif' },
+  { path: '/contact', label: 'Contact', note: 'Firstletter Lab' },
   { path: '/motus-info', label: 'Motus info card', note: 'How the AI companion works, its limits and your data' },
   { path: '/styleguide', label: 'Design system', note: 'Colour, type and components' },
 ]

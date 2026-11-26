@@ -1,6 +1,5 @@
 import '../styles/pages.css'
 import { glossary, sitemap } from '../content/glossary.js'
-import { defaultRoute } from '../content/routes.js'
 import { themeToggle } from '../lib/theme.js'
 import effort from '../content/effort.json'
 import { copy } from '../content/copy.js'
@@ -102,23 +101,17 @@ export function mountGlossary(root) {
 
 export function mountContact(root) {
   document.title = 'Contact · Smart Motion'
-  const sp = defaultRoute.speaker
   root.className = 'app app--page'
   root.innerHTML = shell(
     'Smart Motion',
     'Contact',
     `
-    <div class="contact card">
-      <img class="contact__photo" src="/profile/alif.jpg" alt="${esc(sp.name)}">
+    <div class="contact contact--org card">
       <div>
-        <p class="contact__name">Muhammad Alif Bin Abu Bakar</p>
-        <p class="contact__roles">${sp.roles.map(esc).join(' · ')}</p>
-        <p>${esc(sp.summary)}</p>
+        <p class="contact__name">Firstletter Lab</p>
         <p class="contact__links">
-          <a class="btn" href="mailto:muhammad.alif@me.com" data-mail="muhammad.alif@me.com">Email me</a>
-          <a class="btn btn--ghost" href="https://linktr.ee/muhammad.alif" target="_blank" rel="noopener">My socials <span aria-hidden="true">&nearr;</span></a>
+          <a class="btn" href="https://firstletterlab.sg" target="_blank" rel="noopener">firstletterlab.sg <span aria-hidden="true">&nearr;</span></a>
         </p>
-        <p class="contact__mail" role="status" aria-live="polite" hidden></p>
       </div>
     </div>
     <h2>About this site</h2>
@@ -139,20 +132,6 @@ export function mountContact(root) {
   `,
   )
   chrome(root)
-  // Email: open the mail app, and copy the address as well, because on a
-  // device with no mail app set up the link alone does nothing.
-  const mail = root.querySelector('[data-mail]')
-  const status = root.querySelector('.contact__mail')
-  mail.addEventListener('click', async () => {
-    const address = mail.dataset.mail
-    let copied = false
-    try {
-      await navigator.clipboard.writeText(address)
-      copied = true
-    } catch { /* clipboard not available; the address is still shown below */ }
-    status.hidden = false
-    status.textContent = copied ? `${address} copied. Paste it into your mail app if one did not open.` : address
-  })
 }
 
 // ---------- Motus info card ----------
